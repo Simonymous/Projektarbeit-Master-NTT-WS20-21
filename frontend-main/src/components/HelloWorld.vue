@@ -1,19 +1,59 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <!-- <h1>{{ msg }}</h1> -->
     <p>
-     NTT Project
+     Frontend läuft
+    </p>
+    <p>
+      Backend return:
+      {{ backendresponse }}
     </p>
   </div>
 </template>
 
 <script>
+import { ref } from "vue"
 export default {
+
   name: 'HelloWorld',
-  props: {
-    msg: String,
+  async setup() {
+    let backendresponse = ref(null);
+    const axios = require("axios");
+    const resp = await axios.get('http://localhost:3000')
+    backendresponse.value = await resp.data
+    console.log(backendresponse)
+
+
+    function getResponse(){
+
+    }
+
+    /**function getResponse() {
+
+       .then(function (response){
+       let s = resonde.data;
+        backendresponse = response.data;
+        console.log(response.data)
+        return backendresponse;
+      })
+      return backendresponse;
+    }* */
+    return {
+      backendresponse,
+      getResponse
+    }
   }
+
 }
+/* function getResponse() {
+    const axios = require('axios');
+    let s = "empty";
+    axios.get('http://localhost:3000')
+      .then(function (response){
+        s = response;
+      })
+    return s;  
+} */
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
