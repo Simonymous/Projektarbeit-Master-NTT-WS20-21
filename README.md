@@ -19,3 +19,10 @@ Vue3.js Version 3.0.2
 Nest.js Version 7.5.2
 
 Docker Version 19.03
+
+
+MongoDB mit Docker verbinden:
+
+- download docker/mongo : docker pull mongo
+
+- start Mongo Service : docker run --name some-mongo -d mongo:tag
