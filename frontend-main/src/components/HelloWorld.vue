@@ -2,7 +2,7 @@
   <div class="hello">
     <!-- <h1>{{ msg }}</h1> -->
     <p>
-     Frontend läuft
+     Frontend läuft 
     </p>
     <p>
       Backend return:
@@ -16,17 +16,21 @@ import { ref } from "vue"
 export default {
 
   name: 'HelloWorld',
-  async setup() {
-    let backendresponse = ref(null);
+  setup() {
+    const backendresponse = ref("");
     const axios = require("axios");
-    const resp = await axios.get('http://localhost:3000')
-    backendresponse.value = await resp.data
-    console.log(backendresponse)
+    
+    
 
 
-    function getResponse(){
-
+    async function getResponse(){
+      const resp = await axios.get('http://localhost:3000')
+      backendresponse.value = await resp.data
+      console.log(backendresponse)
+      return backendresponse
     }
+
+    getResponse()
 
     /**function getResponse() {
 
