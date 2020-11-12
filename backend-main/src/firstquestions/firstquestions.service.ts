@@ -17,12 +17,12 @@ export class FirstquestionsService {
     return [...this.firstquestions];
   }
 
-  getSingelQuestion(questionId: string) {
+  getSingleQuestion(questionId: string) {
     const quest = this.findeQuestion(questionId)[0];
     return { ...quest };
   }
 
-  uptadeQuestion(questionId: string, question: string, tests: {hiddentest: string, opentest: string} ) {
+  updateQuestion(questionId: string, question: string, tests: {hiddentest: string, opentest: string} ) {
     const [quest, index] = this.findeQuestion(questionId);
     const updatedQuest = {...quest};
     if(question){

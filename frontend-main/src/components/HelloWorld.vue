@@ -9,6 +9,14 @@
       {{ backendresponse }}
     </p>
   </div>
+  <div>
+    <input v-model="desc" placeholder="beschreibung">
+    <input v-model="hiddentests" placeholder="hiddentest">
+    <input v-model="opentests" placeholder="opentest">
+    <button v-on:click="getQuestions">getQuestions</button>
+    <button v-on:click="postQuestion">postQuestion</button>
+    {{ question }}
+  </div>
 </template>
 
 <script>
@@ -18,16 +26,43 @@ export default {
   name: 'HelloWorld',
   setup() {
     const backendresponse = ref("");
-    const axios = require("axios");
-    
-    
+    const question = ref("");
+    const desc = ref("");
+    const hiddentests = ref("");
+    const opentests = ref("")
+    const tests = ref({})
 
+    const axios = require("axios");
+
+    const questions = {question: "Sprich deutsch", tests: {hiddentest: "hidden1", opentest: "open1"}};
+  
+    
+/*     async function insertQuestion() {
+      console.log("test")
+      let quest = {question: desc, tests: {hiddentest: hiddentests, opentest: opentests}}
+      console.log(quest)
+      return quest
+    } */
 
     async function getResponse(){
       const resp = await axios.get('http://localhost:3000')
       backendresponse.value = await resp.data
       console.log(backendresponse)
       return backendresponse
+    }
+
+    async function getQuestions(){
+      const resp = await axios.get('http://localhost:3000/firstquestions');
+      console.log(resp.data)
+      question.value = resp.data;
+      return question;
+    }
+
+    async function postQuestion(){
+      let quest = {question: desc, tests: {hiddentest: hiddentests, opentest: opentests}}
+      console.log(quest)
+      //console.log(quest)
+      await axios.post('http://localhost:3000/firstquestions', quest);
     }
 
     getResponse()
@@ -44,7 +79,14 @@ export default {
     }* */
     return {
       backendresponse,
-      getResponse
+      getResponse,
+      question,
+      getQuestions,
+      postQuestion,
+      desc,
+      hiddentests,
+      opentests,
+      tests
     }
   }
 

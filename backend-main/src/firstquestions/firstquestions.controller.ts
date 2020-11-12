@@ -22,7 +22,7 @@ export class FirstquestionsController {
 
   @Get(':id')
   getQuestion(@Param ('id') questionID: string) {
-    return this.firstquestionService.getSingelQuestion(questionID);
+    return this.firstquestionService.getSingleQuestion(questionID);
   }
 
   @Patch(':id')
@@ -31,7 +31,7 @@ export class FirstquestionsController {
     @Body('question') questQuestion: string, 
     @Body('tests') testsQuestion: {hiddentest: string, opentest: string}
     ) {
-      this.firstquestionService.uptadeQuestion(questionID, questQuestion, testsQuestion)
+      this.firstquestionService.updateQuestion(questionID, questQuestion, testsQuestion)
       return 'updated'
     }
 
