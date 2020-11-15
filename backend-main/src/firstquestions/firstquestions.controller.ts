@@ -1,5 +1,6 @@
 import { FirstquestionsService } from './firstquestions.service';
 import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
+import { FirstQuestion } from './firstquestion.schema';
 
 
 @Controller('firstquestions')
@@ -11,15 +12,21 @@ export class FirstquestionsController {
     @Body('question') questQuestion: string, 
     @Body('tests') testsQuestion: {hiddentest: string, opentest: string} 
   ) {
-    const generateId = this.firstquestionService.insertFirstQuestion(questQuestion, testsQuestion);
-    return {id: generateId};
+    //const createFirstQuestionDto = new CreateFirstQuestionDto(questQuestion/**,testsQuestion.hiddentest,testsQuestion.opentest*/);
+    const firstQuestion = new FirstQuestion();
+    //TODO: Body To String?????
+    firstQuestion.question = String(questQuestion);
+    //firstQuestion.tests = testsQuestion;
+    const returnObj = this.firstquestionService.create(firstQuestion);
+    return {status: returnObj};
   }
 
   @Get()
   getAllQuestions() {
-    return this.firstquestionService.getFirstQuestions();
+    return this.firstquestionService.findAll();
   }
 
+  /** 
   @Get(':id')
   getQuestion(@Param ('id') questionID: string) {
     return this.firstquestionService.getSingleQuestion(questionID);
@@ -39,5 +46,5 @@ export class FirstquestionsController {
     deleteQuestion(@Param ('id') questionId: string) {
       this.firstquestionService.deleteQuestion(questionId);
       return 'deleted'
-    }
+    }*/
 }

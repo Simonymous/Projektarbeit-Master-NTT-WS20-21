@@ -2,10 +2,10 @@
   <div class="hello">
     <!-- <h1>{{ msg }}</h1> -->
     <p>
-     Frontend läuft 
+     Frontend STATUS OK :-)
     </p>
     <p>
-      Backend return:
+      Backend response:
       {{ backendresponse }}
     </p>
   </div>
@@ -59,10 +59,14 @@ export default {
     }
 
     async function postQuestion(){
+      const headers = {
+        'Content-Type': 'application/json',
+       'Authorization': '....'
+      }
       let quest = {question: desc, tests: {hiddentest: hiddentests, opentest: opentests}}
       console.log(quest)
       //console.log(quest)
-      await axios.post('http://localhost:3000/firstquestions', quest);
+      await axios.post('http://localhost:3000/firstquestions', quest, {headers: headers});
     }
 
     getResponse()
