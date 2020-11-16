@@ -15,7 +15,33 @@
     <input v-model="opentests" placeholder="opentest">
     <button v-on:click="getQuestions">getQuestions</button>
     <button v-on:click="postQuestion">postQuestion</button>
-    {{ question }}
+    
+  </div>
+
+
+  <table>
+    <tr>
+      <th>ID</th><th>Augabenbeschreibung</th><th>Hiddentest</th><th>Opentest</th>
+    </tr>
+    <tr v-for="quest in question" :key="quest.id">
+      <td>
+        {{quest.id}}
+      </td>
+      <td>{{quest.question}}</td>
+       <td>{{quest.tests.hiddentest}}</td>
+        <td>{{quest.tests.opentest}}</td>
+    </tr>
+  </table>
+
+  <div>
+    <button v-on:click="getSingelQuestion">getSingelQuestion</button>
+    
+    <input v-model="questId" placeholder="QuestionID">
+    <p>{{ singelQuestion }}</p>
+  </div>
+  <div>
+    <button v-on:click="patchQuestion">patchQuestion</button>
+    <button v-on:click="deleteQuestion">deleteQuestion</button>
   </div>
 </template>
 
@@ -29,78 +55,100 @@ export default {
     const question = ref("");
     const desc = ref("");
     const hiddentests = ref("");
-    const opentests = ref("")
-    const tests = ref({})
+    const opentests = ref("");
+    const questionId = ref("");
+    const singelQuestion = ref("");
+    const questId = ref("");
+    const tests = ref({});
 
     const axios = require("axios");
 
-    const questions = {question: "Sprich deutsch", tests: {hiddentest: "hidden1", opentest: "open1"}};
+    //const questions = {question: "Sprich deutsch", tests: {hiddentest: "hidden1", opentest: "open1"}};
   
-    
-/*     async function insertQuestion() {
-      console.log("test")
-      let quest = {question: desc, tests: {hiddentest: hiddentests, opentest: opentests}}
-      console.log(quest)
-      return quest
-    } */
-
     async function getResponse(){
       const resp = await axios.get('http://localhost:3000')
       backendresponse.value = await resp.data
-      console.log(backendresponse)
       return backendresponse
     }
 
     async function getQuestions(){
       const resp = await axios.get('http://localhost:3000/firstquestions');
-      console.log(resp.data)
       question.value = resp.data;
       return question;
     }
 
     async function postQuestion(){
-      let quest = {question: desc, tests: {hiddentest: hiddentests, opentest: opentests}}
-      console.log(quest)
-      //console.log(quest)
+      let quest = {question: desc.value, tests: {hiddentest: hiddentests.value, opentest: opentests.value}}
       await axios.post('http://localhost:3000/firstquestions', quest);
+      clearInput()
     }
 
-    getResponse()
+    async function getSingelQuestion(){
+      const resp = await axios.get(selectQuestion());
+      singelQuestion.value = resp.data;
+      clearInput()
+      return singelQuestion
+    }
 
-    /**function getResponse() {
+    async function patchQuestion(){
+      const resp = await axios.get(selectQuestion());
+      let singelQuest = resp.data;
+      if(desc.value){
+        singelQuest.question = desc.value;
+      }
+      if(hiddentests.value){
+        singelQuest.tests.hiddentest = hiddentests.value;
+      }
+      if(opentests.value){
+        singelQuest.tests.opentest = opentests.value;
+      }
+      await axios.patch(selectQuestion(), singelQuest);
+      clearInput()
+    }
 
-       .then(function (response){
-       let s = resonde.data;
-        backendresponse = response.data;
-        console.log(response.data)
-        return backendresponse;
-      })
-      return backendresponse;
-    }* */
+    async function deleteQuestion(){
+      await axios.delete(selectQuestion());
+      clearInput()
+    }
+
+    /**
+     * Support-Methods:
+     */
+
+    function selectQuestion(){
+      const selectedQuestionRoot = "http://localhost:3000/firstquestions/" + questId.value;
+      return selectedQuestionRoot;
+    }
+
+    function clearInput(){
+      console.log("test?")
+      desc.value = "";
+      hiddentests.value = "";
+      opentests.value = "";
+      questId.value = "";
+    }
+
     return {
-      backendresponse,
-      getResponse,
-      question,
       getQuestions,
       postQuestion,
+      getSingelQuestion,
+      getResponse,
+      patchQuestion,
+      deleteQuestion,
+      question,
+      backendresponse,
       desc,
       hiddentests,
       opentests,
+      questId,
+      singelQuestion,
       tests
     }
   }
-
 }
-/* function getResponse() {
-    const axios = require('axios');
-    let s = "empty";
-    axios.get('http://localhost:3000')
-      .then(function (response){
-        s = response;
-      })
-    return s;  
-} */
 </script>
+
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -117,5 +165,20 @@ li {
 }
 a {
   color: #42b983;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
 }
 </style>

@@ -5,7 +5,8 @@ import { FirstquestionsModule } from './firstquestions/firstquestions.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [FirstquestionsModule, MongooseModule.forRoot('mongodb://mongo:27017')],
+  //imports: [FirstquestionsModule, MongooseModule.forRoot('mongodb://mongo:27017')],
+  imports: [FirstquestionsModule],
   controllers: [AppController],
   providers: [AppService],
 })
