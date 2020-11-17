@@ -1,10 +1,25 @@
-import { FirstQuestion } from './firstquestion.model';
-import { Injectable, NotFoundException } from '@nestjs/common';
-
+//import { FirstQuestion } from './firstquestion.model';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { FirstQuestionDTO } from './firstquestion.dto';
+import {FirstQuestion, FirstQuestionDocument} from './firstquestion.schema';
 
 @Injectable()
 export class FirstquestionsService {
-  private firstquestions: FirstQuestion[] = []; 
+  constructor (@InjectModel('FirstQuestion') private firstQuestionModel: Model<FirstQuestionDocument>) {}
+
+  async create(firstQuestionDto: FirstQuestionDTO): Promise<FirstQuestion> {
+    
+    const createdFirstQuestion = new this.firstQuestionModel(firstQuestionDto);
+    return createdFirstQuestion.save();
+  }
+
+  async findAll(): Promise<FirstQuestion[]> {
+    return this.firstQuestionModel.find().exec();
+  }
+
+  /**private firstquestions: FirstQuestion[] = []; 
 
   insertFirstQuestion(question: string, tests: {hiddentest: string, opentest: string}) {
     const questionID = Math.random().toString();
@@ -47,5 +62,5 @@ export class FirstquestionsService {
       throw new NotFoundException('Could nor finde Question');
     }
     return [question, questionIndex];
-  }
+  }**/
 }
