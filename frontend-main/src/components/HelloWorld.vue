@@ -64,9 +64,17 @@ export default {
        'Authorization': '....'
       }
       let quest = {question: desc, tests: {hiddentest: hiddentests, opentest: opentests}}
-      console.log(quest)
-      //console.log(quest)
-      await axios.post('http://localhost:3000/firstquestions', quest, {headers: headers});
+      console.log(desc)
+
+      let firstquestion = {
+        question: desc.value, 
+        tests: {
+          hiddentest: hiddentests.value, 
+          opentest: opentests.value
+        }
+      }
+      //console.log(postData)
+      await axios.post('http://localhost:3000/firstquestions', firstquestion, {headers: headers});
     }
 
     getResponse()

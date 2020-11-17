@@ -2,13 +2,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { FirstQuestionDTO } from './firstquestion.dto';
 import {FirstQuestion, FirstQuestionDocument} from './firstquestion.schema';
 
 @Injectable()
 export class FirstquestionsService {
-  constructor (@InjectModel(FirstQuestion.name) private firstQuestionModel: Model<FirstQuestionDocument>) {}
+  constructor (@InjectModel('FirstQuestion') private firstQuestionModel: Model<FirstQuestionDocument>) {}
 
-  async create(firstQuestionDto: FirstQuestion): Promise<FirstQuestion> {
+  async create(firstQuestionDto: FirstQuestionDTO): Promise<FirstQuestion> {
     
     const createdFirstQuestion = new this.firstQuestionModel(firstQuestionDto);
     return createdFirstQuestion.save();

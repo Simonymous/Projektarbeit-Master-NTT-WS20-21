@@ -12,11 +12,11 @@ export class FirstQuestion {
   @Prop()
   question: string;
 
-  /**@Prop()
+  @Prop()
   tests: {
       hiddentest: string;
       opentest: string;
-  };**/
+  };
 }
 
 export const FirstQuestionSchema = SchemaFactory.createForClass(FirstQuestion);
