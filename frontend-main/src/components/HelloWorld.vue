@@ -23,9 +23,9 @@
     <tr>
       <th>ID</th><th>Augabenbeschreibung</th><th>Hiddentest</th><th>Opentest</th>
     </tr>
-    <tr v-for="quest in question" :key="quest.id">
+    <tr v-for="quest in question" :key="quest._id">
       <td>
-        {{quest.id}}
+        {{quest._id}}
       </td>
       <td>{{quest.question}}</td>
        <td>{{quest.tests.hiddentest}}</td>
@@ -74,6 +74,7 @@ export default {
     async function getQuestions(){
       const resp = await axios.get('http://localhost:3000/firstquestions');
       question.value = resp.data;
+      //console.log(resp.data);
       return question;
     }
 
@@ -82,9 +83,6 @@ export default {
         'Content-Type': 'application/json',
        'Authorization': '....'
       }
-      let quest = {question: desc, tests: {hiddentest: hiddentests, opentest: opentests}}
-      console.log(desc)
-
       let firstquestion = {
         question: desc.value, 
         tests: {
@@ -92,7 +90,6 @@ export default {
           opentest: opentests.value
         }
       }
-      //console.log(postData)
       await axios.post('http://localhost:3000/firstquestions', firstquestion, {headers: headers});
       clearInput()
     }
@@ -105,18 +102,20 @@ export default {
     }
 
     async function patchQuestion(){
-      const resp = await axios.get(selectQuestion());
-      let singelQuest = resp.data;
-      if(desc.value){
-        singelQuest.question = desc.value;
+
+      const headers = {
+        'Content-Type': 'application/json',
+       'Authorization': '....'
       }
-      if(hiddentests.value){
-        singelQuest.tests.hiddentest = hiddentests.value;
+      let firstquestion = {
+        question: desc.value, 
+        tests: {
+          hiddentest: hiddentests.value, 
+          opentest: opentests.value
+        }
       }
-      if(opentests.value){
-        singelQuest.tests.opentest = opentests.value;
-      }
-      await axios.patch(selectQuestion(), singelQuest);
+      console.log(firstquestion)
+      await axios.patch(selectQuestion(), firstquestion, {headers: headers});
       clearInput()
     }
 

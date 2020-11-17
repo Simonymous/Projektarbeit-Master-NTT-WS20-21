@@ -12,13 +12,7 @@ export class FirstquestionsController {
   async addQuestion(
     @Res() res,
     @Body() firstQuestionDTO: FirstQuestionDTO, 
-    //@Body('tests') testsQuestion: {hiddentest: string, opentest: string} 
   ) {
-    //const createFirstQuestionDto = new CreateFirstQuestionDto(questQuestion/**,testsQuestion.hiddentest,testsQuestion.opentest*/);
-    //const firstQuestion = new FirstQuestion();
-    //TODO: Body To String?????
-    //firstQuestion.question = String(questQuestion);
-    //firstQuestion.tests = testsQuestion;
     const returnObj = await this.firstquestionService.create(firstQuestionDTO);
     return res.status(HttpStatus.OK).json({
       message: 'FirstQuestion erfolgreich hinzugefügt!',
@@ -31,25 +25,28 @@ export class FirstquestionsController {
     return this.firstquestionService.findAll();
   }
 
-  /** 
+  
   @Get(':id')
-  getQuestion(@Param ('id') questionID: string) {
-    return this.firstquestionService.getSingleQuestion(questionID);
+  async getQuestion(
+    @Param ('id') questionID: string,
+    @Res() res) {
+    const returnObj = await this.firstquestionService.getSingleQuestion(questionID);
+    return res.status(HttpStatus.OK).json({
+      message: 'FirstQuestion gefunden!',
+      firstQuestion: returnObj
+    })
   }
-
   @Patch(':id')
   updateQuestion(
     @Param ('id') questionID: string, 
-    @Body('question') questQuestion: string, 
-    @Body('tests') testsQuestion: {hiddentest: string, opentest: string}
+    @Body() firstQuestionDTO: FirstQuestionDTO, 
     ) {
-      this.firstquestionService.updateQuestion(questionID, questQuestion, testsQuestion)
+      this.firstquestionService.updateQuestion(questionID, firstQuestionDTO)
       return 'updated'
     }
-
     @Delete(':id')
     deleteQuestion(@Param ('id') questionId: string) {
       this.firstquestionService.deleteQuestion(questionId);
       return 'deleted'
-    }*/
+    }
 }

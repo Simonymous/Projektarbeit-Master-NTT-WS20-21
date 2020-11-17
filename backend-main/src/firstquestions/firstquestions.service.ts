@@ -2,6 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { runInThisContext } from 'vm';
 import { FirstQuestionDTO } from './firstquestion.dto';
 import {FirstQuestion, FirstQuestionDocument} from './firstquestion.schema';
 
@@ -19,48 +20,32 @@ export class FirstquestionsService {
     return this.firstQuestionModel.find().exec();
   }
 
-  /**private firstquestions: FirstQuestion[] = []; 
-
-  insertFirstQuestion(question: string, tests: {hiddentest: string, opentest: string}) {
-    const questionID = Math.random().toString();
-    const newQuestion = new FirstQuestion(questionID, question, tests);
-    this.firstquestions.push(newQuestion);
-    return questionID;
-  }
-
-  getFirstQuestions() {
-    return [...this.firstquestions];
-  }
-
-  getSingleQuestion(questionId: string) {
-    const quest = this.findeQuestion(questionId)[0];
-    return { ...quest };
-  }
-
-  updateQuestion(questionId: string, question: string, tests: {hiddentest: string, opentest: string} ) {
-    const [quest, index] = this.findeQuestion(questionId);
-    const updatedQuest = {...quest};
-    if(question){
-      updatedQuest.question = question;
+  async getSingleQuestion(questionId: String): Promise<FirstQuestion> {
+    if (questionId.match(/^[0-9a-fA-F]{24}$/)) {
+      return this.firstQuestionModel.findById({'_id': questionId}).exec();
+    } else {
+      return null;
     }
-    if(tests){
-      updatedQuest.tests.hiddentest = tests.hiddentest;
-      updatedQuest.tests.opentest = tests.opentest;
-    }
-    this.firstquestions[index] = updatedQuest;
   }
 
-  deleteQuestion(questionId: string) {
-    const [_, index] = this.findeQuestion(questionId);
-    this.firstquestions.splice(index, 1);
+  async updateQuestion(questionId: String, firstQuestionDto: FirstQuestionDTO): Promise<FirstQuestion> {
+    
+    if(firstQuestionDto.question){
+      return this.firstQuestionModel.findByIdAndUpdate(questionId,{'question': firstQuestionDto.question}).exec();
+    }
+    if(firstQuestionDto.tests.hiddentest){
+      return this.firstQuestionModel.findByIdAndUpdate(questionId,{'tests.hiddentest': firstQuestionDto.tests.hiddentest}).exec();
+    }
+    if(firstQuestionDto.tests.opentest){
+      return this.firstQuestionModel.findByIdAndUpdate(questionId,{'tests.opentest': firstQuestionDto.tests.opentest}).exec();
+    }
   }
 
-  private findeQuestion(questionId: string): [FirstQuestion, number] {
-    const questionIndex = this.firstquestions.findIndex((quest) => quest.id === questionId);
-    const question = this.firstquestions[questionIndex];
-    if(!question){
-      throw new NotFoundException('Could nor finde Question');
+  async deleteQuestion(questionId: String): Promise<FirstQuestion> {
+    if (questionId.match(/^[0-9a-fA-F]{24}$/)) {
+      return this.firstQuestionModel.findByIdAndRemove(questionId).exec();
+    } else {
+      return null;
     }
-    return [question, questionIndex];
-  }**/
+  }
 }
