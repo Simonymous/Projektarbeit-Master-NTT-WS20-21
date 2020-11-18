@@ -1,5 +1,7 @@
 import { FirstquestionsService } from './firstquestions.service';
-import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Res, HttpStatus } from '@nestjs/common';
+import { FirstQuestion } from './firstquestion.schema';
+import { FirstQuestionDTO } from './firstquestion.dto';
 
 
 @Controller('firstquestions')
@@ -7,34 +9,41 @@ export class FirstquestionsController {
   constructor(private readonly firstquestionService: FirstquestionsService) {}
 
   @Post()
-  addQuestion(
-    @Body('question') questQuestion: string, 
-    @Body('tests') testsQuestion: {hiddentest: string, opentest: string} 
+  async addQuestion(
+    @Res() res,
+    @Body() firstQuestionDTO: FirstQuestionDTO, 
   ) {
-    const generateId = this.firstquestionService.insertFirstQuestion(questQuestion, testsQuestion);
-    return {id: generateId};
+    const returnObj = await this.firstquestionService.create(firstQuestionDTO);
+    return res.status(HttpStatus.OK).json({
+      message: 'FirstQuestion erfolgreich hinzugefügt!',
+      firstQuestion: returnObj
+    })
   }
 
   @Get()
   getAllQuestions() {
-    return this.firstquestionService.getFirstQuestions();
+    return this.firstquestionService.findAll();
   }
 
+  
   @Get(':id')
-  getQuestion(@Param ('id') questionID: string) {
-    return this.firstquestionService.getSingleQuestion(questionID);
+  async getQuestion(
+    @Param ('id') questionID: string,
+    @Res() res) {
+    const returnObj = await this.firstquestionService.getSingleQuestion(questionID);
+    return res.status(HttpStatus.OK).json({
+      message: 'FirstQuestion gefunden!',
+      firstQuestion: returnObj
+    })
   }
-
   @Patch(':id')
   updateQuestion(
     @Param ('id') questionID: string, 
-    @Body('question') questQuestion: string, 
-    @Body('tests') testsQuestion: {hiddentest: string, opentest: string}
+    @Body() firstQuestionDTO: FirstQuestionDTO, 
     ) {
-      this.firstquestionService.updateQuestion(questionID, questQuestion, testsQuestion)
+      this.firstquestionService.updateQuestion(questionID, firstQuestionDTO)
       return 'updated'
     }
-
     @Delete(':id')
     deleteQuestion(@Param ('id') questionId: string) {
       this.firstquestionService.deleteQuestion(questionId);
