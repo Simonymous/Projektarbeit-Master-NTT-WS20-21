@@ -3,15 +3,20 @@
   <Suspense>
     <HelloWorld/>
   </Suspense>
+    <Suspense>
+    <UserSettings/>
+  </Suspense>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import UserSettings from './components/UserSettings.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    UserSettings,
   }
 }
 </script>
