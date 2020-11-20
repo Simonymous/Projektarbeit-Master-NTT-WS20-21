@@ -11,9 +11,9 @@
           <input v-model="password" placeholder="Password" id="password" autocomplete="on">
         </dd>
       </dl>
-      <dd>
+     <!-- <dd>
         <button name="moodel" class="button" v-on:click="loginWithMoodel">Moodel</button>
-      </dd>
+      </dd>-->
       <p>
         <a href="">I forgot my Password</a>
       </p>
@@ -66,8 +66,10 @@ export default {
       if(username.value && password.value) {
         console.log("Hallo" + " " + username.value)
         const user = new User(username.value, password.value) 
-/*         const resp = await axios.post('', user, {headers: headers});
-        return resp.data; */
+        console.log(user)
+        const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
+        console.log(resp)
+        //return resp.data; 
       }
     }
 
