@@ -1,13 +1,17 @@
 import { FirstquestionsService } from './firstquestions.service';
-import { Controller, Post, Body, Get, Param, Patch, Delete, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
 import { FirstQuestion } from './firstquestion.schema';
 import { FirstQuestionDTO } from './firstquestion.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
 @Controller('firstquestions')
 export class FirstquestionsController {
   constructor(private readonly firstquestionService: FirstquestionsService) {}
 
+  //TODO: Funktioniert!! man muss nur aus dem Frontend das beim Login übermittelte Token mitschicken
+  // https://stackoverflow.com/questions/44072750/how-to-send-basic-auth-with-axios ? ausprobieren..
+  //@UseGuards(JwtAuthGuard)
   @Post()
   async addQuestion(
     @Res() res,
