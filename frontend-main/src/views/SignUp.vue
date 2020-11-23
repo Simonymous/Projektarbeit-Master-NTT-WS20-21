@@ -1,42 +1,62 @@
 <template>
-  <div>
-    <h1>Sign Up</h1>
-    <input type="text" placeholder="Username" v-model="username" />
-    <input type="text" placeholder="Password" v-model="password" />
-    <input
-      type="text"
-      placeholder="Password (repeat)"
-      v-model="password_repeat"
-    />
-    <input type="button" @click="signUp" value="Sign Up" />
-    <p v-if="msg">{{ msg }}</p>
-  </div>
+  <form @submit.prevent="handleSignup">
+    <h3> Sign Up </h3>
+
+    <div class="form-group">
+      <label> Username </label>
+      <input v-model="username" placeholder="Username" id="username" autocomplete="on">
+    </div>
+
+    <div class="form-group">
+      <label> Email </label>
+      <input v-model="email" placeholder="Email" id="email" autocomplete="on">
+    </div>
+
+     <div class="form-group">
+      <label> Password </label>
+      <input v-model="password" placeholder="Password" id="password" autocomplete="on">
+    </div>
+
+    <button name="signup" class="button">Sign Up</button>
+  </form>
 </template>
 <script>
-import AuthService from '@/services/AuthService.js';
+import { ref } from "vue"
 export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      password_repeat: '',
-      msg: ''
-    };
-  },
-  methods: {
-    async signUp() {
-      try {
-        const credentials = {
-          username: this.username,
-          password: this.password,
-          password_repeat: this.password_repeat
-        };
-        const response = await AuthService.signUp(credentials);
-        this.msg = response.msg;
-      } catch (error) {
-        this.msg = error.response.data.msg;
+  name: 'Signup',
+
+  setup() {
+    const username = ref('');
+    const password = ref('');
+    const email = ref('');
+    const User = require('../components/user');
+    const axios = require("axios");
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': '....'
+      }
+
+    /** Bis jetzt nur User Login in User.js */
+    async function handleSignup(){
+      if(username.value && password.value && email.value){
+        //const user = new User(username.value, email.value, password.value)
+        const user = {
+          username: username.value,
+          email: email.value,
+          password: password.value,
+        }
+        console.log(user)
+        const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
       }
     }
+
+    return {
+      username,
+      password,
+      email,
+      handleSignup,
+    }
   }
-};
+
+}
 </script>

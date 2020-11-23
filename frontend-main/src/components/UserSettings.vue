@@ -46,9 +46,15 @@
   
 </template>
 <script>
+//import Home from '../views/Home.vue'
+//import Login from '../views/Login.vue'
 import { ref } from "vue"
 export default {
   name: "UserSettings",
+  components: {
+  //  Home,
+    //Login,
+  },
 
   setup(){
     const username = ref("");
