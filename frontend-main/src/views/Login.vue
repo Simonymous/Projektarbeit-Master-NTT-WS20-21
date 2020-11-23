@@ -22,6 +22,7 @@ export default {
   name: 'Login',
 
   setup() {
+    const that = this;
     const username = ref('');
     const password = ref('');
     const User = require('../components/user');
@@ -36,9 +37,20 @@ export default {
         const user = new User(username.value, password.value)
         console.log(user)
         //const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
+        axios.post('http://localhost:3000/auth/login', user, {headers: headers}).then(response => {
+          console.log(response);
+        }).catch(error => {
+          if(error.response.status === 401) {
+            console.log("Benutzername oder Passwort falsch")
+          } else {
+            console.log("IWAS")
+          }
 
+        })
+ 
         //localStorage.setItem('token', resp.data.token)
-        this.$router.push("/");
+        //console.log(that.router)
+        //that.$router.push("/");
       }
     }
 

@@ -15,7 +15,7 @@ export class FirstquestionsController {
   ) {
     const returnObj = await this.firstquestionService.create(firstQuestionDTO);
     return res.status(HttpStatus.OK).json({
-      message: 'FirstQuestion erfolgreich hinzugefügt!',
+      message: 'FirstQuestion added successfull!',
       firstQuestion: returnObj
     })
   }

@@ -46,7 +46,7 @@ export default {
           password: password.value,
         }
         console.log(user)
-        const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
+        const resp = await axios.post('http://localhost:3000/auth/register', user, {headers: headers});
       }
     }
 

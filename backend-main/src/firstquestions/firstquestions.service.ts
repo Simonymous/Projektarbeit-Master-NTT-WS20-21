@@ -2,7 +2,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { runInThisContext } from 'vm';
 import { FirstQuestionDTO } from './firstquestion.dto';
 import {FirstQuestion, FirstQuestionDocument} from './firstquestion.schema';
 
