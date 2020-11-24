@@ -39,6 +39,7 @@ export default {
         //const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
         axios.post('http://localhost:3000/auth/login', user, {headers: headers}).then(response => {
           console.log(response);
+          localStorage.setItem('token', response.data.token)
         }).catch(error => {
           if(error.response.status === 401) {
             console.log("Benutzername oder Passwort falsch")
@@ -48,7 +49,7 @@ export default {
 
         })
  
-        //localStorage.setItem('token', resp.data.token)
+
         //console.log(that.router)
         //that.$router.push("/");
       }
