@@ -22,6 +22,7 @@
 </template>
 <script>
 import { ref } from "vue"
+import { useRouter } from 'vue-router'
 export default {
   name: 'Signup',
 
@@ -29,6 +30,7 @@ export default {
     const username = ref('');
     const password = ref('');
     const email = ref('');
+    const router = useRouter();
     const User = require('../components/user');
     const axios = require("axios");
     const headers = {
@@ -48,6 +50,7 @@ export default {
         console.log(user)
         const resp = await axios.post('http://localhost:3000/auth/register', user, {headers: headers});
       }
+      router.push('/')
     }
 
     return {

@@ -18,13 +18,14 @@
 </template>
 <script>
 import { ref } from "vue"
+import { useRouter } from 'vue-router'
 export default {
   name: 'Login',
 
   setup() {
-    const that = this;
     const username = ref('');
     const password = ref('');
+    const router = useRouter();
     const User = require('../components/user');
     const axios = require("axios");
     const headers = {
@@ -46,12 +47,8 @@ export default {
           } else {
             console.log("IWAS")
           }
-
         })
- 
-
-        //console.log(that.router)
-        //that.$router.push("/");
+        router.push('/');
       }
     }
 
