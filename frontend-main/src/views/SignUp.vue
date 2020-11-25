@@ -20,10 +20,13 @@
     <button name="signup" class="button">Sign Up</button>
   </form>
 </template>
+
 <script>
 import { ref } from "vue"
 import { useRouter } from 'vue-router'
+
 export default {
+
   name: 'Signup',
 
   setup() {
@@ -31,7 +34,7 @@ export default {
     const password = ref('');
     const email = ref('');
     const router = useRouter();
-    const User = require('../components/user');
+    const User = require('../models/signupUserDTO');
     const axios = require("axios");
     const headers = {
       'Content-Type': 'application/json',
@@ -41,12 +44,12 @@ export default {
     /** Bis jetzt nur User Login in User.js */
     async function handleSignup(){
       if(username.value && password.value && email.value){
-        //const user = new User(username.value, email.value, password.value)
-        const user = {
+        const user = new User(username.value, email.value, password.value)
+/*         const user = {
           username: username.value,
           email: email.value,
           password: password.value,
-        }
+        } */
         console.log(user)
         const resp = await axios.post('http://localhost:3000/auth/register', user, {headers: headers});
       }

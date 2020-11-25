@@ -26,7 +26,7 @@ export default {
     const username = ref('');
     const password = ref('');
     const router = useRouter();
-    const User = require('../components/user');
+    const User = require('../models/loginUserDTO');
     const axios = require("axios");
     const headers = {
       'Content-Type': 'application/json',

@@ -1,5 +1,24 @@
 <template>
-  <img alt="Vue logo" src="./assets/philipp.jpg">
+  <div id="app">
+    <nav class="navbar navbar-expand navbar-light fixed-top">
+      <div class="container">
+        <router-link to="/">Home</router-link>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <router-link to="/login">Login</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/signup">Signup</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+
+  
 <!--   <Suspense>
     <HelloWorld/>
   </Suspense> -->
@@ -40,4 +59,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>

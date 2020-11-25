@@ -1,7 +1,14 @@
 <template>
+  <div v-if="state.counter > 5">
+<!--   <div v-if="state.user"> -->
     <Suspense>
-    <HelloWorld/>
-  </Suspense>
+      <HelloWorld/>
+    </Suspense>
+  </div>
+  <div v-else>
+    <img alt="Vue logo" src="../assets/philipp.jpg">
+  </div>
+
 </template>
 <script>
   import HelloWorld from '../components/HelloWorld'
