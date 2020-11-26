@@ -7,6 +7,9 @@
   </div>
   <div v-else>
     <img alt="Vue logo" src="../assets/philipp.jpg">
+    <h2>Ich schick dein Girl in den Puff und lass Sie jeden Mann darin ansprechen,<br />
+      auch die Chinesen, die Sie in Mandarin ansprechen!
+    </h2>
   </div>
 
 </template>
