@@ -19,6 +19,7 @@
 <script>
 import { ref } from "vue"
 import { useRouter } from 'vue-router'
+import VueCookies from 'vue-cookies'
 export default {
   name: 'Login',
 
@@ -40,6 +41,7 @@ export default {
         //const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
         axios.post('http://localhost:3000/auth/login', user, {headers: headers}).then(response => {
           console.log(response);
+          VueCookies.set('token', 'meister', '10s')
           localStorage.setItem('token', response.data.token)
         }).catch(error => {
           if(error.response.status === 401) {

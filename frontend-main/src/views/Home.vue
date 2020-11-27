@@ -1,5 +1,5 @@
 <template>
-  <div v-if="state.counter > 5">
+  <div v-if="cook">
 <!--   <div v-if="state.user"> -->
     <Suspense>
       <HelloWorld/>
@@ -16,6 +16,7 @@
 <script>
   import HelloWorld from '../components/HelloWorld'
   import { useState } from '../store/store';
+  import VueCookies from 'vue-cookies'
   export default {
     name: 'home',
     components: {
@@ -28,6 +29,7 @@
      * Darüber können wir im weiteren verschiedene Optionen festlegen z.b was angezeigt wird, was der User darf etc.
      */
     setup(){
+      let cook = VueCookies.get('killer')
       let state = useState()
       const axios = require("axios");
       async function getUser() {
@@ -41,6 +43,7 @@
       }
       return {
         state,
+        cook,
       }
     }
   }

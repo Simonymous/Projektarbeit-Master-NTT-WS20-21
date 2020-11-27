@@ -6,6 +6,7 @@
 <script>
 
 import { useState } from '../store/store';
+import VueCookies from 'vue-cookies'
 
   export default {
     setup() {
