@@ -41,8 +41,8 @@ export default {
         //const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
         axios.post('http://localhost:3000/auth/login', user, {headers: headers}).then(response => {
           console.log(response);
-          VueCookies.set('token', 'meister', '10s')
-          localStorage.setItem('token', response.data.token)
+          VueCookies.set('token', response.data.accses_token, '10s')
+          localStorage.setItem('token', response.data.accses_token)
         }).catch(error => {
           if(error.response.status === 401) {
             console.log("Benutzername oder Passwort falsch")
