@@ -1,16 +1,18 @@
 <template>
-  <div v-if="!state.user">
-    <Menubar :model="logedOutItems" />
+  <div>
+    <div v-if="state.counter < 3">
+      <Menu :model="logedOutItems" />
+    </div>
+    <div v-else>
+      <Menu :model="logedInItems" />
+    </div>
   </div>
-  <div v-else>
-    <Menubar :model="logedInItems"></Menubar>
-  </div>
-  
 </template>
 
 <script>
 import { ref } from 'vue'
 import { useState } from '../store/store';
+import VueCookies from 'vue-cookies'
 export default {
   setup() {
     let state = useState()
@@ -29,9 +31,14 @@ export default {
         label: 'Home', icon: 'pi pi-fw pi-home', to: '/',
       },
       {
-        label: 'User',
+        label: state.user,
         items: [{ label: 'Settings', icon: 'pi pi-fw pi-cog', to: 'settings' },
-                { label: 'Logout', icon: 'pi pi-fw pi-power-off', to: '/logout'}
+                { label: 'Logout', icon: 'pi pi-fw pi-power-off', command: (event) => {
+                  VueCookies.remove('token')
+                  state.user = null
+                  state.user = "test"
+                  console.log("Test")
+                }}
 
         ]
       }

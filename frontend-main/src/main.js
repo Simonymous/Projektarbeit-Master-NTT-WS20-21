@@ -4,11 +4,13 @@ import router from './router/router'
 import VueCookies from 'vue-cookies';
 
 import Button from 'primevue/button';
-import Menubar from 'primevue/menubar';   
+import Menubar from 'primevue/menubar';
+import Menu from 'primevue/menu';
+import TabMenu from 'primevue/tabmenu';
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css'; 
-                         //icons                       //icons
+
 import { stateSymbol, createState } from './store/store'
 
 const app = createApp(App)
@@ -18,7 +20,9 @@ app.provide(stateSymbol, createState())
 
 app.component('Button', Button)
 app.component('Menubar', Menubar)
+app.component('Menu', Menu)
+app.component('TabMenu', TabMenu)
 
 app.mount('#app')
 
-//createApp(App).use(router, VueCookies).provide(stateSymbol, createState()).component('Button', Button).mount('#app')
+// createApp(App).use(router, VueCookies).provide(stateSymbol, createState()).component('Button', Button).mount('#app')
