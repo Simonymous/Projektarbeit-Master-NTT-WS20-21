@@ -6,6 +6,5 @@ export class UserDTO {
       public email: string, 
       public password: string, 
       public roles : Role[],
-      public  lastToken: string
       ) {}
   }

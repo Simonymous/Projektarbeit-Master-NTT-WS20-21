@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="state.counter < 3">
+    <div v-if="!state.user">
       <Menu :model="logedOutItems" />
     </div>
     <div v-else>
@@ -27,21 +27,24 @@ export default {
     },])
 
     const logedInItems = ref([
-      {  
-        label: 'Home', icon: 'pi pi-fw pi-home', to: '/',
-      },
-      {
-        label: state.user,
+            {
+        label: 'Eingeloggt: ',//+state.user.user,
         items: [{ label: 'Settings', icon: 'pi pi-fw pi-cog', to: 'settings' },
                 { label: 'Logout', icon: 'pi pi-fw pi-power-off', command: (event) => {
                   VueCookies.remove('token')
                   state.user = null
-                  state.user = "test"
+                  state.counter = 2
                   console.log("Test")
                 }}
 
         ]
-      }
+      },
+      {  
+        label: 'Home', icon: 'pi pi-fw pi-home', to: '/',
+      },
+      {  
+        label: 'Test', icon: 'pi pi-fw pi-home', to: '/test',
+      },
     ])
 
     return {

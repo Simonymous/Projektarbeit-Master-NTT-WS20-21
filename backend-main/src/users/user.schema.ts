@@ -18,10 +18,7 @@ export class User {
 
   @Prop()
   password: string;
-
-  @Prop()
-  lastToken: string;
-
+  
   @Prop()
   roles: Role[];
 }

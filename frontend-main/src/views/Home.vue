@@ -55,7 +55,7 @@
         }).catch(function (error) {
           if(error.response.status === 401) {
             console.log("Not Logged In!")
-            router.push('/login')
+            //router.push('/login')
           } else {
             console.log(error)
           }

@@ -22,8 +22,8 @@ export class UsersService {
     return this.userModel.findOne({'username': username});
   }
 
-  async setToken(token: string): Promise<any> {
-
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().exec();
   }
 
 }
