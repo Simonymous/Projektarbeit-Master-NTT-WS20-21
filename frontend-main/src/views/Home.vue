@@ -1,24 +1,23 @@
 <template>
-  <div v-if="state.user">
   <div>
-    <Button type="submit" label="Submit"/>
-      </div>
 
-    <Suspense>
       <HelloWorld/>
-    </Suspense>
-  </div>
-  <div v-else>
-    <img alt="Vue logo" src="../assets/philipp.jpg">
-    <h2>Ich schick dein Girl in den Puff und lass Sie jeden Mann darin ansprechen,<br />
-      auch die Chinesen, die Sie in Mandarin ansprechen!
-    </h2>
+
   </div>
 
 </template>
 <script>
-  import HelloWorld from '../components/HelloWorld'
-  import { useState } from '../store/store';
+import { defineAsyncComponent } from 'vue'
+
+    import { useState } from '../store/store';
+
+
+  const pluginPath = require("../../config.json").pluginPath;
+  // const HelloWorld = defineAsyncComponent(() => import("@/" + pluginPath));
+  const HelloWorld = defineAsyncComponent(() => import("@/" + useState().plugin));
+
+
+
   import VueCookies from 'vue-cookies'
   import { useRouter } from 'vue-router'
   import { ref, OnMounted, onMounted } from 'vue'
@@ -39,6 +38,7 @@
 
       let state = useState()
       const axios = require("axios");
+
 
       const setUserState = async() => {
         axios.get('http://localhost:3000/user', {
@@ -70,5 +70,6 @@
         setUserState
       }
     }
+
   }
 </script>
