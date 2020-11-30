@@ -1,10 +1,7 @@
 import { FirstquestionsService } from './firstquestions.service';
 import { Controller, Post, Body, Get, Param, Patch, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
-import { FirstQuestion } from './firstquestion.schema';
 import { FirstQuestionDTO } from './firstquestion.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { Roles } from 'src/auth/roles/roles.decorator';
-import { Role } from 'src/auth/roles/role.enum';
 
 
 @Controller('firstquestions')
@@ -28,7 +25,6 @@ export class FirstquestionsController {
   }
 
   @Get()
-  @Roles(Role.Admin)
   getAllQuestions() {
     return this.firstquestionService.findAll();
   }

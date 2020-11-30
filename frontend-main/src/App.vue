@@ -3,17 +3,8 @@
     <NavBar />
   
 
-
-  
-<!--   <Suspense>
-    <HelloWorld/>
-  </Suspense> -->
-<!--     <Suspense>
-    <UserSettings/>
-  </Suspense> -->
  <div class="auth-wrapper">
     <div class="auth-inner">
-      <router-link to="/test">Test</router-link> |
       <router-view/>
     </div>
   </div> 

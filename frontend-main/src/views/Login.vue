@@ -31,7 +31,6 @@ export default {
     const axios = require("axios");
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': '....'
       }
 
     async function handleLogin(){
@@ -40,8 +39,8 @@ export default {
         console.log(user)
         //const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
         axios.post('http://localhost:3000/auth/login', user, {headers: headers}).then(response => {
-          console.log(response.data.access_token);
-          VueCookies.set('token', response.data.access_token, '1min')
+          console.log(response.data.token);
+          VueCookies.set('token', response.data.token, '1min')
           //localStorage.setItem('token', response.data.accses_token)
           router.push('/');
         }).catch(error => {
