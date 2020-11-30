@@ -1,21 +1,7 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand navbar-light fixed-top">
-      <div class="container">
-        <router-link to="/">Home</router-link>
-        <div class="collapse navbar-collapse">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <router-link to="/login">Login</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/signup">Signup</router-link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </div>
+    <NavBar />
+  
 
 
   
@@ -35,17 +21,20 @@
       <router-view/>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 //import UserSettings from './components/UserSettings.vue'
+import NavBar from './views/NavBar'
 
 export default {
   name: 'App',
   components: {
     //HelloWorld,
     //UserSettings,
+    NavBar,
   }
 }
 </script>

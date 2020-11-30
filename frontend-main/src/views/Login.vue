@@ -40,9 +40,10 @@ export default {
         console.log(user)
         //const resp = await axios.post('http://localhost:3000/auth/login', user, {headers: headers});
         axios.post('http://localhost:3000/auth/login', user, {headers: headers}).then(response => {
-          console.log(response);
-          VueCookies.set('token', response.data.accses_token, '10s')
+          console.log(response.data.access_token);
+          VueCookies.set('token', response.data.access_token, '1min')
           localStorage.setItem('token', response.data.accses_token)
+          router.push('/');
         }).catch(error => {
           if(error.response.status === 401) {
             console.log("Benutzername oder Passwort falsch")
@@ -50,7 +51,6 @@ export default {
             console.log("IWAS")
           }
         })
-        router.push('/');
       }
     }
 

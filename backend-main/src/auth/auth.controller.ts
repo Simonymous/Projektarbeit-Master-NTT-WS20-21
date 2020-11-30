@@ -11,11 +11,13 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post('/login')
     async login(@Request() req) {
-        return this.authService.login(req.user)
+      return this.authService.login(req.user)
     }
+  
     @Post('/register')
     async register(    @Res() res,
     @Body() userDTO: UserDTO, ) {
+        
         const returnObj = await this.usersService.create(userDTO);
         return res.status(HttpStatus.OK).json({
             message: 'User added successful!',

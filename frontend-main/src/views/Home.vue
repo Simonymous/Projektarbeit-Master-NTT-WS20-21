@@ -1,6 +1,9 @@
 <template>
-  <div v-if="state.counter > 5">
-<!--   <div v-if="state.user"> -->
+  <div v-if="state.user">
+  <div>
+    <Button type="submit" label="Submit"/>
+      </div>
+
     <Suspense>
       <HelloWorld/>
     </Suspense>
@@ -17,6 +20,7 @@
   import HelloWorld from '../components/HelloWorld'
   import { useState } from '../store/store';
   import VueCookies from 'vue-cookies'
+  import { useRouter } from 'vue-router'
   import { ref, OnMounted, onMounted } from 'vue'
   export default {
     name: 'home',
@@ -30,6 +34,9 @@
      * Darüber können wir im weiteren verschiedene Optionen festlegen z.b was angezeigt wird, was der User darf etc.
      */
     setup(){
+
+      const router = useRouter();
+
       let state = useState()
       const axios = require("axios");
 
@@ -39,10 +46,19 @@
             Authorization: 'Bearer ' + VueCookies.get('token')
           }
         }).then(function (response) {
-          console.log(response);
-          state.user = "response.data.user"
+          console.log(response.data);
+          let test = response.data
+          console.log(test);
+          state.user = response.data
+          console.log(state.user)
+          return state
         }).catch(function (error) {
-          console.log(error);
+          if(error.response.status === 401) {
+            console.log("Not Logged In!")
+            router.push('/login')
+          } else {
+            console.log(error)
+          }
           return state
         })
       }

@@ -47,6 +47,7 @@
 
 <script>
 import { ref } from "vue"
+import VueCookies from 'vue-cookies'
 export default {
 
   name: 'HelloWorld',
@@ -60,19 +61,24 @@ export default {
     const singelQuestion = ref("");
     const questId = ref("");
     const tests = ref({});
+    const axiosAuthHeader = {
+          headers: {
+            Authorization: 'Bearer ' + VueCookies.get('token')
+          }
+        }
 
     const axios = require("axios");
 
     //const questions = {question: "Sprich deutsch", tests: {hiddentest: "hidden1", opentest: "open1"}};
   
     async function getResponse(){
-      const resp = await axios.get('http://localhost:3000')
+      const resp = await axios.get('http://localhost:3000', axiosAuthHeader)
       backendresponse.value = await resp.data
       return backendresponse
     }
 
     async function getQuestions(){
-      const resp = await axios.get('http://localhost:3000/firstquestions');
+      const resp = await axios.get('http://localhost:3000/firstquestions', axiosAuthHeader);
       question.value = resp.data;
       //console.log(resp.data);
       return question;
@@ -81,7 +87,7 @@ export default {
     async function postQuestion(){
       const headers = {
         'Content-Type': 'application/json',
-       'Authorization': '....'
+       'Authorization': 'Bearer ' + VueCookies.get('token')
       }
       let firstquestion = {
         question: desc.value, 
@@ -95,7 +101,7 @@ export default {
     }
 
     async function getSingelQuestion(){
-      const resp = await axios.get(selectQuestion());
+      const resp = await axios.get(selectQuestion(), axiosAuthHeader);
       singelQuestion.value = resp.data;
       clearInput()
       return singelQuestion
@@ -105,7 +111,7 @@ export default {
 
       const headers = {
         'Content-Type': 'application/json',
-       'Authorization': '....'
+       'Authorization': 'Bearer ' + VueCookies.get('token')
       }
       let firstquestion = {
         question: desc.value, 
@@ -120,7 +126,7 @@ export default {
     }
 
     async function deleteQuestion(){
-      await axios.delete(selectQuestion());
+      await axios.delete(selectQuestion(), axiosAuthHeader);
       clearInput()
     }
 

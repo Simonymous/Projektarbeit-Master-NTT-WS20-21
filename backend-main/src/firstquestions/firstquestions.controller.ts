@@ -3,9 +3,12 @@ import { Controller, Post, Body, Get, Param, Patch, Delete, Res, HttpStatus, Use
 import { FirstQuestion } from './firstquestion.schema';
 import { FirstQuestionDTO } from './firstquestion.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { Role } from 'src/auth/roles/role.enum';
 
 
 @Controller('firstquestions')
+@UseGuards(JwtAuthGuard)
 export class FirstquestionsController {
   constructor(private readonly firstquestionService: FirstquestionsService) {}
 
@@ -25,6 +28,7 @@ export class FirstquestionsController {
   }
 
   @Get()
+  @Roles(Role.Admin)
   getAllQuestions() {
     return this.firstquestionService.findAll();
   }
