@@ -7,6 +7,8 @@ import Button from 'primevue/button';
 import Menubar from 'primevue/menubar';
 import Menu from 'primevue/menu';
 import TabMenu from 'primevue/tabmenu';
+import InputText from 'primevue/inputtext';
+import SelectButton from 'primevue/selectbutton';
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css'; 
@@ -22,6 +24,8 @@ app.component('Button', Button)
 app.component('Menubar', Menubar)
 app.component('Menu', Menu)
 app.component('TabMenu', TabMenu)
+app.component('InputText', InputText)
+app.component('SelectButton', SelectButton)
 
 app.mount('#app')
 

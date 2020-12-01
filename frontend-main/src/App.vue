@@ -3,7 +3,7 @@
     <NavBar />
   
 
- <div class="auth-wrapper">
+  <div class="auth-wrapper">
     <div class="auth-inner">
       <router-view/>
     </div>

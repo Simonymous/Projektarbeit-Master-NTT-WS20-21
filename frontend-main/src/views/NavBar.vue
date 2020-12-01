@@ -1,21 +1,24 @@
 <template>
   <div>
-    <div v-if="!state.user">
-      <Menu :model="logedOutItems" />
-    </div>
-    <div v-else>
-      <Menu :model="logedInItems" />
+    <div>
+      <div v-if="!state.user">
+        <Menu :model="logedOutItems" />
+      </div>
+      <div v-else>
+        <Menu :model="logedInItems" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { ref } from 'vue'
-import { useState } from '../store/store';
+import { useState } from '../store/store'
 import VueCookies from 'vue-cookies'
 export default {
   setup() {
     let state = useState()
+    //let userDisplay = state.user.user
     const logedOutItems = ref([{  
         label: 'Home', icon: 'pi pi-fw pi-home', to: '/',
     },
@@ -24,6 +27,9 @@ export default {
     },
     {
         label: 'Signup', icon: 'pi pi-fw pi-sigup', to: '/signup',
+    },
+    {
+        label: 'Test', icon: 'pi pi-fw pi-sigup', to: '/test',
     },])
 
     const logedInItems = ref([

@@ -3,10 +3,11 @@
   <div>
     <Button type="submit" label="Submit"/>
       </div>
-
     <Suspense>
       <HelloWorld/>
     </Suspense>
+      <userManagement/>
+
   </div>
   <div v-else>
     <img alt="Vue logo" src="../assets/philipp.jpg">
@@ -18,6 +19,7 @@
 </template>
 <script>
   import HelloWorld from '../components/HelloWorld'
+  import userManagement from './userManagement'
   import { useState } from '../store/store';
   import VueCookies from 'vue-cookies'
   import { useRouter } from 'vue-router'
@@ -26,6 +28,7 @@
     name: 'home',
     components: {
       HelloWorld,
+      userManagement
     },
     /**
      * Über den Authorization Header kann auf den Token zugegriffen werden. Also überprüft werden ob der Benutzer eingeloggt ist.
