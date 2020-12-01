@@ -51,6 +51,9 @@ export default {
       {  
         label: 'Test', icon: 'pi pi-fw pi-home', to: '/test',
       },
+            {  
+        label: 'User Managment', icon: 'pi pi-fw pi-home', to: '/userManagment',
+      },
     ])
 
     return {

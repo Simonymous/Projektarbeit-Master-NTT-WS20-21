@@ -65,7 +65,7 @@ export default {
           headers: {
             Authorization: VueCookies.get('access-token')
           }
-        }
+    }
 
     const axios = require("axios");
 
