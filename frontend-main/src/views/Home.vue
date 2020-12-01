@@ -46,7 +46,7 @@
       const setUserState = async() => {
         axios.get('http://localhost:3000/user', {
           headers: {
-            Authorization: VueCookies.get('token')
+            Authorization: VueCookies.get('access-token')
           }
         }).then(function (response) {
           console.log(response.data);

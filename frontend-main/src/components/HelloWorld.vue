@@ -63,7 +63,7 @@ export default {
     const tests = ref({});
     const axiosAuthHeader = {
           headers: {
-            Authorization: VueCookies.get('token')
+            Authorization: VueCookies.get('access-token')
           }
         }
 
@@ -87,7 +87,7 @@ export default {
     async function postQuestion(){
       const headers = {
         'Content-Type': 'application/json',
-       'Authorization': VueCookies.get('token')
+       'Authorization': VueCookies.get('access-token')
       }
       let firstquestion = {
         question: desc.value, 
@@ -111,7 +111,7 @@ export default {
 
       const headers = {
         'Content-Type': 'application/json',
-       'Authorization': VueCookies.get('token')
+       'Authorization': VueCookies.get('access-token')
       }
       let firstquestion = {
         question: desc.value, 
