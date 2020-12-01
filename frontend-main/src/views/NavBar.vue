@@ -1,9 +1,9 @@
 <template>
   <div v-if="!state.user">
-    <Menubar :model="logedOutItems" />
+    <Menubar :model="loggedOutItems" />
   </div>
   <div v-else>
-    <Menubar :model="logedInItems"></Menubar>
+    <Menubar :model="loggedInItems"></Menubar>
   </div>
   
 </template>
@@ -14,7 +14,7 @@ import { useState } from '../store/store';
 export default {
   setup() {
     let state = useState()
-    const logedOutItems = ref([{  
+    const loggedOutItems = ref([{  
         label: 'Home', icon: 'pi pi-fw pi-home', to: '/',
     },
     {
@@ -24,7 +24,7 @@ export default {
         label: 'Signup', icon: 'pi pi-fw pi-sigup', to: '/signup',
     },])
 
-    const logedInItems = ref([
+    const loggedInItems = ref([
       {  
         label: 'Home', icon: 'pi pi-fw pi-home', to: '/',
       },
@@ -38,8 +38,8 @@ export default {
     ])
 
     return {
-      logedOutItems,
-      logedInItems,
+      loggedOutItems,
+      loggedInItems,
       state,
     }
   }

@@ -5,6 +5,7 @@ import VueCookies from 'vue-cookies'
 
 import Button from 'primevue/button'
 import Menubar from 'primevue/menubar'
+import Menu from 'primevue/menu'
 import Dropdown from 'primevue/dropdown'
 import 'primevue/resources/themes/saga-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
@@ -20,6 +21,7 @@ app.provide(stateSymbol, createState())
 app.component('Button', Button)
 app.component('Menubar', Menubar)
 app.component('Dropdown', Dropdown)
+app.component('Menu', Menu)
 
 app.mount('#app')
 
