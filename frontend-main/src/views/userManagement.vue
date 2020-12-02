@@ -2,60 +2,59 @@
   <div class="UserManagement">
     <h1>User Management</h1>
     <div>
-      <Button label="getUsers" @click="getUsers()"/>
-      <Button label="updateUser" @click="updateUser()"/>
-      <Button label="getUser" @click="getUser()"/>
-    </div>
-    <div>
-      <InputText type="text" v-model="name" placeholder="Username"/>
-      <InputText type="text" v-model="password" placeholder="Password"/>
-      <InputText type="text" v-model="email" placeholder="Email"/>
-      <SelectButton v-model="selectedRolls" :options="rolls" optionLabel="rollName" :multiple="true" />
+      <Button icon="pi pi-user-plus" label="Add User" @click="createUser()"></Button>
     </div>
     <div>
     <DataTable :value="users" :resizableColumns="true" editMode="cell" columnResizeMode="expand" class="editable-cells-table">
       <Column field="_id" header="User-ID"></Column>
-      <Column field="username" header="Name"></Column>
+      <Column field="username" header="Name">
         <template #editor="slotProps">
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
         </template>
-      <Column field="password" header="Passwort"></Column>
-      <Column field="email" header="E-Mail"></Column>
-      <Column field="roles" header="Rollen">
-      <template editor="slotProps">
-        <Dropdown></Dropdown>
-      </template>  
+        </Column>
+      <Column field="password" header="Passwort">
+        <template #editor="slotProps">
+            <InputText v-model="slotProps.data[slotProps.column.props.field]" />
+        </template>
+      </Column>
+      <Column field="email" header="E-Mail">
+        <template #editor="slotProps">
+            <InputText v-model="slotProps.data[slotProps.column.props.field]" />
+        </template>
+      </Column>
+      <Column field="roles" header="Rols">
+      <template #editor="slotProps">
+        <Dropdown v-model="slotProps.data['roles']" :options="userRoles" optionLabel="label" optionValue="value" laceholder="Select a Status">
+            <template #option="slotProps">
+                <span :class="'product-badge status-' + slotProps.option.value.toLowerCase()">{{slotProps.option.label}}</span>
+            </template>
+        </Dropdown>
+      </template>
+      <template #body="slotProps">
+            {{getStatusLabel(slotProps.data.roles)}}
+        </template>  
       </Column>
       <Column :exportable="false">
         <template #body="slotProps">
-            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" @click="editUser(slotProps.data)" />
+            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" @click="updateUser(slotProps.data)" />
             <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="deleteUser(slotProps.data)" />
         </template>
     </Column>
     </DataTable> 
     </div>
-    <div>
-      <InputText type="text" v-model="userId" placeholder="UserID"/>
-      <p>{{user}}</p>
-    </div>
-  </div>
+  </div> 
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import DataTable from 'primevue/datatable'
 import VueCookies from 'vue-cookies'
 export default {
   name: 'userManagement',
 
-  data() {
-    return {
-      roles:[{label: 'Admin', value: 'admin'},{label: 'User', value: 'user'},{label: 'Dozent', value: 'dozent'}]
-    }
-  },
 
   setup(props) {
-
+    /** System Variables */
     const axios = require("axios");
     const axiosAuthHeader = {
           headers: {
@@ -63,22 +62,31 @@ export default {
           }
     }
 
-    const users = ref('')
-    const name = ref('')
-    const password = ref('')
-    const email = ref('')
-    const admin = ref(false)
-    const lecturer = ref(false)
-    const student = ref(false)
-    const user = ref('')
-    const userId = ref('')
+    /** Tabel Variables */
+    const userRoles = ref([{label: 'Admin', value: 'admin'},{label: 'User', value: 'user'},{label: 'Lecturer', value: 'lecturer'}])
 
-    const selectedRolls = ref(null)
-    const rolls = ref([
-      {rollName: 'Admin', code: true},
-      {rollName: 'Lecturer', code: true},
-      {rollName: 'User', code: true},
-    ])
+
+
+
+    /** User Variables */
+    const users = ref([{_id: 1, username: 'Philipp', password: '234', email: 'test', roles: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', roles: 'admin'}])
+    //const users = ref('')
+
+    function getStatusLabel(status) {
+            switch(status) {
+                case 'admin':
+                    return 'Admin';
+
+                case 'user':
+                    return 'User';
+
+                case 'lecturer':
+                    return 'Lecturer';
+
+                default:
+                    return 'NA';
+            }
+        }
 
     async function getUsers(){
       console.log(axiosAuthHeader)
@@ -88,48 +96,26 @@ export default {
       return users
     }
 
-    async function getUser(ID){
-      const resp = await axios.get(selectUser(ID), axiosAuthHeader)
-      user.value = resp.data
-      userId.value = ID
-      return user, userId
+    function createUser(){
+      users.value.unshift({})
     }
 
-    async function updateUser(){
-      await axios.patch(selectUser(userId.value), User(), axiosAuthHeader);
-    }
-
-    async function deleteUser(event){
-      console.log(event)
-      //await axios.delete(selectUser(userId.value), axiosAuthHeader);
-    }
-
-    function User(){
-      let newUser = {
-        name: name.value,
-        password: password.value,
-        email: email.value,
-        roll: {
-          admin: false,
-          lecturer: false,
-          student: false
+    async function updateUser(user){
+      console.log(user)
+      if (user._id){
+        await axios.patch(selectUser(user._id), user, axiosAuthHeader)
+        return
         }
+      if(user.username && user.password && user.email && user.roles){
+        await axios.post('http://localhost:3000/user', user, axiosAuthHeader)
+        return
       }
-      selectedRolls.value.forEach(roll => {
-        if(roll.rollName === 'Admin'){
-          newUser.roll.admin = true
-          }
-        
-        if(roll.rollName === 'Lecturer'){
-          newUser.roll.lecturer = true
-          }
-        if(roll.rollName === 'User'){
-          newUser.roll.student = true
-          }
-        }
-      )
-      console.log(newUser)
-      return newUser
+      console.log('Fehlerhafte Eingabe')
+    }
+
+    async function deleteUser(user){
+      users.value.splice(user, 1)
+      await axios.delete(selectUser(user._id), axiosAuthHeader);
     }
 
     function selectUser(ID){
@@ -137,21 +123,20 @@ export default {
       return selectedUserRoot;
     }
 
+    onMounted(getUsers())
+
     return {
+    /**Variables */
       users,
+      userRoles,
+
+    /** Methods */
       getUsers,
-      getUser,
-      name,
-      password,
-      email,
-      admin,
-      lecturer,
-      user,
-      rolls,
-      selectedRolls,
       deleteUser,
+      getStatusLabel,
+      updateUser,
+      createUser,
     }
-  }
-  
+  }  
 }
 </script>
