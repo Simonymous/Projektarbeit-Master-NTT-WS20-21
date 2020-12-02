@@ -36,7 +36,7 @@
       </Column>
       <Column :exportable="false">
         <template #body="slotProps">
-            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" @click="updateUser(slotProps.data)" />
+            <Button icon="pi pi-save" class="p-button-rounded p-button-success p-mr-2" @click="updateUser(slotProps.data)" />
             <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="deleteUser(slotProps.data)" />
         </template>
     </Column>
@@ -66,9 +66,6 @@ export default {
     /** Tabel Variables */
     const userRoles = ref([{label: 'Admin', value: 'admin'},{label: 'User', value: 'user'},{label: 'Lecturer', value: 'lecturer'}])
 
-
-
-
     /** User Variables */
     const users = ref([{_id: 1, username: 'Philipp', password: '234', email: 'test', roles: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', roles: 'admin'}])
     //const users = ref('')
@@ -90,34 +87,31 @@ export default {
         }
 
     async function getUsers(){
-      console.log(axiosAuthHeader)
+      //console.log(axiosAuthHeader)
       const resp = await axios.get('http://localhost:3000/user/getUsers', axiosAuthHeader)
-      console.log(resp.data)
+      //console.log(resp.data)
       users.value = resp.data
       return users
     }
 
     async function createUser(){
       users.value.unshift({})
-        const user = new User('username', 'email', 'password');
-        console.log(user);
-        const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': '....'
-        }
-        axios.post('http://localhost:3000/auth/register', user, {headers: headers}).then( function (){
-          getUsers()
-        })
-
     }
     async function updateUser(user){
       console.log(user)
       if (user._id){
+        console.log("ID gesetzt -> Updae")
         await axios.patch(selectUser(user._id), user, axiosAuthHeader)
         return
         }
-      if(user.username && user.password && user.email && user.roles){
-        await axios.post('http://localhost:3000/user', user, axiosAuthHeader)
+      if(user.username && user.password && user.email /**&& user.roles**/){
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': '....'
+        }
+        axios.post('http://localhost:3000/auth/register', user, axiosAuthHeader).then( function (){
+          getUsers()
+        })
         return
       }
       console.log('Fehlerhafte Eingabe')
