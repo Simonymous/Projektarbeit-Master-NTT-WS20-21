@@ -56,6 +56,7 @@ export default {
   setup(props) {
     /** System Variables */
     const axios = require("axios");
+    const User = require('../models/signupUserDTO');
     const axiosAuthHeader = {
           headers: {
             Authorization: VueCookies.get('access-token')
@@ -96,10 +97,19 @@ export default {
       return users
     }
 
-    function createUser(){
+    async function createUser(){
       users.value.unshift({})
-    }
+        const user = new User('username', 'email', 'password');
+        console.log(user);
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': '....'
+        }
+        axios.post('http://localhost:3000/auth/register', user, {headers: headers}).then( function (){
+          getUsers()
+        })
 
+    }
     async function updateUser(user){
       console.log(user)
       if (user._id){
