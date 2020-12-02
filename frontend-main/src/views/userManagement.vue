@@ -98,20 +98,19 @@ export default {
       users.value.unshift({})
     }
     async function updateUser(user){
-      console.log(user)
-      if (user._id){
-        console.log("ID gesetzt -> Updae")
-        await axios.patch(selectUser(user._id), user, axiosAuthHeader)
-        return
-        }
-      if(user.username && user.password && user.email /**&& user.roles**/){
         const headers = {
           'Content-Type': 'application/json',
           'Authorization': '....'
         }
-        axios.post('http://localhost:3000/auth/register', user, axiosAuthHeader).then( function (){
-          getUsers()
-        })
+      console.log(user)
+      if (user._id){
+        console.log("ID gesetzt -> Update")
+        axios.put('http://localhost:3000/user', user, axiosAuthHeader).then( function (){getUsers()})
+        return
+      }
+      if(user.username && user.password && user.email /**&& user.roles**/){
+
+        axios.post('http://localhost:3000/auth/register', user, axiosAuthHeader).then( function (){getUsers()})
         return
       }
       console.log('Fehlerhafte Eingabe')
