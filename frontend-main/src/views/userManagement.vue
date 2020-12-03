@@ -5,7 +5,7 @@
       <Button icon="pi pi-user-plus" label="Add User" @click="createUser()"></Button>
     </div>
     <div>
-    <DataTable :value="users" :resizableColumns="true" editMode="cell" columnResizeMode="expand" class="editable-cells-table">
+    <DataTable :value="users" :resizableColumns="false" editMode="cell" columnResizeMode="expand" class="editable-cells-table">
       <Column field="_id" header="User-ID"></Column>
       <Column field="username" header="Name">
         <template #editor="slotProps">
@@ -23,16 +23,16 @@
         </template>
       </Column>
       <Column field="roles" header="Rols">
-      <template #editor="slotProps">
-        <Dropdown v-model="slotProps.data['roles']" :options="userRoles" optionLabel="label" optionValue="value" laceholder="Select a Status">
-            <template #option="slotProps">
-                <span :class="'product-badge status-' + slotProps.option.value.toLowerCase()">{{slotProps.option.label}}</span>
-            </template>
-        </Dropdown>
-      </template>
-      <template #body="slotProps">
-            {{getStatusLabel(slotProps.data.roles)}}
-        </template>  
+        <template #editor="slotProps">
+          <Dropdown v-model="slotProps.data['roles']" :options="userRoles" optionLabel="label" optionValue="value" laceholder="Select a Status">
+              <template #option="slotProps">
+                  <span :class="'product-badge status-' + slotProps.option.value.toLowerCase()">{{slotProps.option.label}}</span>
+              </template>
+          </Dropdown>
+        </template>
+        <template #body="slotProps">
+              {{getStatusLabel(slotProps.data.roles)}}
+          </template>  
       </Column>
       <Column :exportable="false">
         <template #body="slotProps">
@@ -52,7 +52,6 @@ import VueCookies from 'vue-cookies'
 export default {
   name: 'userManagement',
 
-
   setup(props) {
     /** System Variables */
     const axios = require("axios");
@@ -71,6 +70,7 @@ export default {
     //const users = ref('')
 
     function getStatusLabel(status) {
+      console.log(status)
             switch(status) {
                 case 'admin':
                     return 'Admin';

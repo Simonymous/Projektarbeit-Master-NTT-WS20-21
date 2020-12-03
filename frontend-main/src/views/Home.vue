@@ -1,9 +1,9 @@
 <template>
-  <div v-if="state.user">
+  <div v-if="state.counter >1 ">
     <Suspense>
       <HelloWorld/>
     </Suspense>
-      <UserManagement/>
+      <UserManagement/>-
   </div>
   <div v-else>
     <img alt="Vue logo" src="../assets/philipp.jpg">
