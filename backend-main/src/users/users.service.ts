@@ -10,6 +10,10 @@ export class UsersService {
 
   }
 
+  async put(userDto: UserDTO): Promise<User> {
+    return this.userModel.findOneAndUpdate({'username':userDto.username},userDto) //TODO: testn
+  }
+
   async create(userDto: UserDTO): Promise<User> {
     const createdUser = new this.userModel(userDto);
     return createdUser.save()

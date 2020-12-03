@@ -21,7 +21,8 @@ export class AuthService {
 
   async login(user: any) {    
     const validatedUser = await this.usersService.findOne(user.username)
-    const payload = { username: validatedUser.username, sub: validatedUser._id.toString()};
+    console.log(validatedUser)
+    const payload = { username: validatedUser.username, sub: validatedUser.password};
     console.log(this.jwtService.decode( this.jwtService.sign(payload)))
     return {
       access_token: this.jwtService.sign(payload),

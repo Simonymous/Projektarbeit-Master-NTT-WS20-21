@@ -2,10 +2,10 @@
   <div>
     <div>
       <div v-if="!state.user">
-        <Menu :model="logedOutItems" />
+        <Menubar :model="logedOutItems" class="menubar"/>
       </div>
       <div v-else>
-        <Menu :model="logedInItems" />
+        <Menubar :model="logedInItems" class="menubar"/>
       </div>
     </div>
   </div>
@@ -23,10 +23,10 @@ export default {
         label: 'Home', icon: 'pi pi-fw pi-home', to: '/',
     },
     {
-        label: 'Login', icon: 'pi pi-fw pi-login', to: '/login',
+        label: 'Login', icon: 'pi pi-fw pi-sign-in', to: '/login',
     },
     {
-        label: 'Signup', icon: 'pi pi-fw pi-sigup', to: '/signup',
+        label: 'Signup', icon: 'pi pi-fw pi-register', to: '/signup',
     },
     {
         label: 'Test', icon: 'pi pi-fw pi-sigup', to: '/test',
@@ -49,7 +49,7 @@ export default {
         label: 'Home', icon: 'pi pi-fw pi-home', to: '/',
       },
       {  
-        label: 'Test', icon: 'pi pi-fw pi-home', to: '/test',
+        label: 'Test', icon: 'pi pi-fw pi-sign-out', to: '/test',
       },
             {  
         label: 'User Managment', icon: 'pi pi-fw pi-home', to: '/userManagment',
@@ -64,3 +64,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .menubar {
+  background-color: rgb(94, 202, 221);
+}
+</style>
