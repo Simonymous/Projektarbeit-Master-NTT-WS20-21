@@ -3,7 +3,7 @@
     <Suspense>
       <HelloWorld/>
     </Suspense>
-      <UserManagement/>-
+      <UserManagement/>
   </div>
   <div v-else>
     <img alt="Vue logo" src="../assets/philipp.jpg">
