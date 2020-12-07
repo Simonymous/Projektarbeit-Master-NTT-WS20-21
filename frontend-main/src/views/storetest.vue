@@ -5,7 +5,10 @@
   <div :key="selectedCity">
     <component :is="inscopePlugin"></component>
     </div>
-
+    <div id="example-1">
+      <button v-on:click="state.counter += 1">Add 1</button>
+      <p>The button above has been clicked {{ state.counter }} times.</p>
+    </div>
   </div>
 </template>
 

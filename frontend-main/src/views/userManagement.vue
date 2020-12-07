@@ -5,7 +5,7 @@
       <Button icon="pi pi-user-plus" label="Add User" @click="createUser()"></Button>
     </div>
     <div>
-    <DataTable :value="users" :resizableColumns="false" editMode="cell" columnResizeMode="expand" class="editable-cells-table">
+    <DataTable :value="users" :resizableColumns="true" editMode="cell" columnResizeMode="expand" class="editable-cells-table">
       <Column field="_id" header="User-ID"></Column>
       <Column field="username" header="Name">
         <template #editor="slotProps">
@@ -24,7 +24,7 @@
       </Column>
       <Column field="roles" header="Rols">
         <template #editor="slotProps">
-          <Dropdown v-model="slotProps.data['roles']" :options="userRoles" optionLabel="label" optionValue="value" laceholder="Select a Status">
+          <Dropdown v-model="slotProps.data['roles']" :options="userRoles" optionLabel="label" optionValue="value" laceholder="Select a Status" appendTo="body">
               <template #option="slotProps">
                   <span :class="'product-badge status-' + slotProps.option.value.toLowerCase()">{{slotProps.option.label}}</span>
               </template>
@@ -66,7 +66,7 @@ export default {
     const userRoles = ref([{label: 'Admin', value: 'admin'},{label: 'User', value: 'user'},{label: 'Lecturer', value: 'lecturer'}])
 
     /** User Variables */
-    const users = ref([{_id: 1, username: 'Philipp', password: '234', email: 'test', roles: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', roles: 'admin'}])
+    const users = ref([{_id: "1234567890123456789012345678901234567890", username: 'Philipp', password: '1234567890123456789012345678901234567890', email: 'test', roles: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', roles: 'admin'}])
     //const users = ref('')
 
     function getStatusLabel(status) {
@@ -143,3 +143,8 @@ export default {
   }  
 }
 </script>
+<style>
+.ui-table-wrapper{
+  overflow: visible
+}
+</style>
