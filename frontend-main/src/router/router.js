@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Signup from '../views/SignUp.vue'
 import Test from '../views/storetest.vue'
 import UserManagment from '../views/userManagement.vue'
+import MenuBar from '../views/MenuBar'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/userManagment',
     name: 'UserManagment',
     component: UserManagment
+  },
+  {
+    path: '/menubar',
+    name: 'MenuBar',
+    component: MenuBar
   }
 ]
 

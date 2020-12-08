@@ -69,23 +69,6 @@ export default {
     const users = ref([{_id: "1234567890123456789012345678901234567890", username: 'Philipp', password: '1234567890123456789012345678901234567890', email: 'test', roles: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', roles: 'admin'}])
     //const users = ref('')
 
-    function getStatusLabel(status) {
-      console.log(status)
-            switch(status) {
-                case 'admin':
-                    return 'Admin';
-
-                case 'user':
-                    return 'User';
-
-                case 'lecturer':
-                    return 'Lecturer';
-
-                default:
-                    return 'NA';
-            }
-        }
-
     async function getUsers(){
       //console.log(axiosAuthHeader)
       const resp = await axios.get('http://localhost:3000/user/getUsers', axiosAuthHeader)
@@ -97,6 +80,7 @@ export default {
     async function createUser(){
       users.value.unshift({})
     }
+
     async function updateUser(user){
         const headers = {
           'Content-Type': 'application/json',
@@ -122,9 +106,26 @@ export default {
     }
 
     function selectUser(ID){
-      const selectedUserRoot = "http://localhost:3000" + ID;
+      const selectedUserRoot = "http://localhost:3000/user/" + ID;
       return selectedUserRoot;
     }
+
+    function getStatusLabel(status) {
+      console.log(status)
+            switch(status) {
+                case 'admin':
+                    return 'Admin';
+
+                case 'user':
+                    return 'User';
+
+                case 'lecturer':
+                    return 'Lecturer';
+
+                default:
+                    return 'NA';
+            }
+        }
 
     onMounted(getUsers())
 
