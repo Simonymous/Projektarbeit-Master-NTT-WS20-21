@@ -17,6 +17,17 @@ export class UsersService {
     return this.userModel.findByIdAndUpdate(userDto._id,{'username':userDto.username, 'email':userDto.email, 'role':userDto.role}).exec(); //TODO: testn
   }
 
+  //TODO: Check old Password??
+  async changePassword(userDto: UserDTO) {
+    var password = userDto.password;
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password,saltRounds);
+    userDto.password = await hashedPassword;
+    console.log("[LOG] Change Password User:");
+    console.log(userDto);
+    return this.userModel.findByIdAndUpdate(userDto._id,{'password': userDto.password}).exec();
+  }
+
   async create(userDto: UserDTO): Promise<User> {
 
     var that = this;

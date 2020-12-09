@@ -23,6 +23,18 @@ export class UsersController {
       return this.usersService.findAll();
     }
 
+    @Put('/changePassword')
+    async changePassword(
+      @Res() res,
+    @Body() userDTO: UserDTO) {
+        const returnObj = await this.usersService.changePassword(userDTO)
+
+      return res.status(HttpStatus.OK).json({
+        message: 'User Password changed!',
+        user: returnObj
+      })
+    }
+
     @Put()
     async putUser(
       @Res() res,
@@ -32,7 +44,6 @@ export class UsersController {
           message: 'User changed successful!',
           user: returnObj
         })
-      return 
     }
 
     @Get('/testUser')
