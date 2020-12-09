@@ -70,6 +70,7 @@ export default {
     const axios = require("axios");
 
     //const questions = {question: "Sprich deutsch", tests: {hiddentest: "hidden1", opentest: "open1"}};
+    const task = {category: 'Mathe', tasksheet: 'Mathe 1 Übung 2', title: 'Vollständige Induktion', tags:[], discription: 'Lösen sie die Aufgabe', solution: '1', tests: {hiddentest: "hidden1", opentest: "open1"}, maxPoints: 3, maxTime: Date()}
   
     async function getResponse(){
       const resp = await axios.get('http://localhost:3000', axiosAuthHeader)
@@ -89,14 +90,16 @@ export default {
         'Content-Type': 'application/json',
        'Authorization': VueCookies.get('access-token')
       }
-      let firstquestion = {
+      console.log(task)
+/*       let firstquestion = {
         question: desc.value, 
         tests: {
           hiddentest: hiddentests.value, 
           opentest: opentests.value
         }
-      }
-      await axios.post('http://localhost:3000/firstquestions', firstquestion, {headers: headers});
+      } */
+      /* await axios.post('http://localhost:3000/firstquestions', firstquestion, {headers: headers}); */
+      await axios.post('http://localhost:3000/task', task, {headers: headers})
       clearInput()
     }
 
