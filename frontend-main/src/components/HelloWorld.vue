@@ -99,7 +99,7 @@ export default {
         }
       } */
       /* await axios.post('http://localhost:3000/firstquestions', firstquestion, {headers: headers}); */
-      await axios.post('http://localhost:3000/task', task, {headers: headers})
+      await axios.post('http://localhost:3000/task', task , {headers: headers})
       clearInput()
     }
 
