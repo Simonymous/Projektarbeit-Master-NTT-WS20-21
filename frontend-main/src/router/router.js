@@ -5,6 +5,7 @@ import Signup from '../views/SignUp.vue'
 import Test from '../views/storetest.vue'
 import UserManagment from '../views/userManagement.vue'
 import MenuBar from '../views/MenuBar'
+import CreateTask from '../components/CreateTask'
 
 const routes = [
   {
@@ -36,7 +37,12 @@ const routes = [
     path: '/menubar',
     name: 'MenuBar',
     component: MenuBar
-  }
+  },
+  {
+    path: '/createTask',
+    name: 'CreateTask',
+    component: CreateTask
+  },
 ]
 
 const router = createRouter({

@@ -34,6 +34,9 @@ export default {
     {
         label: 'MenuBar', icon: 'pi pi-fw pi-sigup', to: '/menubar',
     },
+    {
+        label: 'CreateTask', icon: 'pi pi-fw pi-sigup', to: '/createTask',
+    },
     ])
 
     const logedInItems = ref([
