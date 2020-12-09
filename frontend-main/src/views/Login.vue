@@ -1,18 +1,26 @@
 <template>
-  <form @submit.prevent="handleLogin">
+  <form >
     <h3> Login </h3>
 
-    <div class="form-group">
-      <label> Username </label>
-      <input v-model="username" placeholder="Username" id="username" autocomplete="on">
-    </div>
+    <div class="p-grid p-fluid">
+      <div class="p-col-12 p-md-4">
+          <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+        <InputText v-model="username" id="username" placeholder="Username" autocomplete="on" />
+          </div>
+      </div>
 
-     <div class="form-group">
-      <label> Password </label>
-      <input v-model="password" placeholder="Password" id="password" autocomplete="on">
-    </div>
+      <div class="p-col-12 p-md-4">
+          <div class="p-inputgroup">
+              <span class="p-inputgroup-addon">></span>
+              <InputText type="password" v-model="password" placeholder="Password" id="password" autocomplete="on" />
+          </div>
+      </div>
+  </div>
 
-    <button name="login" class="button">Login</button>
+    <Button name="login" class="button" @click="handleLogin()">Login</Button>
   </form>
 
 </template>

@@ -1,23 +1,37 @@
 <template>
-  <form @submit.prevent="handleSignup">
+  <form>
     <h3> Sign Up </h3>
 
-    <div class="form-group">
-      <label> Username </label>
-      <input v-model="username" placeholder="Username" id="username" autocomplete="on">
-    </div>
+    <div class="p-grid p-fluid">
+      <div class="p-col-12 p-md-4">
+          <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-user"></i>
+          </span>
+        <InputText v-model="username" id="username" placeholder="Username" autocomplete="on" />
+          </div>
+      </div>
 
-    <div class="form-group">
-      <label> Email </label>
-      <input v-model="email" placeholder="Email" id="email" autocomplete="on">
-    </div>
+      <div class="p-col-12 p-md-4">
+          <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-envelope"></i>
+          </span>
+              <InputText v-model="email" placeholder="E-Mail" id="email" autocomplete="on" />
+          </div>
+      </div>
 
-     <div class="form-group">
-      <label> Password </label>
-      <input v-model="password" placeholder="Password" id="password" autocomplete="on">
-    </div>
+            <div class="p-col-12 p-md-4">
+          <div class="p-inputgroup">
+          <span class="p-inputgroup-addon">
+              <i class="pi pi-key"></i>
+          </span>
+              <Password v-model="password" placeholder="Password" id="password" autocomplete="on"></Password>
+          </div>
+      </div>
+  </div>
 
-    <button name="signup" class="button">Sign Up</button>
+    <Button label="Sign Up" name="signup" class="button" @click="handleSignup" icon="pi pi-sign-in" iconPos="left"/>
   </form>
 </template>
 

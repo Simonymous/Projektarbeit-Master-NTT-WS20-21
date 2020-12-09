@@ -13,9 +13,6 @@
         </template>
         </Column>
       <Column field="password" header="Passwort">
-        <template #editor="slotProps">
-            <InputText v-model="slotProps.data[slotProps.column.props.field]" />
-        </template>
       </Column>
       <Column field="email" header="E-Mail">
         <template #editor="slotProps">
@@ -24,7 +21,7 @@
       </Column>
       <Column field="roles" header="Rols">
         <template #editor="slotProps">
-          <Dropdown v-model="slotProps.data['roles']" :options="userRoles" optionLabel="label" optionValue="value" laceholder="Select a Status" appendTo="body">
+          <Dropdown v-model="slotProps.data['role']" :options="userRoles" optionLabel="label" optionValue="value" laceholder="Select a Status" appendTo="body">
               <template #option="slotProps">
                   <span :class="'product-badge status-' + slotProps.option.value.toLowerCase()">{{slotProps.option.label}}</span>
               </template>
@@ -66,7 +63,7 @@ export default {
     const userRoles = ref([{label: 'Admin', value: 'admin'},{label: 'User', value: 'user'},{label: 'Lecturer', value: 'lecturer'}])
 
     /** User Variables */
-    const users = ref([{_id: "1234567890123456789012345678901234567890", username: 'Philipp', password: '1234567890123456789012345678901234567890', email: 'test', roles: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', roles: 'admin'}])
+    const users = ref([{_id: "1234567890123456789012345678901234567890", username: 'Philipp', password: '1234567890123456789012345678901234567890', email: 'test', role: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', roles: 'admin'}])
     //const users = ref('')
 
     async function getUsers(){
@@ -82,10 +79,6 @@ export default {
     }
 
     async function updateUser(user){
-        const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': '....'
-        }
       console.log(user)
       if (user._id){
         console.log("ID gesetzt -> Update")

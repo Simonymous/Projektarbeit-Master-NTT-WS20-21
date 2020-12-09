@@ -42,7 +42,7 @@ export default {
     const logedInItems = ref([
             {
         label: 'Eingeloggt: ',//+state.user.user,
-        items: [{ label: 'Settings', icon: 'pi pi-fw pi-cog', to: 'settings' },
+        items: [{ label: 'Settings', icon: 'pi pi-fw pi-cog', to: '/settings' },
                 { label: 'Logout', icon: 'pi pi-fw pi-power-off', command: (event) => {
                   VueCookies.remove('token')
                   state.user = null

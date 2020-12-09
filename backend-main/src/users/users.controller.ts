@@ -10,25 +10,29 @@ export class UsersController {
 
   constructor(private readonly usersService: UsersService) {}
     @Get()
-    @UseGuards(JwtAuthGuard)
-    @Roles(Role.Admin)
+    //@UseGuards(JwtAuthGuard)
+    //@Roles(Role.Admin)
     getUser() {
       return {user: 'test', role:'test'}
     }
 
     @Get('/getUsers')
-    @UseGuards(JwtAuthGuard)
+    //@UseGuards(JwtAuthGuard)
     //@Roles(Role.User)
     getAllUsers() {
       return this.usersService.findAll();
     }
 
     @Put()
-    async putUser(@Res() res,
+    async putUser(
+      @Res() res,
     @Body() userDTO: UserDTO) {
       const returnObj = await this.usersService.put(userDTO)
-
-      return returnObj;
+      return res.status(HttpStatus.OK).json({
+          message: 'User changed successful!',
+          user: returnObj
+        })
+      return 
     }
 
     @Get('/testUser')

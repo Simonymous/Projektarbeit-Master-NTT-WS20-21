@@ -6,6 +6,7 @@ import Test from '../views/storetest.vue'
 import UserManagment from '../views/userManagement.vue'
 import MenuBar from '../views/MenuBar'
 import CreateTask from '../components/CreateTask'
+import Settings from '../views/Settings'
 
 const routes = [
   {
@@ -22,6 +23,11 @@ const routes = [
     path: '/signup',
     name: 'Signup',
     component: Signup
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings
   },
   {
     path: '/test',

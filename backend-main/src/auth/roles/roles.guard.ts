@@ -16,7 +16,6 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    console.log("test")
     const jwtService = new JwtService(null);
     const token = context.switchToHttp().getRequest().headers.authorization
     console.log(token) 

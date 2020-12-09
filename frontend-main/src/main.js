@@ -4,6 +4,7 @@ import router from './router/router'
 import VueCookies from 'vue-cookies';
 
 import Button from 'primevue/button';
+import Panel from 'primevue/panel';
 import Menubar from 'primevue/menubar';
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column';
@@ -12,6 +13,7 @@ import TabMenu from 'primevue/tabmenu';
 import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
 import Dropdown from 'primevue/dropdown'
+import Password from 'primevue/password';
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css'; 
@@ -29,9 +31,11 @@ app.component('Column', Column)
 app.component('Dropdown', Dropdown)
 app.component('Menubar', Menubar)
 app.component('Menu', Menu)
+app.component('Panel', Panel)
 app.component('TabMenu', TabMenu)
 app.component('InputText', InputText)
 app.component('SelectButton', SelectButton)
+app.component('Password', Password)
 
 app.mount('#app')
 

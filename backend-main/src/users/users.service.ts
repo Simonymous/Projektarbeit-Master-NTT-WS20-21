@@ -11,8 +11,10 @@ export class UsersService {
 
   }
 
-  async put(userDto: UserDTO): Promise<User> {
-    return this.userModel.findOneAndUpdate({'username':userDto.username},userDto) //TODO: testn
+  async put(userDto: UserDTO) {
+    console.log("[LOG] Put User:")
+    console.log(userDto)
+    return this.userModel.findByIdAndUpdate(userDto._id,{'username':userDto.username, 'email':userDto.email, 'role':userDto.role}).exec(); //TODO: testn
   }
 
   async create(userDto: UserDTO): Promise<User> {
@@ -22,6 +24,9 @@ export class UsersService {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password,saltRounds);
     userDto.password = await hashedPassword;
+    userDto.role = "user"; //Erstmal User by default
+    console.log("[LOG] Save new User")
+    console.log(userDto)
     const createdUser = await new that.userModel(userDto);
     return createdUser.save()
   }
