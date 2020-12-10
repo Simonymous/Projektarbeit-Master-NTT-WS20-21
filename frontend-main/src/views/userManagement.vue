@@ -38,7 +38,6 @@
         </template>
     </Column>
     </DataTable> 
-    <ConfirmPopup></ConfirmPopup>
     </div>
   </div> 
 </template>
@@ -47,7 +46,6 @@
 import { ref, onMounted } from "vue"
 import DataTable from 'primevue/datatable'
 import VueCookies from 'vue-cookies'
-//import { useConfirm } from "primevue/useconfirm";
 export default {
   name: 'userManagement',
 
