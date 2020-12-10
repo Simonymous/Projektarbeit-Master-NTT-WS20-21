@@ -11,18 +11,24 @@
     </div>
     <div class="taskButtons">
       <Button label='Create Task' @click="createTask"/>
-      <Button label='Update Task'/>
-      <Button label='Delete Task'/>
+      <Button label='Update Task' @click="updateTask"/>
+      <Button label='Delete Task' @click="deleteTask"/>
     </div>
+    <GetTask/>
   </div>
 </template>
 
 <script>
 import { ref } from "vue"
 import VueCookies from 'vue-cookies'
+import { useState } from '../store/store'
+import GetTask from './GetTask.vue'
 
 export default {
   name: 'createTask',
+  components: {
+    GetTask,
+  },
   setup(){
     /** InputText Variables */
     const category = ref('')
@@ -39,25 +45,29 @@ export default {
       'Authorization': VueCookies.get('access-token')
     }
     const Task = require('../models/taskDTO');
+    let state = useState()
 
     /** Class Variables */
-    const backendresponse = ref("")
-    const task = ref("")
+    const backendresponse = ref('')
+    const task = ref('')
 
     /** Functions */  
     async function createTask(){
-      task.value = new Task(
-        category.value,
-        title.value,
-        tags.value,
-        discription.value,
-        solution.value,
-        maxPoints.value
-      )
-      console.log(task.value)
-
-      await axios.post('http://localhost:3000/task', task.value , axiosAuthHeader)
+      let newCreatedTask = newTask() 
+      await axios.post('http://localhost:3000/task', newCreatedTask, {headers: axiosAuthHeader})
       clearInput()
+    }
+
+    async function updateTask(){
+      let newUpdatedTask = newTask()
+      if(state.taskId){
+        await axios.patch(selectTask(), newUpdatedTask, {headers: axiosAuthHeader})
+        clearInput()
+      } 
+    }
+
+    async function deleteTask(){
+      await axios.delete(selectTask(), {headers: axiosAuthHeader})
     }
 
     /** Support Functions */
@@ -68,6 +78,23 @@ export default {
         discription.value = ''
         solution.value = ''
         maxPoints.value = 0
+    }
+
+    function newTask(){
+      task.value = new Task(
+        category.value,
+        title.value,
+        tags.value,
+        discription.value,
+        solution.value,
+        maxPoints.value
+      )
+      return task.value
+    }
+
+    function selectTask(){
+      const selectedTaskRoot = "http://localhost:3000/task/" + state.taskId
+      return selectedTaskRoot
     }
 
     return {
@@ -81,6 +108,8 @@ export default {
 
       /** Functions */
       createTask,
+      updateTask,
+      deleteTask,
     }
   }
   

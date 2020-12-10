@@ -14,6 +14,7 @@ import InputText from 'primevue/inputtext';
 import SelectButton from 'primevue/selectbutton';
 import Dropdown from 'primevue/dropdown'
 import Password from 'primevue/password';
+import Listbox from 'primevue/listbox';
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css'; 
@@ -36,6 +37,7 @@ app.component('TabMenu', TabMenu)
 app.component('InputText', InputText)
 app.component('SelectButton', SelectButton)
 app.component('Password', Password)
+app.component('Listbox', Listbox)
 
 app.mount('#app')
 

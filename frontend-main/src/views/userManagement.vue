@@ -19,7 +19,7 @@
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
         </template>
       </Column>
-      <Column field="roles" header="Rols">
+      <Column field="role" header="Rols">
         <template #editor="slotProps">
           <Dropdown v-model="slotProps.data['role']" :options="userRoles" optionLabel="label" optionValue="value" laceholder="Select a Status" appendTo="body">
               <template #option="slotProps">
@@ -28,7 +28,7 @@
           </Dropdown>
         </template>
         <template #body="slotProps">
-              {{getStatusLabel(slotProps.data.roles)}}
+              {{getStatusLabel(slotProps.data.role)}}
           </template>  
       </Column>
       <Column :exportable="false">
@@ -63,7 +63,7 @@ export default {
     const userRoles = ref([{label: 'Admin', value: 'admin'},{label: 'User', value: 'user'},{label: 'Lecturer', value: 'lecturer'}])
 
     /** User Variables */
-    const users = ref([{_id: "1234567890123456789012345678901234567890", username: 'Philipp', password: '1234567890123456789012345678901234567890', email: 'test', role: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', roles: 'admin'}])
+    const users = ref([{_id: "1234567890123456789012345678901234567890", username: 'Philipp', password: '1234567890123456789012345678901234567890', email: 'test', role: 'admin'},{_id: 2, username: 'Simon', password: '567', email: 'test', role: 'admin'}])
     //const users = ref('')
 
     async function getUsers(){
