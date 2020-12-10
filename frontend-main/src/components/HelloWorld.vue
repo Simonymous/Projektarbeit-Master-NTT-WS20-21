@@ -70,7 +70,7 @@ export default {
     const axios = require("axios");
 
     //const questions = {question: "Sprich deutsch", tests: {hiddentest: "hidden1", opentest: "open1"}};
-    const task = {category: 'Mathe', tasksheet: 'Mathe 1 Übung 2', title: 'Vollständige Induktion', tags:[], discription: 'Lösen sie die Aufgabe', solution: '1', tests: {hiddentest: "hidden1", opentest: "open1"}, maxPoints: 3, maxTime: Date()}
+    const task = {category: 'Mathe', tasksheet: 'Mathe 1 Übung 2', title: 'Vollständige Induktion', tags:[], description: 'Lösen sie die Aufgabe', solution: '1', tests: {hiddentest: "hidden1", opentest: "open1"}, maxPoints: 3, maxTime: Date()}
   
     async function getResponse(){
       const resp = await axios.get('http://localhost:3000', axiosAuthHeader)

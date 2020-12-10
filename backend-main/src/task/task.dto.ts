@@ -4,7 +4,7 @@ export class TaskDTO {
     public tasksheet: string,
     public title: string,
     public tags: [],
-    public discription: string,
+    public description: string,
     public solution: string, 
     public tests: {hiddentest: [], opentest: []},
     public maxPoints: number,

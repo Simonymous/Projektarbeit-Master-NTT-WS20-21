@@ -22,7 +22,7 @@ export class Task {
   tags: [];
 
   @Prop()
-  discription: string;
+  description: string;
 
   @Prop()
   solution: string;

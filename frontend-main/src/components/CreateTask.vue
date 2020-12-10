@@ -5,7 +5,7 @@
       <InputText type="text" v-model="category" placeholder="Category" />
       <InputText type="text" v-model="title" placeholder="Titel"/>
       <InputText type="text" v-model="tags" placeholder="Tags"/>
-      <InputText type="text" v-model="discription" placeholder="Discription"/>
+      <InputText type="text" v-model="description" placeholder="Description"/>
       <InputText type="text" v-model="solution" placeholder="Solution"/>
       <InputText type="text" v-model="maxPoints" placeholder="maxPoints"/>
     </div>
@@ -34,7 +34,7 @@ export default {
     const category = ref('')
     const title = ref('')
     const tags = ref([])
-    const discription = ref('')
+    const description = ref('')
     const solution = ref('')
     const maxPoints = ref(0)
 
@@ -75,7 +75,7 @@ export default {
         category.value = ''
         title.value = ''
         tags.value = ''
-        discription.value = ''
+        description.value = ''
         solution.value = ''
         maxPoints.value = 0
     }
@@ -85,7 +85,7 @@ export default {
         category.value,
         title.value,
         tags.value,
-        discription.value,
+        description.value,
         solution.value,
         maxPoints.value
       )
@@ -102,7 +102,7 @@ export default {
       category,
       title,
       tags,
-      discription,
+      description,
       solution,
       maxPoints,
 

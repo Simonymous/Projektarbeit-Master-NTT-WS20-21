@@ -39,8 +39,8 @@ export class TaskService {
     if(taskDto.tags){
       return this.taskModel.findByIdAndUpdate(taskId,{'tags': taskDto.tags}).exec();
     }
-    if(taskDto.discription){
-      return this.taskModel.findByIdAndUpdate(taskId,{'discription': taskDto.discription}).exec();
+    if(taskDto.description){
+      return this.taskModel.findByIdAndUpdate(taskId,{'description': taskDto.description}).exec();
     }
     if(taskDto.solution){
       return this.taskModel.findByIdAndUpdate(taskId,{'solution': taskDto.solution}).exec();
