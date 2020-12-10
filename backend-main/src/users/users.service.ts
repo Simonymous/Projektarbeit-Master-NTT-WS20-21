@@ -28,6 +28,12 @@ export class UsersService {
     return this.userModel.findByIdAndUpdate(userDto._id,{'password': userDto.password}).exec();
   }
 
+  async delete(userDto: UserDTO) {
+    console.log("[LOG] Delete User:")
+    console.log(userDto)
+    return this.userModel.findByIdAndRemove(userDto._id).exec();
+  }
+
   async create(userDto: UserDTO): Promise<User> {
 
     var that = this;

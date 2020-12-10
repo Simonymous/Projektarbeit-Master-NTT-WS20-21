@@ -35,10 +35,21 @@ export class UsersController {
       })
     }
 
+    @Delete()
+    async deleteUser(@Res() res, @Body() data: any) {
+      console.log(data.user)
+      const returnObj = await this.usersService.delete(data.user)
+      return res.status(HttpStatus.OK).json({
+        message: 'User Password changed!',
+        user: returnObj
+      })
+    }
+
     @Put()
     async putUser(
       @Res() res,
     @Body() userDTO: UserDTO) {
+
       const returnObj = await this.usersService.put(userDTO)
       return res.status(HttpStatus.OK).json({
           message: 'User changed successful!',

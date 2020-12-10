@@ -38,6 +38,7 @@
         </template>
     </Column>
     </DataTable> 
+    <ConfirmPopup></ConfirmPopup>
     </div>
   </div> 
 </template>
@@ -46,6 +47,7 @@
 import { ref, onMounted } from "vue"
 import DataTable from 'primevue/datatable'
 import VueCookies from 'vue-cookies'
+//import { useConfirm } from "primevue/useconfirm";
 export default {
   name: 'userManagement',
 
@@ -94,8 +96,19 @@ export default {
     }
 
     async function deleteUser(user){
-      users.value.splice(user, 1)
-      await axios.delete(selectUser(user._id), axiosAuthHeader);
+                                console.log(user)
+                        //users.value.splice(user, 1)
+                        axios.delete('http://localhost:3000/user', {data: {user}, headers: axiosAuthHeader}).then( function(){getUsers()})
+            /**const confirm = useConfirm();
+            confirm.require({
+                message: 'Willst du den User '+user.username+' wirklich löschen?',
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+                },
+                reject: () => {
+                    //callback to execute when user rejects the action
+                }
+            });**/
     }
 
     function selectUser(ID){
