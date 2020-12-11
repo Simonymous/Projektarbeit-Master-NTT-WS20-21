@@ -9,9 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
-    "bootstrap": "^4.5.3",
-    "bootstrap-vue": "^2.19.0",
-    "core-js": "^3.6.5",
+    "core-js": "^3.8.1",
     "mitt": "^2.1.0",
     "primeicons": "^4.1.0",
     "primevue": "^3.1.1",
@@ -22,13 +20,13 @@
     "vuex-persistedstate": "^4.0.0-beta.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/cli-plugin-babel": "~4.5.9",
+    "@vue/cli-plugin-eslint": "~4.5.9",
+    "@vue/cli-service": "~4.5.9",
+    "@vue/compiler-sfc": "^3.0.4",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0-0"
+    "eslint": "^7.15.0",
+    "eslint-plugin-vue": "^7.2.0"
   },
   "eslintConfig": {
     "root": true,
