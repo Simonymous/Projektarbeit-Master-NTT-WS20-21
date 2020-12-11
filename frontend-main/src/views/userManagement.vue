@@ -2,6 +2,7 @@
   <div class="UserManagement">
     <h1>User Management</h1>
     <div>
+      <ConfirmDialog></ConfirmDialog>   
       <Button icon="pi pi-user-plus" label="Add User" @click="createUser()"></Button>
     </div>
     <div>
@@ -34,6 +35,7 @@
       <Column :exportable="false">
         <template #body="slotProps">
             <Button icon="pi pi-save" class="p-button-rounded p-button-success p-mr-2" @click="updateUser(slotProps.data)" />
+            <ConfirmPopup></ConfirmPopup>
             <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="deleteUser(slotProps.data)" />
         </template>
     </Column>
@@ -42,15 +44,29 @@
   </div> 
 </template>
 
+
 <script>
 import { ref, onMounted } from "vue"
 import DataTable from 'primevue/datatable'
+import { defineComponent } from "vue";
 import VueCookies from 'vue-cookies'
-export default {
-  name: 'userManagement',
+import { useConfirm } from "primevue/useConfirm";
 
+
+export default defineComponent ({
   setup(props) {
     /** System Variables */
+        const confirm = useConfirm();
+        confirm.require({
+            message: 'Are you sure you want to proceed?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                //callback to execute when user confirms the action
+            },
+            reject: () => {
+                //callback to execute when user rejects the action
+            }
+        });
     const axios = require("axios");
     const User = require('../models/signupUserDTO');
     const axiosAuthHeader = {
@@ -94,19 +110,20 @@ export default {
     }
 
     async function deleteUser(user){
-                                console.log(user)
-                        //users.value.splice(user, 1)
-                        axios.delete('http://localhost:3000/user', {data: {user}, headers: axiosAuthHeader}).then( function(){getUsers()})
-            /**const confirm = useConfirm();
-            confirm.require({
-                message: 'Willst du den User '+user.username+' wirklich löschen?',
+      console.log(user)
+            this.$confirm.require({
+                message: 'Möchten sie den Nutzer '+user.username+' wirklich löschen?',
+                header: 'Nutzer löschen',
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
+                    axios.delete('http://localhost:3000/user', {data: {user}, headers: axiosAuthHeader}).then( function(){getUsers()})
                 },
                 reject: () => {
                     //callback to execute when user rejects the action
                 }
-            });**/
+            });
+
+
     }
 
     function selectUser(ID){
@@ -146,7 +163,7 @@ export default {
       createUser,
     }
   }  
-}
+})
 </script>
 <style>
 .ui-table-wrapper{

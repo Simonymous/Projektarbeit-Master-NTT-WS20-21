@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/router'
 import VueCookies from 'vue-cookies';
+import PrimeVue from 'primevue/config';
 
 import Button from 'primevue/button';
 import Panel from 'primevue/panel';
@@ -16,14 +17,17 @@ import Dropdown from 'primevue/dropdown'
 import Password from 'primevue/password';
 import Listbox from 'primevue/listbox';
 import Dialog from 'primevue/dialog';
+import ConfirmDialog from 'primevue/confirmdialog';
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css'; 
+import ConfirmationService from 'primevue/confirmationservice';
 
 import { stateSymbol, createState } from './store/store'
 
 const app = createApp(App)
-
+app.use(ConfirmationService);
+app.use(PrimeVue )
 app.use(router, VueCookies)
 app.provide(stateSymbol, createState())
 
@@ -37,6 +41,7 @@ app.component('Menu', Menu)
 app.component('Panel', Panel)
 app.component('TabMenu', TabMenu)
 app.component('InputText', InputText)
+app.component('ConfirmDialog',ConfirmDialog)
 app.component('SelectButton', SelectButton)
 app.component('Password', Password)
 app.component('Listbox', Listbox)
