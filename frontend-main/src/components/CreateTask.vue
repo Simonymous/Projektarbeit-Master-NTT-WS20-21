@@ -15,6 +15,7 @@
       <Button label='Delete Task' @click="deleteTask"/>
     </div>
     <GetTask/>
+    <TaskWork/>
   </div>
 </template>
 
@@ -22,12 +23,14 @@
 import { ref } from "vue"
 import VueCookies from 'vue-cookies'
 import { useState } from '../store/store'
-import GetTask from './GetTask.vue'
+import GetTask from './GetTask'
+import TaskWork from './TaskWork'
 
 export default {
   name: 'createTask',
   components: {
     GetTask,
+    TaskWork,
   },
   setup(){
     /** InputText Variables */

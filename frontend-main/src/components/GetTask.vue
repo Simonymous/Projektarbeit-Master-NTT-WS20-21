@@ -42,17 +42,21 @@ export default {
     /** Functions */  
 
 /*     async function getTask(){
-      const resp = await axios.get('http://localhost:3000/task', {headers: axiosAuthHeader})
+      const params = {searchParams: searchParameter.value}
+      const resp = await axios.get('http://localhost:3000/task', {params}, {headers: axiosAuthHeader})
       displayListOfTasks(resp.data)
     } */
 
 /*     function displayTasks(tasks){
+      listTasks.value = []
       tasks.forEach(task => {
         listTasks.value.push({name: task.title, code: task._id})
       })
     } */
 
     function displayListOfTasks(){
+      listTasks.value = []
+      console.log(searchParameter.value)
       console.log(listTasks.value)
       testTasks.forEach(task => {
         listTasks.value.push({name: task.name, code: task.code})

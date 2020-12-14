@@ -36,7 +36,4 @@ export default {
 </script>
 
 <style scoped>
-.lestSide {
-  background-color: aqua;
-}
 </style>
