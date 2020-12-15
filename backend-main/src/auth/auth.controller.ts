@@ -3,6 +3,7 @@ import { Controller, Post, Request, Body, Get, Param, Patch, Delete, Res, HttpSt
 import { LocalAuthGuard } from './local-auth.guard';
 import { UserDTO } from 'src/users/user.dto';
 import { UsersService } from 'src/users/users.service';
+import { timeStamp } from 'console';
 
 @Controller('auth')
 export class AuthController {
@@ -10,8 +11,14 @@ export class AuthController {
 
     @UseGuards(LocalAuthGuard)
     @Post('/login')
-    async login(@Request() req, @Body() userDTO: UserDTO) {
-      return this.authService.login(userDTO)
+    async login(@Res() res, @Body() userDTO: UserDTO) {
+      const returnObj = await this.authService.login(userDTO)
+       res.cookie('session',returnObj)
+      return res.status(HttpStatus.OK).json({
+        message: 'User logged In successful!',
+        token: returnObj
+      })
+      //return this.authService.login(userDTO)
     }
   
     @Post('/register')
@@ -21,7 +28,7 @@ export class AuthController {
         const returnObj = await this.usersService.create(userDTO);
         return res.status(HttpStatus.OK).json({
             message: 'User added successful!',
-            user: returnObj
+            returnObj
           })
     }
 }
