@@ -14,7 +14,7 @@ export default {
   setup(){
     const menubarItems = ref([
       {
-        label: 'Task Management', icon: 'pi pi-bookmark', code: 'test', command: (event) => {handleClickComponent(event)}
+        label: 'Task Management', to: '/taskManagement', icon: 'pi pi-bookmark', code: 'test', command: (event) => {handleClickComponent(event)}
       },
       {
         label: 'Task Work', icon: 'pi pi-pencil', code: ''

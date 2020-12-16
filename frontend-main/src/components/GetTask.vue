@@ -9,8 +9,9 @@
       <Button label='Search for Task' @click="displayListOfTasks"/>
     </div>
     <div>
-      <Listbox v-model="selectedTask" :options="listTasks" optionLabel="name" optionValue='code' listStyle="max-height:250px" style="width:15em" v-on:change="handleClickComponent($event)"/>
+      <Listbox v-model="selectedTask" :options="listTasks" optionLabel="name" optionValue='code' v-on:change="handleClickComponent($event)"/>
     </div>
+    <SelectPluginDropdown/>
   </div>
 </template>
 
@@ -18,8 +19,10 @@
 import { ref } from "vue"
 import VueCookies from 'vue-cookies'
 import { useState } from '../store/store'
+import SelectPluginDropdown from './SelectPluginDropdown'
 
 export default {
+  components: { SelectPluginDropdown },
   name: 'getTask',
 
   setup(){

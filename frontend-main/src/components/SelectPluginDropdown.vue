@@ -1,11 +1,6 @@
 <template>
   <div>
     <dropdown v-model="selectedPlugin" :options="plugins" optionLabel="name" placeholder="Select a City" v-on:change="handleChangeComponent($event)" />
-
-  <div>
-    <component :is="inscopePlugin"></component>
-    </div>
-
   </div>
 </template>
 
@@ -28,6 +23,7 @@ import Vue from 'vue';
   }
 
   export default {
+    name: 'SelectPluginDropdown',
     setup() {
       let state = useState();
 

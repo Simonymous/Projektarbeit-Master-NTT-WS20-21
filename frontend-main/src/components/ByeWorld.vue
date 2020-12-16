@@ -14,7 +14,7 @@ import { ref } from "vue"
 import VueCookies from 'vue-cookies'
 export default {
 
-  name: 'HelloWorld',
+  name: 'ByeWorld',
   setup() {
     const backendresponse = ref("");
     const question = ref("");

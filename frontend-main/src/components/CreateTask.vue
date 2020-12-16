@@ -1,21 +1,22 @@
 <template>
   <div class="createTask">
-    <h2>Task Management</h2>
+
     <div class="taskInputs">
-      <InputText type="text" v-model="category" placeholder="Category" />
+      <InputText type="text" :style="{'width':'500px'}" v-model="category" placeholder="Category" />
       <InputText type="text" v-model="title" placeholder="Titel"/>
       <InputText type="text" v-model="tags" placeholder="Tags"/>
       <InputText type="text" v-model="description" placeholder="Description"/>
       <InputText type="text" v-model="solution" placeholder="Solution"/>
       <InputText type="text" v-model="maxPoints" placeholder="maxPoints"/>
     </div>
-    <div class="taskButtons">
+    <!-- <div class="taskButtons">
       <Button label='Create Task' @click="createTask"/>
       <Button label='Update Task' @click="updateTask"/>
       <Button label='Delete Task' @click="deleteTask"/>
-    </div>
-    <GetTask/>
-    <TaskWork/>
+    </div> -->
+    <!-- <GetTask/> -->
+<!--     <TaskWork/> -->
+<show-plugin/>
   </div>
 </template>
 
@@ -23,14 +24,16 @@
 import { ref } from "vue"
 import VueCookies from 'vue-cookies'
 import { useState } from '../store/store'
-import GetTask from './GetTask'
+// import GetTask from './GetTask'
 import TaskWork from './TaskWork'
+import ShowPlugin from './ShowPlugin.vue'
 
 export default {
   name: 'createTask',
   components: {
-    GetTask,
-    TaskWork,
+    // GetTask,
+/*     TaskWork, */
+    ShowPlugin
   },
   setup(){
     /** InputText Variables */
@@ -118,3 +121,9 @@ export default {
   
 }
 </script>
+
+<style scoped>
+  .p-inputtext{
+    margin:5px
+  }
+</style>

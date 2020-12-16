@@ -7,6 +7,7 @@ import UserManagment from '../views/userManagement.vue'
 import MenuBar from '../views/MenuBar'
 import CreateTask from '../components/CreateTask'
 import Settings from '../views/Settings'
+import TaskManagement from '../components/TaskManagement'
 
 const routes = [
   {
@@ -49,6 +50,11 @@ const routes = [
     name: 'CreateTask',
     component: CreateTask
   },
+  {
+    path: '/taskManagement',
+    name: 'TaskManagement',
+    component: TaskManagement
+  }
 ]
 
 const router = createRouter({
