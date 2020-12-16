@@ -44,10 +44,10 @@ export default {
         label: 'Eingeloggt: ',//+state.user.user,
         items: [{ label: 'Settings', icon: 'pi pi-fw pi-cog', to: '/settings' },
                 { label: 'Logout', icon: 'pi pi-fw pi-power-off', command: (event) => {
-                  VueCookies.remove('token')
+                  VueCookies.remove('access-token')
                   state.user = null
                   state.counter = 2
-                  console.log("Test")
+                  console.log("Logout")
                 }}
 
         ]
