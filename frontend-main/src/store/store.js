@@ -12,7 +12,7 @@
 import { reactive, provide, inject } from 'vue'
 
 export const stateSymbol = Symbol('state')
-export const createState = () => reactive({ counter: 0, user: null, taskId: 0, plugin: 'components/HelloWorld.vue' })
+export const createState = () => reactive({ counter: 0, user: null, taskId: 0, component: null, plugin: 'components/HelloWorld.vue' })
 
 export const useState = () => inject(stateSymbol)
 export const provideState = () => provide(

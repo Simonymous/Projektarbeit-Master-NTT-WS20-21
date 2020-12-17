@@ -1,9 +1,13 @@
 <template>
-  <div v-if="state.counter >1 ">
-    <Suspense>
+  <div v-if="state.counter === 0 ">
+<!--     <Suspense>
       <HelloWorld/>
     </Suspense>
-      <UserManagement/>
+      <UserManagement/> -->
+      <MenuBar/>
+      <div>
+        <component :is="inscopeComponent"></component>
+      </div>
   </div>
   <div v-else>
     <img alt="Vue logo" src="../assets/philipp.jpg">
@@ -16,15 +20,18 @@
 <script>
   import HelloWorld from '../components/HelloWorld'
   import UserManagement from './userManagement'
+  import MenuBar  from './MenuBar'
   import { useState } from '../store/store';
   import VueCookies from 'vue-cookies'
   import { useRouter } from 'vue-router'
-  import { ref, OnMounted, onMounted } from 'vue'
+  import { ref, OnMounted, onMounted, defineAsyncComponent, watch } from 'vue'
   export default {
     name: 'home',
     components: {
-      HelloWorld,
-      UserManagement,
+/*       HelloWorld,
+      UserManagement, */
+      MenuBar,
+
     },
     /**
      * Über den Authorization Header kann auf den Token zugegriffen werden. Also überprüft werden ob der Benutzer eingeloggt ist.
@@ -35,6 +42,7 @@
     setup(){
 
       const router = useRouter();
+      const inscopeComponent = ref(defineAsyncComponent(() => import("@/" + state.component)))
 
       let state = useState()
       const axios = require("axios");
@@ -62,11 +70,16 @@
         })
       }
 
+      watch(state,(component) => {
+        inscopeComponent.value = defineAsyncComponent(() => import("@/" + state.component));
+    })
+
       onMounted(setUserState)
 
       return {
         state,
-        setUserState
+        setUserState,
+        inscopeComponent
       }
     }
   }

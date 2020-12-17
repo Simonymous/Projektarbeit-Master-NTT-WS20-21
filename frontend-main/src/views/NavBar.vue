@@ -31,12 +31,12 @@ export default {
     {
         label: 'Test', icon: 'pi pi-fw pi-sigup', to: '/test',
     },
-    {
+/*     {
         label: 'MenuBar', icon: 'pi pi-fw pi-sigup', to: '/menubar',
-    },
-    {
+    }, */
+/*     {
         label: 'CreateTask', icon: 'pi pi-fw pi-sigup', to: '/createTask',
-    },
+    }, */
     ])
 
     const logedInItems = ref([

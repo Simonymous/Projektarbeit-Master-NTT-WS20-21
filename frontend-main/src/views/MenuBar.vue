@@ -9,27 +9,31 @@
 
 <script>
 import TabMenu from 'primevue/tabmenu'
-import { ref, onMounted } from "vue"
+import { ref, onMounted, } from "vue"
+import { useState } from '../store/store';
 export default {
   setup(){
+    let state = useState()
     const menubarItems = ref([
       {
-        label: 'Task Management', to: '/taskManagement', icon: 'pi pi-bookmark', code: 'test', command: (event) => {handleClickComponent(event)}
+        label: 'Task Management', /* to: '/taskManagement', */ icon: 'pi pi-bookmark', code: 'components/TaskManagement.vue', command: (event) => {handleClickComponent(event)}
       },
       {
-        label: 'Task Work', icon: 'pi pi-pencil', code: ''
+        label: 'Task Work', icon: 'pi pi-pencil', code: 'components/TaskWork.vue' , command: (event) => {handleClickComponent(event)}
       },
       {
-        label: 'User Management', icon: 'pi pi-users', code: ''
+        label: 'User Management', icon: 'pi pi-users', code: 'views/userManagement.vue' , command: (event) => {handleClickComponent(event)}
       }
     ])
 
     function handleClickComponent(e){
-      console.log(e.item.code)
+      state.component = e.item.code
+      console.log(state.component)
     }
     return {
       menubarItems,
       handleClickComponent, 
+      state,
     }
   }
 }

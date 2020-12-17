@@ -5,6 +5,7 @@
       <SplitterPanel size='20'>
         <div>
           <GetTask/>
+          <SelectPluginDropdown/>
         </div>       
       </SplitterPanel>
       <SplitterPanel size='80'>
@@ -19,10 +20,12 @@
 <script>
 import CreateTask from './CreateTask'
 import GetTask from './GetTask'
+import SelectPluginDropdown from './SelectPluginDropdown'
 export default {
   components: {
     CreateTask,
     GetTask,
+    SelectPluginDropdown,
   },
   setup(){
     return {
