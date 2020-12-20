@@ -49,6 +49,11 @@ export default {
 
     /** Functions */ 
 
+    async function searchTask(){
+      //Search Query: 'attribut' : 'inhalt', bpsw: { "name":"test" } oder { "name":"test", "tag":"math" }
+      const resp = await axios.post('http://localhost:3000/task/searchTask'+{headers: axiosAuthHeader})
+    }
+
     async function getTaskContent(){
       const resp = await axios.get('http://localhost:3000/task/' + state.taskId, {headers: axiosAuthHeader})
       taskTitle.value = resp.date.title

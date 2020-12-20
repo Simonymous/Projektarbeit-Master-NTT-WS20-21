@@ -33,12 +33,24 @@ export class TaskController {
   async getTask(
     @Param ('id') taskID: string,
     @Res() res) {
+      console.log("Get Task")
     const returnObj = await this.taskService.getSingleTask(taskID);
     return res.status(HttpStatus.OK).json({
       message: 'Task gefunden!',
       task: returnObj
     })
   }
+
+  @Post('/searchTask')
+  async searchTask(
+    @Res() res, @Body () searchQuery: any,) {
+    const returnObj = await this.taskService.searchTask(searchQuery);
+    return res.status(HttpStatus.OK).json({
+      message: 'Gefundene Tasks:',
+      task: returnObj
+    })
+  }
+
   @Patch(':id')
   updateTask(
     @Param ('id') taskID: string, 

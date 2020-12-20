@@ -11,8 +11,7 @@
   </div>
   <div v-else>
     <img alt="Vue logo" src="../assets/philipp.jpg">
-    <h2>Ich schick dein Girl in den Puff und lass Sie jeden Mann darin ansprechen,<br />
-      auch die Chinesen, die Sie auf Mandarin ansprechen!
+    <h2>Willkommen auf der Startseite der HtW Saar Coding Plattform
     </h2>
   </div>
 

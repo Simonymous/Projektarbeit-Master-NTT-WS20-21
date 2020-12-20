@@ -14,7 +14,7 @@ export class TaskService {
   }
 
   async findAll(): Promise<Task[]> {
-    return this.taskModel.find().exec();
+    return this.taskModel.find({}).exec();
   }
 
   async getSingleTask(taskId: String): Promise<Task> {
@@ -23,6 +23,12 @@ export class TaskService {
     } else {
       return null;
     }
+  }
+
+  async searchTask(searchQuery: any):Promise<Task[]> {
+    console.log("[LOG] Search Task with query");
+    console.log(searchQuery)
+    return this.taskModel.find({searchQuery}).exec();
   }
 
   async updateTask(taskId: String, taskDto: TaskDTO): Promise<Task> {
