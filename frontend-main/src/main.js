@@ -22,6 +22,7 @@ import ConfirmDialog from 'primevue/confirmdialog'
 import ConfirmationService from 'primevue/confirmationservice'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
+import Card from 'primevue/card'
 import 'primevue/resources/themes/saga-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
@@ -51,6 +52,7 @@ app.component('Listbox', Listbox)
 app.component('Editor', Editor)
 app.component('Splitter', Splitter)
 app.component('SplitterPanel', SplitterPanel)
+app.component('Card', Card)
 
 app.mount('#app')
 // createApp(App).use(router, VueCookies).provide(stateSymbol, createState()).component('Button', Button).mount('#app')
