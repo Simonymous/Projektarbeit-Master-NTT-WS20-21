@@ -25,6 +25,7 @@ export class TaskService {
     }
   }
 
+  // Objekt mit 2 Arrays: Suche nach Tags und Suche nach Name: TODO: SearchByTag, SearchByName
   async searchTask(searchQuery: any):Promise<Task[]> {
     console.log("[LOG] Search Task with query");
     console.log(searchQuery)

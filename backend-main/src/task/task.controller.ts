@@ -41,6 +41,7 @@ export class TaskController {
     })
   }
 
+  // Suche primär nach Tags und dann nach Name -> erhalte Searchstring
   @Post('/searchTask')
   async searchTask(
     @Res() res, @Body () searchQuery: any,) {
