@@ -6,10 +6,11 @@ import { TaskModule } from './task/task.module';
 //import { TasksheetModule } from "./tasksheet/tasksheet.module"
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import {MoodleModule} from './moodle/moodle.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [FirstquestionsModule, TaskModule, MongooseModule.forRoot('mongodb://root:example@mongo:27017/test?authSource=admin'), AuthModule, UsersModule],
+  imports: [FirstquestionsModule, TaskModule, MongooseModule.forRoot('mongodb://root:example@mongo:27017/test?authSource=admin'), AuthModule, UsersModule, MoodleModule],
   controllers: [AppController],
   providers: [AppService],
 })
