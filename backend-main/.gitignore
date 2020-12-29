@@ -4,6 +4,9 @@
 frontend-main/node_modules
 backend-main/node_modules
 
+!/node_modules/ims-lti/
+!backend-main/node_modules/ims-lti/
+
 # Logs
 logs
 *.log
