@@ -3,6 +3,7 @@ import { Controller, Post, Body, Get, Param, Patch, Delete, Res, HttpStatus, Use
 var uuid = require("uuid4");
 var lti = require("ims-lti");
 
+var a;
 
 @Controller('moodle')
 export class MoodleController {
@@ -15,24 +16,60 @@ export class MoodleController {
   ) {
     var provider = new lti.Provider("top", "secret");
     let returnString = '';
+    var sessions = {};
     provider.valid_request(request, (err, isValid) => {
       if (!isValid) {
         console.log("INVALID")
         
         return "INVALID"+err
       }
-      var sessions = {};
 
-      var sessionID = uuid();
-      sessions[sessionID] = provider;
-      console.log(provider.body)
-      //console.log(provider)
+      a = provider;
+      
+
+
+
+      // console.log(provider)
+      // console.log("-------------------------")
+      // console.log(sessionID)
+      // console.log("-------------------------")
+      // console.log(sessions)
+      // console.log("-------------------------")
+      // console.log(provider.outcome_service)
+      // provider.outcome_service.send_replace_result(1, (err, isValid) => {
+      //   if (!isValid) {
+      //     console.log("INVALID Grade!!")
+      //     console.log(err)
+          
+      //     return "INVALID"+err
+      //   }
+      //   console.log("Nice")
+      //   return ('OK')
+      // })
       return "OK"
+    })
+
+
+    console.log(a)
+    a.outcome_service.send_replace_result(50/100, (err, isValid) => {
+      if (!isValid) {
+        if(!a.outcome_service) {
+          console.log("Kein outcome service vorhanden!")
+        }
+        console.log("INVALID Grade!!")
+        console.log(err)
+        
+        return "INVALID"+err
+      }
+      console.log("Nice")
+      return ('OK')
     })
     //console.log(request)
     //console.log(provider)
     //return returnString;
-    // return "OK"
-    return response.redirect('http://localhost:8080')
+    return "OK"
+    // return response.redirect('http://localhost:8080')
   }
 }
+
+
