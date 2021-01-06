@@ -14,19 +14,24 @@ export class MoodleController {
     @Param ('grade') grade
   ) {
     console.log("Grade erhalten: "+grade)
-    a.outcome_service.send_replace_result(grade, (err, isValid) => {
-      if (!isValid) {
-        if(!a.outcome_service) {
-          console.log("Kein outcome service vorhanden!")
+    if(a) {
+      a.outcome_service.send_replace_result(grade, (err, isValid) => {
+        if (!isValid) {
+          if(!a.outcome_service) {
+            console.log("Kein outcome service vorhanden!")
+          }
+          console.log("INVALID Grade!!")
+          console.log(err)
+          
+          return "INVALID GRADE "+err
         }
-        console.log("INVALID Grade!!")
-        console.log(err)
-        
-        return "INVALID GRADE "+err
-      }
-      console.log("Note erfolgreich übermittelt")
-      return ('OK')
-    })
+        console.log("Note erfolgreich übermittelt")
+        return ('OK')
+      })
+    } else {
+      return "Kein Provider vorhanden!"
+    }
+
   }
 
   @Post()
