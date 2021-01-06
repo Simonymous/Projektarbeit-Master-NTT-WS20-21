@@ -9,14 +9,31 @@ var a;
 export class MoodleController {
   constructor() {}
 
+  @Post(':grade')
+  sendGrade(
+    @Param ('grade') grade
+  ) {
+    console.log("Grade erhalten: "+grade)
+    a.outcome_service.send_replace_result(grade, (err, isValid) => {
+      if (!isValid) {
+        if(!a.outcome_service) {
+          console.log("Kein outcome service vorhanden!")
+        }
+        console.log("INVALID Grade!!")
+        console.log(err)
+        
+        return "INVALID GRADE "+err
+      }
+      console.log("Note erfolgreich übermittelt")
+      return ('OK')
+    })
+  }
+
   @Post()
   getMoodle(
       @Req() request,
-      @Res() response
   ) {
     var provider = new lti.Provider("top", "secret");
-    let returnString = '';
-    var sessions = {};
     provider.valid_request(request, (err, isValid) => {
       if (!isValid) {
         console.log("INVALID")
@@ -51,19 +68,7 @@ export class MoodleController {
 
 
     console.log(a)
-    a.outcome_service.send_replace_result(50/100, (err, isValid) => {
-      if (!isValid) {
-        if(!a.outcome_service) {
-          console.log("Kein outcome service vorhanden!")
-        }
-        console.log("INVALID Grade!!")
-        console.log(err)
-        
-        return "INVALID"+err
-      }
-      console.log("Nice")
-      return ('OK')
-    })
+
     //console.log(request)
     //console.log(provider)
     //return returnString;
