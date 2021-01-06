@@ -15,7 +15,7 @@ export class MoodleController {
   ) {
     console.log("Grade erhalten: "+grade)
     if(a) {
-      a.outcome_service.send_replace_result(grade, (err, isValid) => {
+      a.outcome_service.send_replace_result(grade/100, (err, isValid) => {
         if (!isValid) {
           if(!a.outcome_service) {
             console.log("Kein outcome service vorhanden!")
@@ -37,6 +37,7 @@ export class MoodleController {
   @Post()
   getMoodle(
       @Req() request,
+      @Res() response
   ) {
     var provider = new lti.Provider("top", "secret");
     provider.valid_request(request, (err, isValid) => {
@@ -68,7 +69,7 @@ export class MoodleController {
       //   console.log("Nice")
       //   return ('OK')
       // })
-      return "OK"
+      return "Provider läuft"
     })
 
 
@@ -77,8 +78,8 @@ export class MoodleController {
     //console.log(request)
     //console.log(provider)
     //return returnString;
-    return "OK"
-    // return response.redirect('http://localhost:8080')
+    //return "OK"
+    return response.redirect('http://localhost:8080')
   }
 }
 
