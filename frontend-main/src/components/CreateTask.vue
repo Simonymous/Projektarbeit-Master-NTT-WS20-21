@@ -9,13 +9,6 @@
       <InputText type="text" v-model="solution" placeholder="Solution"/>
       <InputText type="text" v-model="maxPoints" placeholder="maxPoints"/>
     </div>
-    <!-- <div class="taskButtons">
-      <Button label='Create Task' @click="createTask"/>
-      <Button label='Update Task' @click="updateTask"/>
-      <Button label='Delete Task' @click="deleteTask"/>
-    </div> -->
-    <!-- <GetTask/> -->
-<!--     <TaskWork/> -->
 <show-plugin/>
   </div>
 </template>
@@ -24,15 +17,12 @@
 import { ref } from "vue"
 import VueCookies from 'vue-cookies'
 import { useState } from '../store/store'
-// import GetTask from './GetTask'
 import TaskWork from './TaskWork'
 import ShowPlugin from './ShowPlugin.vue'
 
 export default {
   name: 'createTask',
   components: {
-    // GetTask,
-/*     TaskWork, */
     ShowPlugin
   },
   setup(){

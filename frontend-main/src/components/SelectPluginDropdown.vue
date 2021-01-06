@@ -30,7 +30,8 @@ import Vue from 'vue';
       const plugins= [
         {name: 'HelloWorld', code: 'components/HelloWorld.vue'},
         {name: 'ByeWorld', code: 'components/ByeWorld.vue'},
-        {name: 'BasicMathCreate', code: 'components/Plugins/BasicMath/create.vue'}
+        {name: 'BasicMathCreate', code: 'components/Plugins/BasicMath/create.vue'},
+        {name: 'Grade', code: 'components/Plugins/Grade/resolve.vue'},
       ]
 
       let selectedPlugin = ref({name: 'HelloWorld', code: 'components/HelloWorld.vue'});

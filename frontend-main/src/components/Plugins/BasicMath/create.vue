@@ -1,4 +1,4 @@
-
+grade
 <template>
   <div>
     <InputText v-model="varA" placeholder="A" />

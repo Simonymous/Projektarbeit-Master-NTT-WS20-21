@@ -18,7 +18,7 @@
           <div>
             <p>
               Punkte:
-              {{taskPoints }}
+              {{ taskPoints }}
             </p>
           </div>
         </template>
