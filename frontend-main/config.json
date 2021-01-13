@@ -1,3 +1,4 @@
 {
-  "pluginPath" : "components/HelloWorld.vue"
+  "pluginPath" : "components/HelloWorld.vue",
+  "backendURL" : "http://localhost:3000"
 }

@@ -57,4 +57,3 @@ app.component('Card', Card)
 app.component('Slider', Slider)
 
 app.mount('#app')
-// createApp(App).use(router, VueCookies).provide(stateSymbol, createState()).component('Button', Button).mount('#app')

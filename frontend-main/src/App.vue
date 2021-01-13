@@ -1,26 +1,21 @@
 <template>
   <div id="app">
     <NavBar />
-  
-
-  <div class="auth-wrapper">
-    <div class="auth-inner">
-      <router-view/>
-    </div>
-  </div> 
-</div>
+    <div class="auth-wrapper">
+      <div class="auth-inner">
+        <router-view/>
+      </div>
+    </div> 
+  </div>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
-//import UserSettings from './components/UserSettings.vue'
+
 import NavBar from './views/NavBar'
 
 export default {
   name: 'App',
   components: {
-    //HelloWorld,
-    //UserSettings,
     NavBar,
   }
 }
@@ -34,5 +29,4 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-
 </style>
