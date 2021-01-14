@@ -1,22 +1,24 @@
 import VueCookies from 'vue-cookies'
-const axios = require('axios')
+import axios from 'axios'
 
-const backendURL = require('../../config.json').backendURL
-const AccessToken = VueCookies.get('access-token')
+// TODO: Schauen ob funktioniert
+// const BACKEND_URL = require('../../config.json').backendURL
+const BACKEND_URL = process.env.BACKEND_URL
+
+const ACCESS_TOKEN = VueCookies.get('access-token')
 
 const requestOptions = {
   headers: {
-    Authorization: AccessToken
+    Authorization: ACCESS_TOKEN,
+    'Content-Type': 'application/json',
   }
 }
 
 /**
- *
- * @param {*} pathName Without preceeding /
+ * @param {*} pathName without preceeding /
  */
-export async function getBackendRequest (pathName) {
-  axios.get(backendURL + '/' + pathName, requestOptions).then(function (response) {
-    // state.user = response.data
+export async function getBackendRequest(pathName) {
+  axios.get(BACKEND_URL + '/' + pathName, requestOptions).then(function (response) {
     return response.data
   }).catch(function (error) {
     if (error?.response.status === 401) {
@@ -25,5 +27,16 @@ export async function getBackendRequest (pathName) {
     } else {
       throw error
     }
+  })
+}
+
+/**
+ * @param {*} pathName without preceeding /
+ */
+export async function postBackendRequest(pathName, postParam) {
+  axios.post(BACKEND_URL + '/' + pathName, postParam, requestOptions).then(function (response) {
+    return response.data
+  }).catch(function (error) {
+    return error
   })
 }

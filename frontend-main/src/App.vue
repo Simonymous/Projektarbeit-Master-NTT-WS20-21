@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavBar />
+    <GlobalNavBar />
     <div class="auth-wrapper">
       <div class="auth-inner">
         <router-view/>
@@ -11,12 +11,12 @@
 
 <script>
 
-import NavBar from './views/NavBar'
+import GlobalNavBar from './views/GlobalNavBar'
 
 export default {
   name: 'App',
   components: {
-    NavBar,
+    GlobalNavBar,
   }
 }
 </script>
