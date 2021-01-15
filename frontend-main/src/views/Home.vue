@@ -33,9 +33,7 @@ export default {
     onMounted(getUserAndSetState(), loadPluginLocation());
 
     watch(state, (component) => {
-      inscopeComponent.value = defineAsyncComponent(() =>
-        import("@/" + state.component)
-      );
+      inscopeComponent.value = defineAsyncComponent(() => import("@/" + state.component));
     });
 
     async function getUserAndSetState() {
@@ -50,14 +48,13 @@ export default {
       try {
         const URL_PARAMS = new URLSearchParams(window.location.search);
 
-        const ENTRY_POINT_PATH =
-          "components/" + URL_PARAMS.get("entryPoint") + ".vue";
+        const ENTRY_POINT_PATH = "components/" + URL_PARAMS.get("entryPoint") + ".vue";
         const PLUGIN_PATH = "components/" + URL_PARAMS.get("plugin") + ".vue";
 
         state.component = ENTRY_POINT_PATH;
         state.plugin = PLUGIN_PATH;
       } catch (e) {
-      // Geht eines nicht, wird nichts gesetzt
+        // Geht eines nicht, wird nichts gesetzt
         console.log(e);
       }
     }

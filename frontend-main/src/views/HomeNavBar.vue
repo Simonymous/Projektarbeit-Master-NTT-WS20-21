@@ -21,23 +21,24 @@ export default {
     const router = useRouter();
     const menubarItems = ref([
       {
-        label: 'Task Management', icon: 'pi pi-bookmark', code: 'components/TaskManagement.vue', command: (event) => {handleClickComponent(event)}
+        label: 'Task Management', icon: 'pi pi-bookmark', code: 'components/TaskManagement.vue', component: 'TaskManagement', command: (event) => {handleClickComponent(event)}
       },
       {
-        label: 'Task Work', icon: 'pi pi-pencil', code: 'TaskWork' , command: (event) => {handleClickComponent(event)}
+        label: 'Task Work', icon: 'pi pi-pencil', code: 'components/TaskWork.vue', component: 'TaskWork', command: (event) => {handleClickComponent(event)}
       },
       {
-        label: 'User Management', icon: 'pi pi-users', code: 'userManagement' , command: (event) => {handleClickComponent(event)}
+        label: 'User Management', icon: 'pi pi-users', code: 'components/UserManagement.vue', component: 'UserManagement', command: (event) => {handleClickComponent(event)}
       }
     ])
 
     function handleClickComponent(e){
       let urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("entryPoint", e.item.code);
-      console.log(urlParams)
+      
+      urlParams.set("entryPoint", e.item.component);
+      console.log(urlParams.get('entryPoint'))
       router.push(window.location.pathname + "?" + new URLSearchParams(urlParams).toString());
       // router.push("/");
-      // state.component = e.item.code
+      state.component = e.item.code
     }
     return {
       menubarItems,
