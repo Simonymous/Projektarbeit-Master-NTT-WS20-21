@@ -18,12 +18,16 @@ import Password from 'primevue/password'
 import Listbox from 'primevue/listbox'
 import Dialog from 'primevue/dialog'
 import Editor from 'primevue/editor'
+import PanelMenu from 'primevue/panelmenu'
+import TieredMenu from 'primevue/tieredmenu'
 import ConfirmDialog from 'primevue/confirmdialog'
 import ConfirmationService from 'primevue/confirmationservice'
 import Splitter from 'primevue/splitter'
 import SplitterPanel from 'primevue/splitterpanel'
 import Card from 'primevue/card'
 import Slider from 'primevue/slider'
+import Accordion from 'primevue/accordion'
+import AccordionTab from 'primevue/accordiontab'
 import 'primevue/resources/themes/saga-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
@@ -55,5 +59,9 @@ app.component('Splitter', Splitter)
 app.component('SplitterPanel', SplitterPanel)
 app.component('Card', Card)
 app.component('Slider', Slider)
+app.component('Accordion', Accordion)
+app.component('AccordionTab', AccordionTab)
+app.component('TieredMenu', TieredMenu)
+app.component('PanelMenu', PanelMenu)
 
 app.mount('#app')

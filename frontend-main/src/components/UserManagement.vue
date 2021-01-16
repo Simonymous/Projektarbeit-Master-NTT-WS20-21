@@ -3,7 +3,11 @@
     <h1>User Management</h1>
     <div>
       <ConfirmDialog></ConfirmDialog>
-      <Button icon="pi pi-user-plus" label="Add User" @click="createUser()"></Button>
+      <Button
+        icon="pi pi-user-plus"
+        label="Add User"
+        @click="createUser()"
+      ></Button>
     </div>
     <div>
       <DataTable
@@ -19,13 +23,14 @@
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
           </template>
         </Column>
+        <!-- TODO: Wie soll passwort angezeigt werden? -->
         <Column field="password" header="Passwort"> </Column>
         <Column field="email" header="E-Mail">
           <template #editor="slotProps">
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
           </template>
         </Column>
-        <Column field="role" header="Rols">
+        <Column field="role" header="Roles">
           <template #editor="slotProps">
             <Dropdown
               v-model="slotProps.data['role']"
@@ -37,14 +42,17 @@
             >
               <template #option="slotProps">
                 <span
-                  :class="'product-badge status-' + slotProps.option.value.toLowerCase()"
+                  :class="
+                    'product-badge status-' +
+                    slotProps.option.value.toLowerCase()
+                  "
                   >{{ slotProps.option.label }}</span
                 >
               </template>
             </Dropdown>
           </template>
           <template #body="slotProps">
-            {{ setUserRole(slotProps.data.role) }}
+            {{ getUserRole(slotProps.data.role) }}
           </template>
         </Column>
         <Column :exportable="false">
@@ -73,33 +81,38 @@ import DataTable from "primevue/datatable";
 import { defineComponent } from "vue";
 import VueCookies from "vue-cookies";
 import { useConfirm } from "primevue/useConfirm";
-import { postBackendRequest, putBackendRequest, getBackendRequest, deleteBackendRequest } from "../helper/requests";
-
+import {
+  postBackendRequest,
+  putBackendRequest,
+  getBackendRequest,
+  deleteBackendRequest,
+} from "../helper/requests";
 
 export default defineComponent({
   setup(props) {
     /** System Variables */
     const confirm = useConfirm();
-    const REGISTER_PATH = "auth/register"
-    const USER_PATH = 'user'
-    confirm.require({
-      message: "Are you sure you want to proceed?",
-      icon: "pi pi-exclamation-triangle",
-      accept: () => {
-        //callback to execute when user confirms the action
-      },
-      reject: () => {
-        //callback to execute when user rejects the action
-      },
-    });
+    const REGISTER_PATH = "auth/register";
+    const USER_PATH = "user";
+    // confirm.require({
+    //   message: "Are you sure you want to proceed?",
+    //   icon: "pi pi-exclamation-triangle",
+    //   accept: () => {
+    //     //callback to execute when user confirms the action
+    //   },
+    //   reject: () => {
+    //     //callback to execute when user rejects the action
+    //   },
+    // });
 
     /** Tabel Variables */
     const USER_ROLES = [
       { label: "Admin", value: "admin" },
       { label: "User", value: "user" },
       { label: "Lecturer", value: "lecturer" },
-    ]
+    ];
 
+    //TODO: remove for Prod
     /** User Variables */
     const users = ref([
       {
@@ -109,59 +122,64 @@ export default defineComponent({
         email: "test",
         role: "admin",
       },
-      { _id: 2, username: "Simon", password: "567", email: "test", role: "admin" },
+      {
+        _id: 2,
+        username: "Simon",
+        password: "567",
+        email: "test",
+        role: "admin",
+      },
     ]);
 
     async function getUsers() {
-/*       const response = getBackendRequest('user/getUsers')
-      users.value = response.data */
-      return users
+      if (process.env.BACKEND_ONLINE) {
+        const response = await getBackendRequest("user/getUsers");
+        users.value = response.data;
+      }
+      return users;
     }
 
-    async function createUser() {
-      users.value.unshift({})
+    function createUser() {
+      users.value.unshift({});
     }
 
     async function updateUser(user) {
-      try{
-      if (user._id) {
-        const response = putBackendRequest(USER_PATH, user).then(function() {
+      try {
+        if (user._id) {
+          await putBackendRequest(USER_PATH, user)
           getUsers()
-        })
-        return
-      }
-      if (user.username && user.password && user.email && user.roles && !user._id) {
-        const response = postBackendRequest(REGISTER_PATH, user).then(function(){
+          return
+        }else if (
+          user.username &&
+          user.email &&
+          user.roles
+        ) {
+          await postBackendRequest(REGISTER_PATH, user)
           getUsers()
-        })
-        return
-      }
-      } catch (error){
-        console.log(error)
+          return
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
 
+    //TODO: Payload in URL oder Header/Body
     async function deleteUser(user) {
       this.$confirm.require({
-        message: "Möchten sie den Nutzer " + user.username + " wirklich löschen?",
+        message:
+          "Möchten sie den Nutzer " + user.username + " wirklich löschen?",
         header: "Nutzer löschen",
         icon: "pi pi-exclamation-triangle",
-        accept: () => {
-          try{
-            const response = deleteBackendRequest(USER_PATH + '/' + user._id).then(function() {
-              getUsers()
-            })
-          } catch (error) {
-            console.log(error)
-          }
-/*           axios
-            .delete("http://localhost:3000/user", {
-              data: { user },
-              headers: axiosAuthHeader,
-            })
-            .then(function () {
+        accept: async () => {
+          try {
+            const response = await deleteBackendRequest(
+              USER_PATH + "/" + user._id
+            ).then(function () {
               getUsers();
-            }); */
+            });
+          } catch (error) {
+            console.log(error);
+          }
         },
         reject: () => {
           //callback to execute when user rejects the action
@@ -169,24 +187,12 @@ export default defineComponent({
       });
     }
 
-    function setUserRole(status) {
-      console.log(status)
-      switch (status) {
-        case "admin":
-          return "Admin"
-
-        case "user":
-          return "User"
-
-        case "lecturer":
-          return "Lecturer"
-
-        default:
-          return "NA"
-      }
+    function getUserRole(status) {
+      let selectedRole = USER_ROLES.find(role => role.value == status);
+      return selectedRole.label;
     }
 
-    onMounted(getUsers())
+    onMounted(getUsers());
 
     return {
       /**Variables */
@@ -196,16 +202,19 @@ export default defineComponent({
       /** Methods */
       getUsers,
       deleteUser,
-      setUserRole,
+      getUserRole,
       updateUser,
       createUser,
-    }
+    };
   },
-})
+});
 </script>
 
 <style>
 .ui-table-wrapper {
   overflow: visible;
+}
+.p-button {
+  margin: 3px;
 }
 </style>

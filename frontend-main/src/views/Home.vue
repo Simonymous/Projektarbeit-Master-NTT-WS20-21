@@ -48,10 +48,10 @@ export default {
       try {
         const URL_PARAMS = new URLSearchParams(window.location.search);
 
-        const ENTRY_POINT_PATH = "components/" + URL_PARAMS.get("entryPoint") + ".vue";
+        const COMPONENT_PATH = "components/" + URL_PARAMS.get("component") + ".vue";
         const PLUGIN_PATH = "components/" + URL_PARAMS.get("plugin") + ".vue";
 
-        state.component = ENTRY_POINT_PATH;
+        state.component = COMPONENT_PATH;
         state.plugin = PLUGIN_PATH;
       } catch (e) {
         // Geht eines nicht, wird nichts gesetzt
