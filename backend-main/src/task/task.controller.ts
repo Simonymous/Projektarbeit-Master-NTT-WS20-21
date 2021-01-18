@@ -7,7 +7,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller('task')
 @UseGuards(JwtAuthGuard)
 export class TaskController {
-  constructor(private readonly taskService: TaskService) {}
+  constructor(private readonly taskService: TaskService) { }
 
   //TODO: Funktioniert!! man muss nur aus dem Frontend das beim Login übermittelte Token mitschicken
   // https://stackoverflow.com/questions/44072750/how-to-send-basic-auth-with-axios ? ausprobieren..
@@ -15,7 +15,7 @@ export class TaskController {
   @Post()
   async createNewTask(
     @Res() res,
-    @Body() taskDTO: TaskDTO, 
+    @Body() taskDTO: TaskDTO,
   ) {
     const returnObj = await this.taskService.create(taskDTO);
     return res.status(HttpStatus.OK).json({
@@ -31,9 +31,9 @@ export class TaskController {
 
   @Get(':id')
   async getTask(
-    @Param ('id') taskID: string,
+    @Param('id') taskID: string,
     @Res() res) {
-      console.log("Get Task")
+    console.log("Get Task")
     const returnObj = await this.taskService.getSingleTask(taskID);
     return res.status(HttpStatus.OK).json({
       message: 'Task gefunden!',
@@ -44,7 +44,7 @@ export class TaskController {
   // Suche primär nach Tags und dann nach Name -> erhalte Searchstring
   @Post('/searchTask')
   async searchTask(
-    @Res() res, @Body () searchQuery: any,) {
+    @Res() res, @Body() searchQuery: any,) {
     const returnObj = await this.taskService.searchTask(searchQuery);
     return res.status(HttpStatus.OK).json({
       message: 'Gefundene Tasks:',
@@ -54,15 +54,15 @@ export class TaskController {
 
   @Patch(':id')
   updateTask(
-    @Param ('id') taskID: string, 
-    @Body() taskDTO: TaskDTO, 
-    ) {
-      this.taskService.updateTask(taskID, taskDTO)
-      return 'updated'
-    }
-    @Delete(':id')
-    deleteTask(@Param ('id') taskID: string) {
-      this.taskService.deleteTask(taskID);
-      return 'deleted'
-    }
+    @Param('id') taskID: string,
+    @Body() taskDTO: TaskDTO,
+  ) {
+    this.taskService.updateTask(taskID, taskDTO)
+    return 'updated'
+  }
+  @Delete(':id')
+  deleteTask(@Param('id') taskID: string) {
+    this.taskService.deleteTask(taskID);
+    return 'deleted'
+  }
 }

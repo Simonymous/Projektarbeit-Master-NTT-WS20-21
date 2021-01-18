@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Req, Res } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import moodleSessions from './moodleSessions'
 
+var lti = require("ims-lti");
 @Injectable()
 export class AuthService {
+  
   constructor( private usersService: UsersService,
                private jwtService: JwtService
               ) {}
@@ -23,11 +26,40 @@ export class AuthService {
 
   async login(user: any) {    
     const validatedUser = await this.usersService.findOne(user.username)
-    console.log(validatedUser)
+    //console.log(validatedUser)
     const payload = { username: validatedUser.username, sub: validatedUser.password};
     console.log(this.jwtService.decode( this.jwtService.sign(payload)))
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async moodleLogin(request) {
+    let provider = new lti.Provider("top", "secret"); //Shared und public Secret aus moodle
+    let sessions = moodleSessions.getInstance();
+    let access_token = "";
+
+    provider.valid_request(request, (err, isValid) => {
+      if (!isValid) {
+        console.log("[LOG] INVALID LTI REQUEST..")
+        
+        return "INVALID:"+err
+      }
+
+      const payload = {'obj':'test'}
+      access_token = this.jwtService.sign(payload)
+      sessions.addSession(access_token,provider)
+      //a = provider; //Temporäre Lösung bis die Sesssions in die DB geschoben werden
+      
+      //return "Provider läuft.."
+    })
+
+    console.log("[LOG] LTI Session initiiert:")
+    console.log(sessions)
+
+    //const payload = {}
+
+    return access_token
+    
   }
 }
