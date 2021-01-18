@@ -1,9 +1,11 @@
 <template>
-  <Accordion :multiple="true" :activeIndex="activeIndex">
+  <Accordion :multiple="true" :activeIndex="[0,1]">
     <AccordionTab header="Task" :active="true">
+      <Button label="Create new Task" v-on:click="buttonClickCreateTask"></Button>
       <Listbox class="listbox" />
     </AccordionTab>
     <AccordionTab header="Task Collection">
+      <Button label="Create new TaskCollection" v-on:click="buttonClickCreateTaskCollection"></Button>
       <PanelMenu :model="TaskCollectionItems" :multiple="true"
     /></AccordionTab>
   </Accordion>
@@ -12,8 +14,7 @@
 import { ref } from "vue";
 
 export default {
-  setup() {
-    const activeIndex = ref([0, 1]);
+  setup(props,{emit}) {
     const TaskCollectionItems = ref([
       {
         label: "Aufgabenblatt 1",
@@ -35,7 +36,20 @@ export default {
       },
     ]);
 
-    return { activeIndex, TaskCollectionItems };
+    function buttonClickCreateTask(){
+      emit('exerciseSelected', {id:-1, kindOfExercise:'task'})
+    }
+
+    function buttonClickCreateTaskCollection(){
+      emit('exerciseSelected', {id:-1, kindOfExercise:'collection'})
+    }
+
+    return { TaskCollectionItems, buttonClickCreateTask, buttonClickCreateTaskCollection };
   },
 };
 </script>
+<style scoped>
+button {
+  width: 100%;
+}
+</style>

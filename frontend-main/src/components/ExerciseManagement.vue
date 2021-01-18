@@ -4,34 +4,58 @@
     <Splitter layout="horizontal">
       <SplitterPanel size='20'>
         <div>
-          <ExerciseManagementSelector/>
+          <ExerciseManagementSelector @exerciseSelected="exerciseSelected"/>
           <SelectPluginDropdown/>
         </div>       
       </SplitterPanel>
       <SplitterPanel size='80'>
-        <div>
-          <CreateTask/>
+        <div v-if="test=='task'">
+          <ManageTask/>
+        aosndfoisaf
         </div>
+        <div v-else-if="test=='collection'">
+        qwertzuiop
+        </div>
+        <div v-else>
+        Bitte eine Aufgabe oder Aufgabenblatt auswählen.
+        </div>
+
+
+<!--           <CreateTask/>
+        </div> -->
       </SplitterPanel>
     </Splitter>
   </div>
 </template>
 
 <script>
-import CreateTask from './CreateTask'
+import ManageTask from './ManageTask'
 import ExerciseManagementSelector from './ExerciseManagementSelector.vue'
 // import GetTask from './GetTask'
 import SelectPluginDropdown from './SelectPluginDropdown'
+import { ref } from 'vue'
 export default {
   components: {
-    CreateTask,
+    ManageTask,
     //GetTask,
     SelectPluginDropdown,
     ExerciseManagementSelector,
   },
   setup(){
-    return {
 
+    const test = ref({});
+    
+
+    function exerciseSelected(payload){
+      console.log(payload)
+      test.value = payload.kindOfExercise;
+      console.log(payload.kindOfExercise);
+      console.log(test.value)
+      return test
+    }
+    return {
+      exerciseSelected,
+      test
     }
   }
 }
