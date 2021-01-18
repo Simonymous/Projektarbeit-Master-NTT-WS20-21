@@ -38,6 +38,7 @@ export class AuthService {
     let provider = new lti.Provider("top", "secret"); //Shared und public Secret aus moodle
     let sessions = moodleSessions.getInstance();
     let access_token = "";
+    let taskId;
 
     provider.valid_request(request, (err, isValid) => {
       if (!isValid) {
@@ -45,21 +46,25 @@ export class AuthService {
         
         return "INVALID:"+err
       }
+      console.log("[LOG] LTI Session initiiert:")
+      //console.log(provider)
+      taskId = provider.body.custom_taskId;
+      //console.log(taskId)
 
       const payload = {'obj':'test'}
       access_token = this.jwtService.sign(payload)
       sessions.addSession(access_token,provider)
-      //a = provider; //Temporäre Lösung bis die Sesssions in die DB geschoben werden
       
       //return "Provider läuft.."
     })
 
-    console.log("[LOG] LTI Session initiiert:")
-    console.log(sessions)
+    
+    //console.log(sessions)
 
     //const payload = {}
 
-    return access_token
+    return {access_token: access_token,
+            taskId: taskId}
     
   }
 }

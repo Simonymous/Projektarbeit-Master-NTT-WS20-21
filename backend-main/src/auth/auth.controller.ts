@@ -27,10 +27,8 @@ export class AuthController {
       @Res() response
     ) {
       const returnObj = await this.authService.moodleLogin(request);
-      return response.redirect('http://localhost:8080/moodle').json({
-        message: 'User logged In successful!',
-        token: returnObj
-      })
+      return response.redirect('http://localhost:8080/moodle?taskId='+returnObj.taskId+'&token='+returnObj.access_token)
+      }
       
     }
   
