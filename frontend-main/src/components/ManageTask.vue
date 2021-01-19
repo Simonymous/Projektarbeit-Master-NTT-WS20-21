@@ -23,11 +23,12 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import VueCookies from 'vue-cookies';
 import { useState } from '../store/store';
 import TaskWork from './TaskWork';
 import ShowPlugin from './ShowPlugin.vue';
+import { getBackendRequest, postBackendRequest, deleteBackendRequest, putBackendRequest } from "../helper/requests";
 
 export default {
   name: 'manageTask',
@@ -44,40 +45,47 @@ export default {
     const solution = ref('')
 
     /** System Variables */
-    const axios = require('axios');
-    const axiosAuthHeader = {
-      'Content-Type': 'application/json',
-      Authorization: VueCookies.get('access-token'),
-    };
+    const TASK_PATH = 'task'
     const Task = require('../models/taskDTO');
     let state = useState();
 
     /** Class Variables */
-    const backendresponse = ref('');
     const task = ref('');
 
     /** Functions */
     async function saveChangedTask() {
-      let newCreatedTask = newTask();
-      console.log(newCreatedTask)
-      await axios.post('http://localhost:3000/task', newCreatedTask, {
-        headers: axiosAuthHeader,
-      });
-      clearInput();
-    }
-
-    async function updateTask() {
-      let newUpdatedTask = newTask();
-      if (state.taskId) {
-        await axios.patch(selectTask(), newUpdatedTask, {
-          headers: axiosAuthHeader,
-        });
-        clearInput();
+      try{
+        if(state.selectedTaskObject === null){
+          let newCreatedTask = newTask();
+          postBackendRequest(TASK_PATH, newCreatedTask)
+          clearInput()
+        }else{
+          let updatedTask = updateTask()
+          putBackendRequest(TASK_PATH, updatedTask)
+          clearInput()
+        }
+      state.selectedTaskObject = null
+      }catch(error){
+        console.log(error)
       }
     }
 
+    async function updateTask() {
+      //state.selectedTaskObject.category = category.value
+      state.selectedTaskObject.title = title.value
+      //state.selectedTaskObject.tags = tags.value
+      state.selectedTaskObject.description = description.value
+      state.selectedTaskObject.maxPoints = maxPoints.value
+
+      return state.selectedTaskObject
+    }
+
     async function deleteTask() {
-      await axios.delete(selectTask(), { headers: axiosAuthHeader });
+      try{
+        deleteBackendRequest(selectTask())
+      }catch(error){
+        console.log(error)
+      }
     }
 
     /** Support Functions */
@@ -103,9 +111,19 @@ export default {
     }
 
     function selectTask() {
-      const selectedTaskRoot = 'http://localhost:3000/task/' + state.taskId;
+      const selectedTaskRoot = TASK_PATH + state.taskId;
       return selectedTaskRoot;
     }
+    
+    function displayTask(){
+      title.value = state.selectedTaskObject.title
+      description.value = state.selectedTaskObject.description
+      maxPoints.value = state.selectedTaskObject.maxPoints
+    }
+
+    watch(state, (newState, oldState) => {
+      displayTask()
+    })
 
     return {
       /** InputText Variables */
