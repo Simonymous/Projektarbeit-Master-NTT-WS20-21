@@ -72,7 +72,7 @@ export default {
     function handleSelectedTask(e){
       selectedTask.value = e.value
       state.taskId = e.value
-      state.selectedTaskObject = e
+      state.selectedTaskObject = listOfTasks.value.find(element => element.id == e.value)
     }
 
     return { TaskCollectionItems, buttonClickCreateTask, buttonClickCreateTaskCollection, listOfTasks, selectedTask, handleSelectedTask };
