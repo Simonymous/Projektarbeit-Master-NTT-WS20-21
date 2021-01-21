@@ -50,7 +50,7 @@ import Vue from 'vue';
     },
     methods:{
       handleChangeComponent(e){
-        this.state.plugin = e.value.code;
+        // this.state.plugin = e.value.code;
         reloadComponent();
         this.inscopePlugin = outscopePlugin;
       }

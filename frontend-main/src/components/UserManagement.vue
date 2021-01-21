@@ -80,7 +80,7 @@ import { ref, onMounted } from "vue";
 import DataTable from "primevue/datatable";
 import { defineComponent } from "vue";
 import VueCookies from "vue-cookies";
-import { useConfirm } from "primevue/useConfirm";
+// import { useConfirm } from "primevue/useConfirm";
 import {
   postBackendRequest,
   putBackendRequest,
@@ -91,7 +91,7 @@ import {
 export default defineComponent({
   setup(props) {
     /** System Variables */
-    const confirm = useConfirm();
+    // const confirm = useConfirm();
     const REGISTER_PATH = "auth/register";
     const USER_PATH = "user";
     // confirm.require({
@@ -189,7 +189,7 @@ export default defineComponent({
 
     function getUserRole(status) {
       let selectedRole = USER_ROLES.find(role => role.value == status);
-      return selectedRole.label;
+      return selectedRole?.label;
     }
 
     onMounted(getUsers());

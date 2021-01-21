@@ -15,7 +15,7 @@
 <script>
 import HomeNavBar from "./HomeNavBar";
 import { useState } from "../store/store";
-import { ref, onMounted, defineAsyncComponent, watch } from "vue";
+import { ref, onMounted, defineAsyncComponent, watch, markRaw, shallowRef } from "vue";
 import { getBackendRequest } from "../helper/requests";
 export default {
   name: "home",
@@ -32,8 +32,8 @@ export default {
 
     onMounted(getUserAndSetState(), loadPluginLocation());
 
-    watch(state, (component) => {
-      inscopeComponent.value = defineAsyncComponent(() => import("@/" + state.component));
+    watch(() => state.component, (component) => {
+        inscopeComponent.value = defineAsyncComponent(() => import("@/" + state.component));
     });
 
     async function getUserAndSetState() {
@@ -49,10 +49,10 @@ export default {
         const URL_PARAMS = new URLSearchParams(window.location.search);
 
         const COMPONENT_PATH = "components/" + URL_PARAMS.get("component") + ".vue";
-        const PLUGIN_PATH = "components/" + URL_PARAMS.get("plugin") + ".vue";
+        //const PLUGIN_PATH = "components/" + URL_PARAMS.get("plugin") + ".vue";
 
         state.component = COMPONENT_PATH;
-        state.plugin = PLUGIN_PATH;
+        //state.plugin = PLUGIN_PATH;
       } catch (e) {
         // Geht eines nicht, wird nichts gesetzt
         console.log(e);

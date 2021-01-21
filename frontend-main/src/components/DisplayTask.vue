@@ -84,10 +84,10 @@ export default {
       console.log(taskSolution)
     }
   
-    watch(state,(hans,meiser) => {
-      getTaskContent()
-      console.log('test'+ state.taskId)
-    })
+    // watch(state,(hans,meiser) => {
+    //   getTaskContent()
+    //   console.log('test'+ state.taskId)
+    // })
     
     return{
       taskTitle,

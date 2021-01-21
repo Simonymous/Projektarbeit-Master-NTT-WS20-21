@@ -2,9 +2,6 @@
 node_modules/*
 /dist
 
-!node_modules/primevue
-
-
 # local env files
 .env.local
 .env.*.local

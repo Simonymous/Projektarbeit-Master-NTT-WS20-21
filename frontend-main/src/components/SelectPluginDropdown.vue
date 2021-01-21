@@ -1,6 +1,6 @@
 <template>
   <div>
-    <dropdown v-model="selectedPlugin" :options="plugins" optionLabel="name" placeholder="Select a City" v-on:change="handleChangeComponent($event)" />
+    <Dropdown v-model="selectedPlugin" :options="plugins" optionLabel="name" placeholder="Select a City" v-on:change="handleChangeComponent($event)" />
   </div>
 </template>
 
@@ -11,8 +11,6 @@ import VueCookies from 'vue-cookies';
 import { h, ref, reactive, defineAsyncComponent, onMounted } from 'vue';
 
 import Vue from 'vue';
-
-
 
   const pluginPath = require("../../config.json").pluginPath;
   let outscopePlugin = defineAsyncComponent(() => import("@/" + useState().plugin));

@@ -3,7 +3,7 @@ import axios from 'axios'
 
 // TODO: Schauen ob funktioniert
 // const BACKEND_URL = require('../../config.json').backendURL
-const BACKEND_URL = process.env.BACKEND_URL
+const BACKEND_URL = process.env.MY_BACKEND_URL
 
 const ACCESS_TOKEN = VueCookies.get('access-token')
 

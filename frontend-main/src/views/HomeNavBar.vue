@@ -23,8 +23,8 @@ export default {
       {
         label: "Exercise Management",
         icon: "pi pi-bookmark",
-        code: "components/ExerciseManagement.vue",
-        component: "ExerciseManagement",
+        code: "components/ExerciseManagement/Overview.vue",
+        component: "ExerciseManagement/Overview",
         command: (event) => {
           handleClickComponent(event);
         },

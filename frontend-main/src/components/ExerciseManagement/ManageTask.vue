@@ -14,6 +14,8 @@
 
       <!--       <InputText type='text' v-model='tags' placeholder='Tags' /> -->
     </div>
+              <SelectPluginDropdown/>
+
     <show-plugin />
     <div class='createTaskFooter'>
       <Button label='Save' v-on:click='saveChangedTask'></Button>
@@ -25,15 +27,17 @@
 <script>
 import { ref, watch } from 'vue';
 import VueCookies from 'vue-cookies';
-import { useState } from '../store/store';
-import TaskWork from './TaskWork';
-import ShowPlugin from './ShowPlugin.vue';
-import { getBackendRequest, postBackendRequest, deleteBackendRequest, putBackendRequest } from "../helper/requests";
+import { useState } from '../../store/store';
+import ShowPlugin from '../ShowPlugin.vue';
+import SelectPluginDropdown from '../SelectPluginDropdown'
+
+import { getBackendRequest, postBackendRequest, deleteBackendRequest, putBackendRequest } from "../../helper/requests";
 
 export default {
   name: 'manageTask',
   components: {
     ShowPlugin,
+    SelectPluginDropdown
   },
   setup() {
     /** InputText Variables */
@@ -46,7 +50,7 @@ export default {
 
     /** System Variables */
     const TASK_PATH = 'task'
-    const Task = require('../models/taskDTO');
+    const Task = require('../../models/taskDTO');
     let state = useState();
 
     /** Class Variables */
@@ -120,6 +124,7 @@ export default {
       description.value = state.selectedTaskObject.description
       maxPoints.value = state.selectedTaskObject.maxPoints
     }
+
 
     return {
       /** InputText Variables */
