@@ -1,0 +1,8 @@
+{
+  "installCommands": "npm install vue-prism-editor.... https://stackoverflow.com/questions/26414587/how-to-install-multiple-versions-of-package-using-npm",
+  "metaData": {"pluginName":""},
+  "author":"",
+  "version":"",
+  "createTask": "./crate.vue",
+  "executeTask": "./app.vue"
+}

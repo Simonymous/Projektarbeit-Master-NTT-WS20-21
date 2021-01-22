@@ -31,6 +31,14 @@ import AccordionTab from 'primevue/accordiontab'
 import 'primevue/resources/themes/saga-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
+// import PrismEditor from 'vue-prism-editor'
+import 'vue-prism-editor/dist/prismeditor.min.css' // import the styles somewhere
+
+// import highlighting library (you can use any library you want just return html string)
+// import { highlight, languages } from 'prismjs/components/prism-core'
+// import 'prismjs/components/prism-clike'
+// import 'prismjs/components/prism-javascript'
+// import 'prismjs/themes/prism-tomorrow.css' // import syntax highlighting styles
 
 import { stateSymbol, createState } from './store/store'
 
@@ -41,6 +49,7 @@ app.use(router, VueCookies)
 app.provide(stateSymbol, createState())
 
 app.component('Button', Button)
+// app.component('PrismEditor', PrismEditor)
 app.component('DataTable', DataTable)
 app.component('Column', Column)
 app.component('Dropdown', Dropdown)

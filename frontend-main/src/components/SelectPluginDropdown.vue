@@ -30,6 +30,7 @@ import Vue from 'vue';
         {name: 'ByeWorld', code: 'components/ByeWorld.vue'},
         {name: 'BasicMathCreate', code: 'components/Plugins/BasicMath/create.vue'},
         {name: 'Grade', code: 'components/Plugins/Grade/resolve.vue'},
+        {name: 'Code', code:'components/Plugins/Code/create.vue'}
       ]
 
       let selectedPlugin = ref({name: 'HelloWorld', code: 'components/HelloWorld.vue'});
