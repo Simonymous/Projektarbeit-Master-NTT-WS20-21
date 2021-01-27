@@ -1,0 +1,7 @@
+[
+  {"label": "HelloWorld", "code": "demo1", "path": "components/HelloWorld.vue"},
+  {"name": "ByeWorld", "code": "demo2", "path": "components/ByeWorld.vue"},
+  {"name": "BasicMathCreate", "code": "basicMath", "path": "components/Plugins/BasicMath/config.json"},
+  {"name": "Grade", "code": "gradeDemo", "path": "components/Plugins/Grade/resolve.vue"},
+  {"name": "Code", "code": "codeJS", "path": "/Code/config.json"}
+]
