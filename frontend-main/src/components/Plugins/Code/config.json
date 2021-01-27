@@ -4,5 +4,5 @@
   "author":"",
   "version":"",
   "createTask": "./crate.vue",
-  "executeTask": "./app.vue"
+  "solveTask": "./solve.vue"
 }

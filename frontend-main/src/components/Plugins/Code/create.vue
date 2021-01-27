@@ -6,7 +6,6 @@
       :highlight="highlighter"
       line-numbers
     ></prism-editor>
-    <h1>asdfionhsdaf</h1>
   </div>
 </template>
 

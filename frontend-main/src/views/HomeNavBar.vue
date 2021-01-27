@@ -32,8 +32,8 @@ export default {
       {
         label: "Task Work",
         icon: "pi pi-pencil",
-        code: "components/TaskWork.vue",
-        component: "TaskWork",
+        code: "components/ExerciseSolve/Overview.vue",
+        component: "ExerciseSolve/Overview",
         command: (event) => {
           handleClickComponent(event);
         },
