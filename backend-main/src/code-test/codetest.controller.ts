@@ -22,6 +22,8 @@ const testCases = [
         output: 1
      },
 ]
+const functionargs = ['a','b']
+
 @Controller('codetest')
 export class CodetestController {
   constructor() {}
@@ -31,8 +33,7 @@ export class CodetestController {
       let returnArgs = [];
       try {
         var safeEval = require('notevil')
-        //FIXME: Arg liste erstellen und aus objekt auslesen, um dynamisch zu werden
-        let userFunction = safeEval.Function('a','b',code.code)
+        let userFunction = safeEval.Function(...functionargs,code.code)
         testCases.forEach(function(test) {
             let currentoutput = userFunction.apply('sandbox',test.input)
             let testDescription = "EXPECT "+JSON.stringify(test.input)+" TO BE "+JSON.stringify(test.output)+"-> GETTING "+currentoutput
