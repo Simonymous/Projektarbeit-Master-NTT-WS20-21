@@ -1,7 +1,7 @@
 <template>
   <div>
-    <component :is="inscopePlugin"></component>
-    <p @update="console.log('oiasnd')">{{ state.plugin }}</p>
+    <component :is="inscopePlugin" v-bind="$props" @updateReturnValue="emitToParentUpdateReturnValue"></component>
+    {{asd}}
   </div>
 </template>
 
@@ -22,7 +22,10 @@ import {
 } from "vue";
 
 export default {
-  setup() {
+  props: {
+    taskData: Object
+  },
+  setup(props, {emit}) {
     let state = useState();
     const inscopePlugin = ref(defineAsyncComponent(() => import("@/" + state.plugin)));
 
@@ -32,9 +35,15 @@ export default {
       inscopePlugin.value = defineAsyncComponent(() => import("@/" + state.plugin));
       console.log(inscopePlugin.value);
     });
+
+    function emitToParentUpdateReturnValue(value){
+      emit('updateReturnValue', value)
+    }
+
     return {
       state,
       inscopePlugin,
+      emitToParentUpdateReturnValue
     };
   },
 };

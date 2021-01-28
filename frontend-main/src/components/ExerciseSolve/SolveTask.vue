@@ -1,44 +1,80 @@
 <template>
-  <div class='solveTask'>
-    <div class='taskInfo'>
-      <!-- Title, Beschreibung ... -->
+  <div class="solveTask">
+    <div class="taskInfo">
+      <h1>{{ $props.exercise.title }}</h1>
+      <p>{{ $props.exercise.description }}</p>
     </div>
-    <div class='taskWork'>
-      <show-plugin/>
+    <div class="taskWork">
+      <show-plugin :taskData="dataForPlugin" v-on:updateReturnValue="output" />
+    </div>
+    <div class="taskFooter">
+      <Button label="Test Solution" @click="testSolution" />
+      <Button label="Submit Solution" @click="submitSolution" />
     </div>
   </div>
 </template>
 
 <script>
-import { ref, watch } from 'vue';
-import VueCookies from 'vue-cookies';
-import { useState } from '../../store/store';
-import ShowPlugin from '../ShowPlugin.vue';
-// import SelectPluginDropdown from '../SelectPluginDropdown'
-import availablePlugins from '../Plugins/paths.json'
-
-// import { getBackendRequest, postBackendRequest, deleteBackendRequest, putBackendRequest } from "../../helper/requests";
+import { ref, watch } from "vue";
+import VueCookies from "vue-cookies";
+import { useState } from "../../store/store";
+import ShowPlugin from "../ShowPlugin.vue";
+import availablePlugins from "../Plugins/paths.json";
+import { postBackendRequest } from "../../helper/requests";
 
 export default {
-  name: 'solveTask',
+  name: "solveTask",
   components: {
     ShowPlugin,
-    // SelectPluginDropdown
   },
   props: {
-    exercise: {plugin :'codeJS', titel:''}
+    exercise: { plugin: "codeJS", title: "Eijoo", description: String },
   },
+
   setup(props) {
     let state = useState();
 
-selectPlugin()
+    let dataForPlugin = ref({ defaultCode: "sqwertzuiopdf" });
+    let userInput = ref();
 
-    async function selectPlugin(){
-    console.log(await (import('@/' + (availablePlugins.find(plugin => plugin.code === props.exercise.plugin)).path)))
-    state.plugin = (await import('@/' + (availablePlugins.find(plugin => plugin.code === props.exercise.plugin)).path)).solveTask;
+    selectPlugin();
 
+    async function selectPlugin() {
+      let pathToPluginConfig =
+        "components/Plugins" +
+        availablePlugins.find((plugin) => plugin.code === props.exercise.plugin)
+          .path;
+      let pathToPluginSolve = require("@/" + pathToPluginConfig).solveTask;
+      state.plugin = "components/Plugins" + pathToPluginSolve;
     }
 
+    function output(value) {
+      userInput = value;
+    }
+
+    async function testSolution() {
+      try {
+        
+        const response = await postBackendRequest();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    async function submitSolution() {
+      try {
+        const response = await postBackendRequest();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    return {
+      dataForPlugin,
+      output,
+      testSolution,
+      submitSolution,
+    };
   },
 };
 </script>

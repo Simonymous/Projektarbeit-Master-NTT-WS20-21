@@ -1,11 +1,11 @@
 <template>
   <Accordion :multiple="true" :activeIndex="[0,1]">
     <AccordionTab header="Task" :active="true">
-      <Button label="Create new Task" v-on:click="emitOpenTask"></Button>
+      <Button label="TODO: Suchleiste?" v-on:click="emitOpenTask"></Button>
       <Listbox class="listbox" :options="listOfTasks" optionLabel="name" optionValue='code' v-on:change="emitOpenTask($event.value)"  listStyle="max-height:250px"/>
     </AccordionTab>
     <AccordionTab header="Task Collection">
-      <Button label="Create new TaskCollection" v-on:click="emitOpenTaskCollection"></Button>
+      <Button label="TODO: Suchleiste?" v-on:click="emitOpenTaskCollection"></Button>
       <PanelMenu :model="TaskCollectionItems" :multiple="true"
     /></AccordionTab>
   </Accordion>
