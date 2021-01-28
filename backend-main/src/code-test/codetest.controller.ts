@@ -1,5 +1,5 @@
-
 import { Controller, Post, Body } from '@nestjs/common';
+//import {safeEval} from 'notevil'
 const testCases = [
     {
        name:"Add 12 and 13 to be 25", 
@@ -30,19 +30,21 @@ export class CodetestController {
   testJavascript(@Body() code: any) {
       let returnArgs = [];
       try {
-        //let userFunction = new Function('a','b',code.code)
-        let userFunction = new Function('a','b',code.code)
+        var safeEval = require('notevil')
+        //FIXME: Arg liste erstellen und aus objekt auslesen, um dynamisch zu werden
+        let userFunction = safeEval.Function('a','b',code.code)
         testCases.forEach(function(test) {
-            let testDescription = "EXPECT "+JSON.stringify(test.input)+" TO BE "+JSON.stringify(test.output)
-            //console.log(userFunction.apply(null,test.input),"console.log(test); return 2;")
-            if(userFunction.apply('sandbox',test.input)===test.output) {
+            let currentoutput = userFunction.apply('sandbox',test.input)
+            let testDescription = "EXPECT "+JSON.stringify(test.input)+" TO BE "+JSON.stringify(test.output)+"-> GETTING "+currentoutput
+            if(currentoutput===test.output) {
                 returnArgs.push(testDescription+"...PASSED")
             } else {
                 returnArgs.push(testDescription+"...NOT PASSED")
             }
         })
-      } catch {
-          console.log("Funktion konnte nicht erzeugt werden")
+      } catch(e) {
+          console.log("Funktion konnte nicht erzeugt werden",e)
+          returnArgs.push("Compile Error: "+e.message)
       }
       
 
