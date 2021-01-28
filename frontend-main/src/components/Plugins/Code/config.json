@@ -3,6 +3,6 @@
   "metaData": {"pluginName":""},
   "author":"",
   "version":"",
-  "createTask": "./crate.vue",
-  "solveTask": "./solve.vue"
+  "createTask": "/Code/create.vue",
+  "solveTask": "/Code/solve.vue"
 }

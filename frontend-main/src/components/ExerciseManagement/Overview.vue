@@ -10,10 +10,9 @@
       <SplitterPanel size='80'>
         <div v-if="exerciseType=='task'">
           <ManageTask/>
-        aosndfoisaf
         </div>
         <div v-else-if="exerciseType=='collection'">
-        qwertzuiop
+          TaskColleaction Erstellen
         </div>
         <div v-else>
         Bitte eine Aufgabe oder Aufgabenblatt auswählen.

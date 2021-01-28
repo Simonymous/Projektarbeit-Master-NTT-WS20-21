@@ -10,10 +10,9 @@
       <SplitterPanel size='80'>
         <div v-if="exerciseType=='task'">
           <SolveTask :exercise="exercise" />
-          "SolveTask"
         </div>
         <div v-else-if="exerciseType=='collection'">
-        qwertzuiop
+          TaskCollection ausfüllen
         </div>
         <div v-else>
         Bitte eine Aufgabe oder Aufgabenblatt auswählen.
@@ -46,7 +45,8 @@ export default {
 
     function getExerciseFromId(Id){
       if(process.env.NODE_ENV === "development"){
-        return ({plugin :'codeJS', titel:'TIIIITEL'})
+        // Beispiel Aufgabe
+        return ({plugin :'codeJS', title:'TIIIITEL', description:'The Vue community generally favors using Vuex to solve this kind of issue. Changes are made to Vuex state and the DOM representation just flows from that, eliminating the need for events in many cases.'})
       }else{
         //request
         return {}
