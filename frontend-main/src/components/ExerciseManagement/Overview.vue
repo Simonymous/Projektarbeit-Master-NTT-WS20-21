@@ -9,7 +9,7 @@
       </SplitterPanel>
       <SplitterPanel size='80'>
         <div v-if="exerciseType=='task'">
-          <ManageTask/>
+          <ManageTask v-bind:taskID = "exerciseID" />
         </div>
         <div v-else-if="exerciseType=='collection'">
           TaskColleaction Erstellen
@@ -37,13 +37,16 @@ export default {
   },
   setup(){
     const exerciseType = ref();
+    const exerciseID = ref(-1)
     
     function exerciseSelected(payload){
       exerciseType.value = payload.kindOfExercise;
+      exerciseID.value = payload.id;
     }
     return {
       exerciseSelected,
-      exerciseType
+      exerciseType,
+      exerciseID
     }
   }
 }

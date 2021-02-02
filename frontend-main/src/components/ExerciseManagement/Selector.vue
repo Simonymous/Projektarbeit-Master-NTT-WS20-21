@@ -1,7 +1,7 @@
 <template>
   <Accordion :multiple="true" :activeIndex="[0, 1]">
     <AccordionTab header="Task" :active="true">
-      <Button label="Create new Task" v-on:click="emitOpenTask"></Button>
+      <Button label="Create new Task" v-on:click="emitOpenTask()"></Button>
       <Listbox
         class="listbox"
         :options="listOfTasks"
@@ -70,39 +70,14 @@ export default {
       }
     }
 
-    // function buttonClickCreateTask(){
-    //   emit('exerciseSelected', {id:-1, kindOfExercise:'task'})
-    // }
-
     function buttonClickCreateTaskCollection() {
       emit("exerciseSelected", { id: -1, kindOfExercise: "collection" });
     }
-
-    // function itemGetsSelected(event){
-    //   emit('exerciseSelected', {id:event.value, kindOfExercise:'task'})
-    //   // console.log(event)
-    // }
 
     function emitOpenTask(id = -1) {
       console.log(id);
       emit("exerciseSelected", { id: id, kindOfExercise: "task" });
     }
-
-    // watch(selectedTask,(selectedTask,prevSelectedTask) => {
-    //   emit('exerciseSelected', {id: selectedTask, kindOfExercise:'task'})
-    // })
-
-    // watch(selectedTaskCollection,(newTaskCollection,oldTaslCollection) => {
-    //   emit('exerciseSelected', {id: selectedTaskCollection, kindOfExercise:'collection'})
-    // })
-
-    //onMounted(loadTasksOfProfessor)
-
-    // function handleSelectedTask(e){
-    //   selectedTask.value = e.value
-    //   state.taskId = e.value
-    //   state.selectedTaskObject = listOfTasks.value.find(element => element.id == e.value)
-    // }
 
     return {
       TaskCollectionItems,
