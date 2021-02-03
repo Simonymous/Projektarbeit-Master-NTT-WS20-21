@@ -1,23 +1,19 @@
 <template>
   <div class="manageTask">
     <div class="taskInputs">
-      TaskID: {{task.ID}}
-      Titel:<InputText type="text" v-model="task.title" placeholder="Titel" />
+      TaskID: {{ task.ID }} Titel:<InputText
+        type="text"
+        v-model="task.title"
+        placeholder="Titel"
+      />
       Description:<InputText
         type="text"
         v-model="task.description"
         placeholder="Description"
       />
-      Tags: <InputText
-        type="text"
-        v-model="task.tags"
-        placeholder="Tags"
-      />
-      Course: <InputText
-        type="text"
-        v-model="task.course"
-        placeholder="Course"
-      />
+      Tags:
+      <InputText type="text" v-model="task.tags" placeholder="Tags" /> Course:
+      <InputText type="text" v-model="task.course" placeholder="Course" />
       <!--       <InputText type='text' v-model='maxPoints' placeholder='Zeit' /> -->
       <!--       <InputText
         type='text'
@@ -44,6 +40,7 @@ import VueCookies from "vue-cookies";
 import { useState } from "../../store/store";
 import ShowPlugin from "../ShowPlugin.vue";
 import SelectPluginDropdown from "../SelectPluginDropdown";
+import { getBackendRequestDummy } from "../../helper/dummyRequests";
 
 import {
   getBackendRequest,
@@ -62,7 +59,7 @@ export default {
     taskID: Number,
   },
   setup(props) {
-    const TASK_PATH = "task"
+    const TASK_PATH = "task";
     const CREATE_TASK_PATH = "createTask";
     const UPDATE_TASK_PATH = "updateTask";
     const DELETE_TASK_PATH = "delete";
@@ -82,30 +79,34 @@ export default {
       closedTests: [],
       dataForPlugin: {},
       date: new Date(),
-    }
+    };
 
-    const task = ref({...emptyTask, title : "oisdnf"});
-
-
+    const task = ref({ ...emptyTask, title: "oisdnf" });
 
     // initialize();
-    watch(() => props.taskID, (newValue, oldValue) => {
-      if (newValue !== -1) {
+    watch(
+      () => props.taskID,
+      () => initialize()
+    );
+
+    initialize();
+    function initialize() {
+      if (props.taskID === -1) {
+        task.value = { ...emptyTask, title: "ttt" };
+      } else {
         requestTask();
-      }else{
-        task.value = {...emptyTask, title : "ttt"};
       }
-
-    })
-
-    // function initialize() {
-    //   console.log(props.taskID)
-
-    // }
+    }
 
     async function requestTask() {
       try {
-        // task.value = await getBackendRequest(TASK_PATH + "/" + props.taskID);
+        if (process.env.BACKEND_ONLINE) {
+          task.value = await getBackendRequest(TASK_PATH + "/" + props.taskID);
+        } else {
+          task.value = getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
+        }
+
+        state.plugin = task.value.pluginCode
       } catch (error) {
         console.log(error);
       }
@@ -114,6 +115,7 @@ export default {
     function handleSaveClick() {
       // console.log( task.value.ID)
       try {
+        task.value.pluginCode = state.plugin
         if (task.value.ID === -1) {
           postBackendRequest(CREATE_TASK_PATH, task.value);
         } else {
@@ -127,63 +129,17 @@ export default {
     function handleDeleteClick() {
       try {
         // deleteBackendRequest(DELETE_TASK_PATH + "/" + task.value.ID);
-        task.value = {...emptyTask}
+        task.value = { ...emptyTask };
       } catch (error) {
         console.log(error);
       }
     }
 
 
-    // /** Support Functions */
-    // function clearInput() {
-    //   category.value = '';
-    //   title.value = '';
-    //   tags.value = '';
-    //   description.value = '';
-    //   solution.value = '';
-    //   maxPoints.value = 0;
-    // }
-
-    // function newTask() {
-    //   task.value = new TaskModel(
-    //     ID.value,
-    //     type.value,
-    //     pluginCode.value,
-    //     dataForPlugin.value,
-    //     title.value,
-    //     tags.value,
-    //     course.value,
-    //     creator.value,
-    //     description.value,
-    //     openTests.value,
-    //     closedTests.value,
-    //     date.value
-    //   );
-    //   return task.value;
-    // }
-
-    // function selectTask() {
-    //   const selectedTaskRoot = TASK_PATH + state.taskId;
-    //   return selectedTaskRoot;
-    // }
-
-    // function displayTask(){
-    //   title.value = state.selectedTaskObject.title
-    //   description.value = state.selectedTaskObject.description
-    //   maxPoints.value = state.selectedTaskObject.maxPoints
-    // }
-
     return {
-      /** InputText Variables */
-      // category,
-      // title,
-      // tags,
-      // description,
-      // solution,
-      // maxPoints,
       task,
-handleSaveClick,
-handleDeleteClick
+      handleSaveClick,
+      handleDeleteClick,
     };
   },
 };
