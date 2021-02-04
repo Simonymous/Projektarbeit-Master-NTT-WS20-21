@@ -1,12 +1,14 @@
 <template>
   <div>
-    <prism-editor
+    <div>
+      <prism-editor
       class="my-editor"
       v-model="code"
       :highlight="highlighter"
       line-numbers
       @input="inputChanged"
     ></prism-editor>
+    </div>
   </div>
 </template>
 
@@ -20,7 +22,7 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 export default {
   components: {
@@ -30,9 +32,16 @@ export default {
     taskData: Object,
   },
   setup(props,{emit}) {
-    console.log(props)
 
-    let code = ref(props.taskData.defaultCode);
+    watch(props, () => {
+      code.value = props.taskData.dataForPlugin.defaultCode;
+    });
+
+    onMounted(() => code.value = props.taskData.dataForPlugin.defaultCode)
+
+    console.log("oni" + props)
+
+    let code = ref(props.taskData.dataForPlugin.defaultCode);
 
     function highlighter(code) {
       return highlight(code, languages.js, "typescript"); // languages.<insert language> to return html with markup

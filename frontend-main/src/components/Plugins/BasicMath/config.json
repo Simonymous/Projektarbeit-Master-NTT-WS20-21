@@ -3,6 +3,6 @@
   "metaData": {"pluginName":""},
   "author":"",
   "version":"",
-  "createTask": "./crate.vue",
-  "executeTask": "./app.vue"
+  "createTask": "/BasicMath/create.vue",
+  "solveTask": "/BasicMath/create.vue"
 }

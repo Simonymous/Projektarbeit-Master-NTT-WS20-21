@@ -1,64 +1,54 @@
 <template>
   <div>
-    <Dropdown v-model="selectedPlugin" :options="plugins" optionLabel="label" placeholder="Select a Plugin" v-on:change="handleChangeComponent($event)" />
+    <Dropdown
+      v-model="selectedPlugin"
+      :options="plugins"
+      optionLabel="label"
+      placeholder="Select a Plugin"
+      v-on:change="handleChangeComponent($event)"
+    />
   </div>
 </template>
 
 <script>
+import { useState } from "../store/store";
+import { onMounted, ref, watch } from "vue";
+import plugins from "./Plugins/paths.json";
 
-import { useState } from '../store/store';
-import VueCookies from 'vue-cookies';
-import { h, ref, reactive, defineAsyncComponent, onMounted } from 'vue';
-import plugins from './Plugins/paths.json'
+export default {
+  name: "SelectPluginDropdown",
+  setup() {
+    let state = useState();
 
-import Vue from 'vue';
+    let selectedPlugin = ref({
+      label: "Grade",
+      code: "gradeDemo",
+      path: "components/Plugins/Grade/resolve.vue",
+    });
 
-  // const pluginPath = require("../../config.json").pluginPath;
-  // let outscopePlugin = defineAsyncComponent(() => import("@/" + useState().plugin));
+    onMounted(() => setSelectedPlugin())
 
-  // function reloadComponent(){
-  //   console.log("Component (re-) loaded")
-  //   outscopePlugin = defineAsyncComponent(() => import("@/" + useState().plugin));
-  // }
+    watch(state, (plugin) => {
+      setSelectedPlugin()
+    });
 
-  export default {
-    name: 'SelectPluginDropdown',
-    setup() {
-      let state = useState();
+    function setSelectedPlugin(){
+      selectedPlugin.value = plugins.find(
+        (plugin) => plugin.code == state.plugin
+      );
+      console.log("pdsmf" + selectedPlugin.value)
+    }
 
-      // const plugins= [
-      //   {name: 'HelloWorld', code: 'components/HelloWorld.vue'},
-      //   {name: 'ByeWorld', code: 'components/ByeWorld.vue'},
-      //   {name: 'BasicMathCreate', code: 'components/Plugins/BasicMath/create.vue'},
-      //   {name: 'Grade', code: 'components/Plugins/Grade/resolve.vue'},
-      //   {name: 'Code', code:'components/Plugins/Code/create.vue'}
-      // ]
+    function handleChangeComponent(event) {
+      state.plugin = event.value.code;
+    }
 
-      let selectedPlugin = ref({"label": "Grade", "code": "gradeDemo", "path": "components/Plugins/Grade/resolve.vue"});
-      // let inscopePlugin = outscopePlugin;
-
-      function changePlugin(event){
-this.state.plugin = event.value.code;
-      }
-
-
-      return { 
-        state,
-        plugins,
-        selectedPlugin,
-        // inscopePlugin,
-        changePlugin
-      };
-    },
-    // methods:{
-    //   handleChangeComponent(e){
-    //     this.state.plugin = e.value.code;
-    //     reloadComponent();
-    //     this.inscopePlugin = outscopePlugin;
-    //   }
-    // }
-
-  };
-
-
+    return {
+      state,
+      plugins,
+      selectedPlugin,
+      handleChangeComponent,
+    };
+  },
+};
 </script>

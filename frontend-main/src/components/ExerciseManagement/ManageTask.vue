@@ -14,19 +14,11 @@
       Tags:
       <InputText type="text" v-model="task.tags" placeholder="Tags" /> Course:
       <InputText type="text" v-model="task.course" placeholder="Course" />
-      <!--       <InputText type='text' v-model='maxPoints' placeholder='Zeit' /> -->
-      <!--       <InputText
-        type='text'
-        :style='{ width: '500px' }'
-        v-model='category'
-        placeholder='Category'
-      /> -->
 
-      <!--       <InputText type='text' v-model='tags' placeholder='Tags' /> -->
     </div>
     Plugin:<SelectPluginDropdown />
 
-    <show-plugin />
+    <show-plugin :taskData="task"  :pluginMode="'createTask'"/>
     <div class="createTaskFooter">
       <Button label="Save" v-on:click="handleSaveClick"></Button>
       <Button label="Delete" v-on:click="handleDeleteClick"></Button>
@@ -69,7 +61,7 @@ export default {
     let emptyTask = {
       ID: -1,
       type: "task",
-      pluginCode: "",
+      pluginCode: "gradeDemo",
       title: "",
       tags: [],
       course: "",
@@ -93,6 +85,7 @@ export default {
     function initialize() {
       if (props.taskID === -1) {
         task.value = { ...emptyTask, title: "ttt" };
+        state.plugin = task.value.pluginCode
       } else {
         requestTask();
       }
