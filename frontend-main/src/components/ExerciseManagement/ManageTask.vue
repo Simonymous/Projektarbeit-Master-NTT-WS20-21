@@ -18,7 +18,7 @@
     </div>
     Plugin:<SelectPluginDropdown />
 
-    <show-plugin :taskData="task"  :pluginMode="'createTask'"/>
+    <show-plugin :taskData="task"  :pluginMode="'createTask'" @pluginChangedData="pluginChangedTask"/>
     <div class="createTaskFooter">
       <Button label="Save" v-on:click="handleSaveClick"></Button>
       <Button label="Delete" v-on:click="handleDeleteClick"></Button>
@@ -112,6 +112,7 @@ export default {
         if (task.value.ID === -1) {
           postBackendRequest(CREATE_TASK_PATH, task.value);
         } else {
+          console.log(task.value)
           postBackendRequest(UPDATE_TASK_PATH, task.value);
         }
       } catch (error) {
@@ -128,11 +129,16 @@ export default {
       }
     }
 
+    function pluginChangedTask(payload){
+      task.value = payload;
+    }
+
 
     return {
       task,
       handleSaveClick,
       handleDeleteClick,
+      pluginChangedTask
     };
   },
 };

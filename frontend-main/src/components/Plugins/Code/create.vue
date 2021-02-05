@@ -6,10 +6,11 @@
         v-model="code"
         :highlight="highlighter"
         line-numbers
-        @input="inputChanged"
+        @input="codeChanged"
       ></prism-editor>
     </div>
     <div>
+      <Button label="Neuer offener Test anlegen:" @click="addNewOpenTest()" />
       <DataTable
         :value="openTestsRows"
         :resizableColumns="true"
@@ -17,25 +18,52 @@
         columnResizeMode="expand"
         class="editable-cells-table"
       >
-        <Column field="input" header="Input">
+        <Column field="input" header="Eingabe Wert(e): ['a', 'b']">
           <template #editor="slotProps">
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
           </template>
         </Column>
-        <Column field="output" header="Output">
+        <Column field="output" header="Erwarteter Output: 'c'">
           <template #editor="slotProps">
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
           </template>
-        </Column>
-        <Column field="test" >
-        
         </Column>
         <Column :exportable="false">
           <template #body="slotProps">
             <Button
-              icon="pi pi-save"
-              class="p-button-rounded p-button-success p-mr-2"
-              @click="addNewOpenTest()"
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-outlined"
+              @click="removeOpenTest(slotProps)"
+            />
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+    <div>
+      <Button label="Neuer geschlossener Test anlegen:" @click="addNewClosedTest()" />
+      <DataTable
+        :value="closedTestsRows"
+        :resizableColumns="true"
+        editMode="cell"
+        columnResizeMode="expand"
+        class="editable-cells-table"
+      >
+        <Column field="input" header="Eingabe Wert(e): ['a', 'b']">
+          <template #editor="slotProps">
+            <InputText v-model="slotProps.data[slotProps.column.props.field]" />
+          </template>
+        </Column>
+        <Column field="output" header="Erwarteter Output: 'c'">
+          <template #editor="slotProps">
+            <InputText v-model="slotProps.data[slotProps.column.props.field]" />
+          </template>
+        </Column>
+        <Column :exportable="false">
+          <template #body="slotProps">
+            <Button
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-outlined"
+              @click="removeClosedTest(slotProps)"
             />
           </template>
         </Column>
@@ -65,15 +93,13 @@ export default {
   },
   setup(props, { emit }) {
     let openTestsRows = ref(props.taskData.openTests);
+    let closedTestsRows = ref(props.taskData.closedTests);
 
-    watch(props, () => {
-      code.value = props.taskData.dataForPlugin.defaultCode;
-      openTestsRows.value = props.taskData.openTests;
-    });
-
-    // onMounted(() => code.value = props.taskData.dataForPlugin.defaultCode)
-
-    console.log(props.taskData);
+    // watch(props, () => {
+    //   code.value = props.taskData.dataForPlugin.defaultCode;
+    //   openTestsRows.value = props.taskData.openTests;
+    //   closedTestsRows.value = props.taskData.closedTests;
+    // });
 
     let code = ref(props.taskData?.dataForPlugin?.defaultCode);
 
@@ -81,23 +107,55 @@ export default {
       return highlight(code, languages.js, "typescript"); // languages.<insert language> to return html with markup
     }
 
-    function inputChanged() {
-      emit("updateReturnValue", code.value);
-    }
-
-
-
     function addNewOpenTest() {
       openTestsRows.value.unshift({});
-      console.log(openTestsRows.value)}
+      emitChanges();
+    }
 
-    
+    function addNewClosedTest(){
+      console.log(closedTestsRows.value)
+      closedTestsRows.value.unshift({});
+      emitChanges();
+    }
+
+    function removeOpenTest(a) {
+      if (openTestsRows.value.length > 0) {
+        openTestsRows.value.splice(a.index, 1);
+      }
+      emitChanges();
+    }
+
+    function removeClosedTest(a){
+      if (closedTestsRows.value.length > 0) {
+        closedTestsRows.value.splice(a.index, 1);
+      }
+      emitChanges();
+    }
+
+    function codeChanged() {
+      emitChanges();
+    }
+
+    function emitChanges() {
+      let taskData = {
+        ...props.taskData,
+        dataForPlugin: code.value,
+        openTests: openTestsRows.value,
+        closedTests: closedTestsRows.value,
+      };
+      emit("pluginChangedData", taskData);
+    }
+
     return {
       code,
       highlighter,
-      inputChanged,
+      codeChanged,
       addNewOpenTest,
-      openTestsRows
+      openTestsRows,
+      removeOpenTest,
+      removeClosedTest,
+      addNewClosedTest,
+      closedTestsRows
     };
   },
 };

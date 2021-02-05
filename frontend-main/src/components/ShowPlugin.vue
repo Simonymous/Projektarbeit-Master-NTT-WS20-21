@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component :is="inscopePlugin" :taskData="taskData" @updateReturnValue="emitToParentUpdateReturnValue"></component>
+    <component :is="inscopePlugin" :taskData="taskData" @pluginChangedData="emitToParentUpdate"></component>
   </div>
 </template>
 
@@ -38,8 +38,8 @@ export default {
       inscopePlugin.value = defineAsyncComponent(() => getSelectedPluginPath());
     });
 
-    function emitToParentUpdateReturnValue(value) {
-      emit("updateReturnValue", value);
+    function emitToParentUpdate(value) {
+      emit("pluginChangedData", value);
     }
 
     async function getSelectedPluginPath() {
@@ -55,7 +55,7 @@ export default {
     return {
       state,
       inscopePlugin,
-      emitToParentUpdateReturnValue,
+      emitToParentUpdate,
     };
   },
 };
