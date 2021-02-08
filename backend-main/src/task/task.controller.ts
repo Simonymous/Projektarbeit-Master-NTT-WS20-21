@@ -1,11 +1,13 @@
 import { TaskService } from './task.service';
 import { Controller, Post, Body, Get, Param, Patch, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
-import { TaskDTO } from './task.dto';
+import {Task} from './task.schema';
+
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import taskRunner from './taskrunner';
 
 
 @Controller('task')
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 export class TaskController {
   constructor(private readonly taskService: TaskService) { }
 
@@ -15,11 +17,11 @@ export class TaskController {
   @Post()
   async createNewTask(
     @Res() res,
-    @Body() taskDTO: TaskDTO,
+    @Body() taskDTO: Task,
   ) {
     const returnObj = await this.taskService.create(taskDTO);
     return res.status(HttpStatus.OK).json({
-      message: 'Task created successfull!',
+      message: 'Task created successfully!',
       task: returnObj
     })
   }
@@ -33,10 +35,10 @@ export class TaskController {
   async getTask(
     @Param('id') taskID: string,
     @Res() res) {
-    console.log("Get Task")
+    console.log("[LOG] Get Task")
     const returnObj = await this.taskService.getSingleTask(taskID);
     return res.status(HttpStatus.OK).json({
-      message: 'Task gefunden!',
+      message: 'Found Tasks:',
       task: returnObj
     })
   }
@@ -55,7 +57,7 @@ export class TaskController {
   @Patch(':id')
   updateTask(
     @Param('id') taskID: string,
-    @Body() taskDTO: TaskDTO,
+    @Body() taskDTO: Task,
   ) {
     this.taskService.updateTask(taskID, taskDTO)
     return 'updated'
@@ -64,5 +66,26 @@ export class TaskController {
   deleteTask(@Param('id') taskID: string) {
     this.taskService.deleteTask(taskID);
     return 'deleted'
+  }
+
+  @Post('/testTask')
+  async getOpenTests(@Param('id') taskID: string, @Res() res) {
+    let tasks = this.taskService.getSingleTask(taskID)
+    let mytaskrunner = new taskRunner();
+    let solutions = mytaskrunner.runTests(tasks);
+    return res.status(HttpStatus.OK).json({
+      message: 'Gefundene Tasks:',
+      opentests : solutions
+    })
+  }
+
+  @Post('/submitTask')
+  async submitTask(@Body() submission:any, @Res() res) {
+    let mytaskrunner = new taskRunner();
+    let feedback = mytaskrunner.submitTask(submission);
+    return res.status(HttpStatus.OK).json({
+      message: 'Gefundene Tasks:',
+      feedback: feedback
+    })
   }
 }
