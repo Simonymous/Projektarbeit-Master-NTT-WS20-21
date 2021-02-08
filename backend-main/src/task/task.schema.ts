@@ -5,28 +5,41 @@ export type TaskDocument = Task & Document;
 
 @Schema()
 export class Task {
-
-  @Prop()
-  name: string;
-
-  @Prop()
-  category: string;
-
-  @Prop()
-  tasksheet: string;
+  constructor(
+    title: string,
+    description: string,
+    content: string,
+    creator: string,
+    tags: [],
+    course: string,
+    plugin: string,
+    tests: {
+        hiddentest: [];
+        opentest: [];
+    },
+  ) {}
 
   @Prop()
   title: string;
 
   @Prop()
-  tags: [];
-
-  @Prop()
   description: string;
 
   @Prop()
-  solution: string;
+  content: string;
 
+  @Prop()
+  creator: string;
+
+  @Prop()
+  tags: [];
+
+  @Prop()
+  course: string;
+
+  @Prop()
+  plugin: string;
+  
   @Prop()
   tests: {
       hiddentest: [];
