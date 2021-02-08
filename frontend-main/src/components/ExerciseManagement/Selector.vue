@@ -16,7 +16,7 @@
         label="Create new TaskCollection"
         v-on:click="buttonClickCreateTaskCollection"
       ></Button>
-      <PanelMenu :model="TaskCollectionItems" :multiple="true"
+      <PanelMenu :model="listOfTaskCollections" :multiple="true"
     /></AccordionTab>
     <AccordionTab header="Import"> </AccordionTab>
   </Accordion>
@@ -30,38 +30,50 @@ import {
   deleteBackendRequest,
   putBackendRequest,
 } from "../../helper/requests";
+import { getBackendRequestDummy } from "../../helper/dummyRequests";
+
 
 export default {
   setup(props, { emit }) {
     const TASK_PATH = "task";
+    const TASK_COLLECTION_PATH = "taskCollection";
     let state = useState();
     const selectedTask = ref();
     const selectedTaskCollection = ref(0);
-    const listOfTasks = ref([
-      { name: "Mathe 1", code: 3 },
-      { name: "Deutsch 1", code: 2 },
-    ]);
-    const TaskCollectionItems = ref([
-      {
-        label: "Aufgabenblatt 1",
-        items: [
-          {
-            label: "Exercise 1",
-          },
-          { label: "Exercise 2" },
-        ],
-      },
-      {
-        label: "Aufgabenblatt 2",
-        items: [
-          {
-            label: "Exercise 3",
-          },
-          { label: "Exercise 4" },
-        ],
-      },
-    ]);
 
+    const listOfTasks = ref();
+    const listOfTaskCollections = ref();
+
+    init()
+    async function init(){
+      listOfTasks.value = await requestTasks();
+      listOfTaskCollections.value = await requestTaskCollections();
+    }
+
+    async function requestTasks(){
+      try {
+        if (process.env.BACKEND_ONLINE) {
+          return await getBackendRequest(TASK_PATH);
+        } else {
+          return getBackendRequestDummy(TASK_PATH);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
+    async function requestTaskCollections(){
+      try {
+        if (process.env.BACKEND_ONLINE) {
+          return await getBackendRequest(TASK_COLLECTION_PATH);
+        } else {
+          return getBackendRequestDummy(TASK_COLLECTION_PATH);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
     async function loadTasksOfProfessor() {
       try {
         listOfTasks.value = getBackendRequest(TASK_PATH + "/" + state.user._id);
@@ -80,11 +92,11 @@ export default {
     }
 
     return {
-      TaskCollectionItems,
       buttonClickCreateTaskCollection,
       listOfTasks,
       selectedTask,
       emitOpenTask,
+      listOfTaskCollections
     };
   },
 };

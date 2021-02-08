@@ -1,15 +1,13 @@
 <template>
   <div class="solveTask">
-    <div class="taskInfo">
-      <h1>{{ $props.exercise.title }}</h1>
-      <p>{{ $props.exercise.description }}</p>
+    <div class="taskInputs">
+      TaskID: {{ task.ID }} Titel:{{task.title}} Description:{{task.description}}
     </div>
-    <div class="taskWork">
-      <show-plugin :taskData="dataForPlugin" v-on:updateReturnValue="output" />
-    </div>
-    <div class="taskFooter">
-      <Button label="Test Solution" @click="testSolution" />
-      <Button label="Submit Solution" @click="submitSolution" />
+
+    <show-plugin :taskData="task" :pluginMode="'solveTask'" @pluginChangedData="pluginChangedTask"/>
+    <div class="solveTaskFooter">
+      <Button label="Test" v-on:click="testInput"></Button>
+      <Button label="Submit" v-on:click="submitSolution"></Button>
     </div>
   </div>
 </template>
@@ -20,7 +18,18 @@ import VueCookies from "vue-cookies";
 import { useState } from "../../store/store";
 import ShowPlugin from "../ShowPlugin.vue";
 import availablePlugins from "../Plugins/paths.json";
-import { postBackendRequest } from "../../helper/requests";
+import { getBackendRequestDummy, postBackendRequestDummy } from "../../helper/dummyRequests";
+import {
+  getBackendRequest,
+  postBackendRequest,
+} from "../../helper/requests";
+import TaskWorkVue from '../TaskWork.vue';
+
+const PATHS = require('../../../config.json').URL_PATHS;
+
+const TASK_PATH = PATHS.TASK_PATH
+const TEST_TASK_PATH = PATHS.TEST_TASK_PATH    
+const SUBMIT_TASK_PATH = PATHS.SUBMIT_TASK_PATH
 
 export default {
   name: "solveTask",
@@ -28,34 +37,62 @@ export default {
     ShowPlugin,
   },
   props: {
-    exercise: { plugin: "codeJS", title: "Eijoo", description: String },
+    taskID: Number
   },
 
   setup(props) {
     let state = useState();
-
-    let dataForPlugin = ref({ defaultCode: "sqwertzuiopdf" });
     let userInput = ref();
 
-    selectPlugin();
 
-    async function selectPlugin() {
-      let pathToPluginConfig =
-        "components/Plugins" +
-        availablePlugins.find((plugin) => plugin.code === props.exercise.plugin)
-          .path;
-      let pathToPluginSolve = require("@/" + pathToPluginConfig).solveTask;
-      state.plugin = "components/Plugins" + pathToPluginSolve;
+    let emptyTask = {
+      ID: -1,
+      type: "task",
+      pluginCode: "gradeDemo",
+      title: "",
+      tags: [],
+      course: "",
+      creator: "",
+      description: "",
+      openTests: [],
+      closedTests: [],
+      dataForPlugin: {},
+      date: new Date(),
+    };
+
+    const task = ref({...emptyTask})
+
+
+    init()
+    async function init(){
+      task.value = await requestTask()
+      state.plugin = task.value.pluginCode
     }
 
-    function output(value) {
-      userInput = value;
-    }
-
-    async function testSolution() {
+    async function requestTask() {
       try {
-        
-        const response = await postBackendRequest();
+        if (process.env.BACKEND_ONLINE) {
+          return await getBackendRequest(TASK_PATH + "/" + props.taskID);
+        } else {
+          return getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    function pluginChangedTask(payload){
+      task.value = payload;
+    }
+
+
+    async function testInput() {
+      try {
+        if (process.env.BACKEND_ONLINE) {
+          return await postBackendRequest(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
+        } else {
+          return postBackendRequestDummy(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -63,17 +100,17 @@ export default {
 
     async function submitSolution() {
       try {
-        const response = await postBackendRequest();
+        const response = await postBackendRequest(SUBMIT_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
       } catch (error) {
         console.log(error);
       }
     }
 
     return {
-      dataForPlugin,
-      output,
-      testSolution,
+      testInput,
       submitSolution,
+      task,
+      pluginChangedTask
     };
   },
 };

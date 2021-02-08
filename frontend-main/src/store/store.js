@@ -13,7 +13,7 @@ import { reactive, provide, inject } from 'vue'
 import User from '../models/User'
 
 export const stateSymbol = Symbol('state')
-export const createState = () => reactive({ counter: 0, user: new User(), selectedTaskObject: null, taskId: 0, component: null, plugin: {"label": "Grade", "code": "gradeDemo", "path": "components/Plugins/Grade/resolve.vue"}, availablePlugins: {} })
+export const createState = () => reactive({ counter: 0, user: new User(), selectedTaskObject: null, taskId: 0, component: null, plugin: { label: 'Grade', code: 'gradeDemo', path: 'components/Plugins/Grade/resolve.vue' }, availablePlugins: {} })
 
 export const useState = () => inject(stateSymbol)
 export const provideState = () => provide(

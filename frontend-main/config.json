@@ -1,5 +1,13 @@
 {
   "pluginPath" : "components/HelloWorld.vue",
   "backendURL" : "http://localhost:3000",
-  "pluginsPath" : "components/Plugins"
+  "pluginsPath" : "components/Plugins",
+  "URL_PATHS":{
+    "TASK_PATH" : "task",
+    "CREATE_TASK_PATH" : "createTask",
+    "UPDATE_TASK_PATH" : "updateTask",
+    "DELETE_TASK_PATH" : "deleteTask",
+    "TEST_TASK_PATH" : "task/testTask",
+    "SUBMIT_TASK_PATH" : "task/submitTask"
+  }
 }

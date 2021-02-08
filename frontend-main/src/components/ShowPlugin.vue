@@ -1,6 +1,10 @@
 <template>
   <div>
-    <component :is="inscopePlugin" :taskData="taskData" @pluginChangedData="emitToParentUpdate"></component>
+    <component
+      :is="inscopePlugin"
+      :taskData="taskData"
+      @pluginChangedData="emitToParentUpdate"
+    ></component>
   </div>
 </template>
 
@@ -20,7 +24,7 @@ import {
   shallowRef,
 } from "vue";
 import plugins from "./Plugins/paths.json";
-import {pluginsPath} from "../../config.json";
+import { pluginsPath } from "../../config.json";
 
 export default {
   props: {
@@ -28,7 +32,7 @@ export default {
     pluginMode: String,
   },
   setup(props, { emit }) {
-    console.log(props.taskData)
+    console.log(props.taskData);
     let state = useState();
     const inscopePlugin = ref(
       defineAsyncComponent(() => getSelectedPluginPath())
@@ -43,13 +47,20 @@ export default {
     }
 
     async function getSelectedPluginPath() {
-      let pluginConfigPath =
-        pluginsPath +
-        plugins.find((plugin) => plugin.code == state.plugin).path;
-      let pluginConfig = require("@/" + pluginConfigPath);
-      let plugin = require("@/" + pluginsPath + pluginConfig[props.pluginMode]);
-      
-      return plugin;
+      try {
+        let pluginConfigPath =
+          pluginsPath +
+          plugins.find((plugin) => plugin.code == state.plugin).path;
+        let pluginConfig = require("@/" + pluginConfigPath);
+        let plugin = require("@/" +
+          pluginsPath +
+          pluginConfig[props.pluginMode]);
+
+        return plugin;
+      } catch (error) {
+        console.warn(error);
+        return require("./Plugins/noPlugin.vue");
+      }
     }
 
     return {

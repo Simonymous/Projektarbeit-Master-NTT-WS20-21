@@ -11,58 +11,58 @@
   </Accordion>
 </template>
 <script>
-import { ref, onMounted, watch } from "vue"
-import { useState } from '../../store/store'
-import { getBackendRequest, postBackendRequest, deleteBackendRequest, putBackendRequest } from "../../helper/requests";
+// import { ref, onMounted, watch } from "vue"
+// import { useState } from '../../store/store'
+// import { getBackendRequest, postBackendRequest, deleteBackendRequest, putBackendRequest } from "../../helper/requests";
 
-export default {
-  setup(props,{emit}) {
-    const TASK_PATH = 'task'
-    let state = useState()
-    const selectedTask = ref()
-    const selectedTaskCollection = ref(0)
-    const listOfTasks = ref([{name: 'Mathe 1', code: 3}, {name: 'Deutsch 1', code: 2}])
-    const TaskCollectionItems = ref([
-      {
-        label: "Aufgabenblatt 1",
-        items: [
-          {
-            label: "Exercise 1",
-          },
-          { label: "Exercise 2" },
-        ],
-      },
-      {
-        label: "Aufgabenblatt 2",
-        items: [
-          {
-            label: "Exercise 3",
-          },
-          { label: "Exercise 4" },
-        ],
-      },
-    ]);
+// export default {
+//   setup(props,{emit}) {
+//     const TASK_PATH = 'task'
+//     let state = useState()
+//     const selectedTask = ref()
+//     const selectedTaskCollection = ref(0)
+//     const listOfTasks = ref([{name: 'Mathe 1', code: 3}, {name: 'Deutsch 1', code: 2}])
+//     const TaskCollectionItems = ref([
+//       {
+//         label: "Aufgabenblatt 1",
+//         items: [
+//           {
+//             label: "Exercise 1",
+//           },
+//           { label: "Exercise 2" },
+//         ],
+//       },
+//       {
+//         label: "Aufgabenblatt 2",
+//         items: [
+//           {
+//             label: "Exercise 3",
+//           },
+//           { label: "Exercise 4" },
+//         ],
+//       },
+//     ]);
 
-    async function loadTasksOfProfessor(){
-      try{
-      listOfTasks.value = getBackendRequest(TASK_PATH + '/' + state.user._id)
-      }catch(error){
-        console.log(error)
-      }
-    }
+//     async function loadTasksOfProfessor(){
+//       try{
+//       listOfTasks.value = getBackendRequest(TASK_PATH + '/' + state.user._id)
+//       }catch(error){
+//         console.log(error)
+//       }
+//     }
 
 
-    function emitOpenTaskCollection(){
-      emit('exerciseSelected', {id:-1, kindOfExercise:'collection'})
-    }
+//     function emitOpenTaskCollection(){
+//       emit('exerciseSelected', {id:-1, kindOfExercise:'collection'})
+//     }
 
-    function emitOpenTask(id=-1){
-      emit('exerciseSelected', {id:id, kindOfExercise:'task'})
-    }
+//     function emitOpenTask(id=-1){
+//       emit('exerciseSelected', {id:id, kindOfExercise:'task'})
+//     }
 
-    return { TaskCollectionItems, emitOpenTaskCollection, listOfTasks, selectedTask, emitOpenTask };
-  },
-};
+//     return { TaskCollectionItems, emitOpenTaskCollection, listOfTasks, selectedTask, emitOpenTask };
+//   },
+// };
 </script>
 <style scoped>
 button {

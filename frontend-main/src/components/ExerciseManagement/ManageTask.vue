@@ -33,13 +33,20 @@ import { useState } from "../../store/store";
 import ShowPlugin from "../ShowPlugin.vue";
 import SelectPluginDropdown from "../SelectPluginDropdown";
 import { getBackendRequestDummy } from "../../helper/dummyRequests";
-
 import {
   getBackendRequest,
   postBackendRequest,
   deleteBackendRequest,
   putBackendRequest,
 } from "../../helper/requests";
+
+const PATHS = require('../../../config.json').URL_PATHS;
+
+const TASK_PATH = PATHS.TASK_PATH
+const CREATE_TASK_PATH = PATHS.CREATE_TASK_PATH    
+const UPDATE_TASK_PATH = PATHS.UPDATE_TASK_PATH
+const DELETE_TASK_PATH = PATHS.DELETE_TASK_PATH;
+
 
 export default {
   name: "manageTask",
@@ -51,10 +58,6 @@ export default {
     taskID: Number,
   },
   setup(props) {
-    const TASK_PATH = "task";
-    const CREATE_TASK_PATH = "createTask";
-    const UPDATE_TASK_PATH = "updateTask";
-    const DELETE_TASK_PATH = "delete";
     const TaskModel = require("../../models/taskDTO");
     let state = useState();
 
