@@ -7,7 +7,7 @@ import taskRunner from './taskrunner';
 
 
 @Controller('task')
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 export class TaskController {
   constructor(private readonly taskService: TaskService) { }
 
@@ -35,10 +35,10 @@ export class TaskController {
   async getTask(
     @Param('id') taskID: string,
     @Res() res) {
-    console.log("Get Task")
+    console.log("[LOG] Get Task")
     const returnObj = await this.taskService.getSingleTask(taskID);
     return res.status(HttpStatus.OK).json({
-      message: 'Task gefunden!',
+      message: 'Found Tasks:',
       task: returnObj
     })
   }
@@ -68,7 +68,7 @@ export class TaskController {
     return 'deleted'
   }
 
-  @Get('/getOpenTests')
+  @Post('/testTask')
   async getOpenTests(@Param('id') taskID: string, @Res() res) {
     let tasks = this.taskService.getSingleTask(taskID)
     let mytaskrunner = new taskRunner();
