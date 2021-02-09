@@ -28,7 +28,11 @@ import Card from 'primevue/card'
 import Slider from 'primevue/slider'
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
+import ToastService from 'primevue/toastservice';
+import Toast from 'primevue/toast';
 import 'primevue/resources/themes/saga-blue/theme.css'
+// import 'primevue/resources/themes/md-light-indigo/theme.css'
+
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 // import PrismEditor from 'vue-prism-editor'
@@ -46,6 +50,8 @@ const app = createApp(App)
 app.use(ConfirmationService)
 app.use(PrimeVue)
 app.use(router, VueCookies)
+app.use(ToastService);
+
 app.provide(stateSymbol, createState())
 
 app.component('Button', Button)
@@ -72,5 +78,7 @@ app.component('Accordion', Accordion)
 app.component('AccordionTab', AccordionTab)
 app.component('TieredMenu', TieredMenu)
 app.component('PanelMenu', PanelMenu)
+app.component('Toast', Toast)
+
 
 app.mount('#app')

@@ -9,6 +9,8 @@
       <Button label="Test" v-on:click="testInput"></Button>
       <Button label="Submit" v-on:click="submitSolution"></Button>
     </div>
+    <Toast />
+
   </div>
 </template>
 
@@ -24,6 +26,8 @@ import {
   postBackendRequest,
 } from "../../helper/requests";
 import TaskWorkVue from '../TaskWork.vue';
+import { useToast } from "primevue/usetoast";
+
 
 const PATHS = require('../../../config.json').URL_PATHS;
 
@@ -43,6 +47,7 @@ export default {
   setup(props) {
     let state = useState();
     let userInput = ref();
+    const toast = useToast();
 
 
     let emptyTask = {
@@ -87,12 +92,15 @@ export default {
 
 
     async function testInput() {
+      let testResults;
       try {
         if (process.env.BACKEND_ONLINE) {
-          return await postBackendRequest(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
+          testResults = await postBackendRequest(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
         } else {
-          return postBackendRequestDummy(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
+          testResults =  postBackendRequestDummy(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
         }
+
+        openToasts(testResults)
       } catch (error) {
         console.log(error);
       }
@@ -104,6 +112,21 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    }
+
+    function openToasts(dataArray){
+      console.log(dataArray)
+      toast.removeAllGroups();
+        toast.add({severity:'info', summary: 'Info Message', detail:'Message Content', life: 3000});
+
+      dataArray.forEach(item =>{
+        console.log(item)
+        if(item.status === 'success'){
+          toast.add({severity: 'success', summary: item.title, detail: item.detail, life:3000})
+        }else if(item.status === 'error'){
+          toast.add({severity: 'error', summary: item.title, detail: item.detail})
+        }
+      })
     }
 
     return {

@@ -46,6 +46,6 @@ export function getBackendRequestDummy (pathName) {
 
 export function postBackendRequestDummy (pathName, data) {
   if (pathName.includes('task/testTask')) {
-    return (true)
+    return ([{status: 'success', title: 'Teaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaast1', detail: 'Test1Detail'}, {status: 'error', title: 'Test2'}])
   }
 }

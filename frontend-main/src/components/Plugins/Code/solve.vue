@@ -48,7 +48,7 @@ export default {
     }
 
     function inputChanged (){
-      emit('updateReturnValue', code.value)
+      emit('pluginChangedData', {...props.taskData, dataForPlugin:{defaultCode: code.value}})
     }
 
     return { code, highlighter, inputChanged };
