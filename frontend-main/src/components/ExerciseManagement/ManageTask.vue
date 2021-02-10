@@ -96,11 +96,11 @@ export default {
 
     async function requestTask() {
       try {
-        if (process.env.BACKEND_ONLINE) {
+        // if (process.env.BACKEND_ONLINE) {
           task.value = await getBackendRequest(TASK_PATH + "/" + props.taskID);
-        } else {
-          task.value = getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
-        }
+        // } else {
+        //   task.value = getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
+        // }
 
         state.plugin = task.value.pluginCode
       } catch (error) {

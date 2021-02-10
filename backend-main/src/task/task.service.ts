@@ -8,15 +8,18 @@ export class TaskService {
   constructor (@InjectModel('Task') private taskModel: Model<TaskDocument>) {}
 
   async create(taskDto: Task): Promise<Task> {
+    console.log("[LOG] Creating New Task:",taskDto)
     const createdTask = new this.taskModel(taskDto);
     return createdTask.save();
   }
 
   async findAll(): Promise<Task[]> {
+    console.log("[LOG] Getting all Tasks")
     return this.taskModel.find({}).exec();
   }
 
   async getSingleTask(taskId: String): Promise<Task> {
+    console.log("[LOG] Getting Task with ID:",taskId)
     if (taskId.match(/^[0-9a-fA-F]{24}$/)) {
       return this.taskModel.findById({'_id': taskId}).exec();
     } else {
@@ -26,14 +29,13 @@ export class TaskService {
 
   // Objekt mit 2 Arrays: Suche nach Tags und Suche nach Name: TODO: SearchByTag, SearchByName
   async searchTask(searchQuery: any):Promise<Task[]> {
-    console.log("[LOG] Search Task with query");
-    console.log(searchQuery)
+    console.log("[LOG] Search Task with query",searchQuery);
     return this.taskModel.find({searchQuery}).exec();
   }
 
   async updateTask(taskId: String, taskDto: Task): Promise<Task> {
   
-    if(taskDto.title){
+    /**if(taskDto.title){
       return this.taskModel.findByIdAndUpdate(taskId,{'title': taskDto.title}).exec();
     }
     if(taskDto.tags){
@@ -53,7 +55,8 @@ export class TaskService {
     }
     if(taskDto.maxTime){
       return this.taskModel.findByIdAndUpdate(taskId,{'maxTime': taskDto.maxTime}).exec();
-    }
+    }**/
+    return this.taskModel.findOne();
   }
 
   async deleteTask(taskId: String): Promise<Task> {

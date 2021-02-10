@@ -1,5 +1,7 @@
 <template>
-  <div v-if="state?.user?.isLoggedIn() || DEVMODE">
+  <!-- <div v-if="state?.user?.isLoggedIn() || DEVMODE"> -->
+      <div v-if=" DEVMODE">
+
     <HomeNavBar />
     <div>
       <component :is="inscopeComponent"></component>
@@ -23,8 +25,8 @@ export default {
     HomeNavBar,
   },
   setup() {
-    const DEVMODE = process.env.NODE_ENV === "development";
-
+    // const DEVMODE = process.env.NODE_ENV === "development";
+const DEVMODE = true
     const inscopeComponent = ref(
       defineAsyncComponent(() => import("@/" + state.component))
     );

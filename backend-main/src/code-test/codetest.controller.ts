@@ -28,6 +28,8 @@ const functionargs = ['a','b']
 export class CodetestController {
   constructor() {}
 
+// Array of status:'failed/success', title:'', description?:''
+
   @Post('/javascript')
   testJavascript(@Body() code: any) {
       let returnArgs = [];

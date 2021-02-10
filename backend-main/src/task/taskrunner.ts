@@ -2,6 +2,7 @@ export default class taskRunner {
   constructor() {}
 
   public runTests(task:any,userInput:string):any {
+    console.log("[LOG] Running Test for task")
     switch(task.plugin) {
         case "coding": return this.codingTests(task,userInput) 
         default: return "Failed Running"

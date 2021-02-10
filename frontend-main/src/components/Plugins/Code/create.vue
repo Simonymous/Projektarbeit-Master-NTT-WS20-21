@@ -18,12 +18,12 @@
         columnResizeMode="expand"
         class="editable-cells-table"
       >
-        <Column field="input" header="Eingabe Wert(e): ['a', 'b']">
+        <Column field="input" header="Eingabe Wert(e): [a:'a', b:'b']">
           <template #editor="slotProps">
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
           </template>
         </Column>
-        <Column field="output" header="Erwarteter Output: 'c'">
+        <Column field="output" header="Erwarteter Output: c">
           <template #editor="slotProps">
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
           </template>
@@ -139,7 +139,7 @@ export default {
     function emitChanges() {
       let taskData = {
         ...props.taskData,
-        dataForPlugin: code.value,
+        dataForPlugin: {defaultCode: code.value},
         openTests: openTestsRows.value,
         closedTests: closedTestsRows.value,
       };

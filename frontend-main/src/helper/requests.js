@@ -2,8 +2,8 @@ import VueCookies from 'vue-cookies'
 import axios from 'axios'
 
 // TODO: Schauen ob funktioniert
-// const BACKEND_URL = require('../../config.json').backendURL
-const BACKEND_URL = process.env.MY_BACKEND_URL
+const BACKEND_URL = require('../../config.json').backendURL
+// const BACKEND_URL = process.env.MY_BACKEND_URL
 
 const ACCESS_TOKEN = VueCookies.get('access-token')
 
@@ -18,7 +18,8 @@ const requestOptions = {
  * @param {*} pathName without preceeding /
  */
 export async function getBackendRequest(pathName) {
-  axios.get(BACKEND_URL + pathName, requestOptions).then(function (response) {
+  return axios.get(BACKEND_URL + pathName, requestOptions).then(function (response) {
+    console.log(response.data)
     return response.data
   }).catch(function (error) {
     if (error?.response.status === 401) {
@@ -37,6 +38,7 @@ export async function postBackendRequest(pathName, postParam) {
   axios.post(BACKEND_URL + pathName, postParam, requestOptions).then(function (response) {
     return response.data
   }).catch(function (error) {
+    console.error(error)
     return error
   })
 }

@@ -12,11 +12,10 @@ export class Task {
     creator: string,
     tags: [],
     course: string,
-    plugin: string,
-    tests: {
-        hiddentest: [];
-        opentest: [];
-    },
+    pluginCode: string,
+    dataForPlugin: any,
+    closedTests: [],
+    openTests: [],
   ) {}
 
   @Prop()
@@ -38,21 +37,25 @@ export class Task {
   course: string;
 
   @Prop()
-  plugin: string;
+  pluginCode: string;
+
+  @Prop()
+  dataForPlugin:any;
   
   @Prop()
-  tests: 
-  {
-      functionargs: [];
-      hiddentests: [];
-      opentests: [];
-  };
+  closedTests: [];
 
   @Prop()
-  maxPoints: number;
+  openTests: [];
 
   @Prop()
-  maxTime: Date;
+  date: Date;
+  
+  // @Prop()
+  // maxPoints: number;
+
+  // @Prop()
+  // maxTime: Date;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

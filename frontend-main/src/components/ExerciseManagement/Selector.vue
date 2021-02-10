@@ -5,8 +5,8 @@
       <Listbox
         class="listbox"
         :options="listOfTasks"
-        optionLabel="name"
-        optionValue="code"
+        optionLabel="title"
+        optionValue="_id"
         v-on:change="emitOpenTask($event.value)"
         listStyle="max-height:250px"
       />
@@ -46,17 +46,20 @@ export default {
 
     init()
     async function init(){
+      console.log(process.env)
       listOfTasks.value = await requestTasks();
       listOfTaskCollections.value = await requestTaskCollections();
     }
 
     async function requestTasks(){
-      try {
-        if (process.env.BACKEND_ONLINE) {
-          return await getBackendRequest(TASK_PATH);
-        } else {
-          return getBackendRequestDummy(TASK_PATH);
-        }
+      try { //TODO: Remove || true when .env fixed
+        // if (process.env.BACKEND_ONLINE || true) {
+        //   return await getBackendRequest(TASK_PATH);
+        // } else {
+        //   return getBackendRequestDummy(TASK_PATH);
+        // }
+                  return await getBackendRequest(TASK_PATH);
+
       } catch (error) {
         console.log(error);
       }
@@ -87,7 +90,7 @@ export default {
     }
 
     function emitOpenTask(id = -1) {
-      console.log(id);
+      console.log(listOfTasks.value);
       emit("exerciseSelected", { id: id, kindOfExercise: "task" });
     }
 

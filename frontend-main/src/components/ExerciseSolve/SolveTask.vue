@@ -41,7 +41,7 @@ export default {
     ShowPlugin,
   },
   props: {
-    taskID: Number
+    taskID: String
   },
 
   setup(props) {
@@ -70,17 +70,19 @@ export default {
 
     init()
     async function init(){
+      console.log(props.taskID)
       task.value = await requestTask()
+      console.log(task.value)
       state.plugin = task.value.pluginCode
     }
 
     async function requestTask() {
       try {
-        if (process.env.BACKEND_ONLINE) {
+        // if (process.env.BACKEND_ONLINE || true) {
           return await getBackendRequest(TASK_PATH + "/" + props.taskID);
-        } else {
-          return getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
-        }
+        // } else {
+        //   return getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
+        // }
       } catch (error) {
         console.log(error);
       }
@@ -94,11 +96,11 @@ export default {
     async function testInput() {
       let testResults;
       try {
-        if (process.env.BACKEND_ONLINE) {
+        // if (process.env.BACKEND_ONLINE ||true) {
           testResults = await postBackendRequest(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
-        } else {
-          testResults =  postBackendRequestDummy(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
-        }
+        // } else {
+        //   testResults =  postBackendRequestDummy(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
+        // }
 
         openToasts(testResults)
       } catch (error) {

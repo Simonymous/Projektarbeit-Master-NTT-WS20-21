@@ -8,6 +8,10 @@ services:
     volumes:
       - "./frontend-main:/app"    
       - "./frontend-main/app/node_modules"
+    # env_file:
+    #   - ".env"
+    environment:
+     - TEEEST="asdfghjkl"
       
   backend:
     container_name: backend
