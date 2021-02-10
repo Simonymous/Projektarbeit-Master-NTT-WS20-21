@@ -2,30 +2,42 @@ export default class taskRunner {
   constructor() {}
 
   public runTests(task:any,userInput:string):any {
-    console.log("[LOG] Running Test for task")
-    switch(task.plugin) {
-        case "coding": return this.codingTests(task,userInput) 
+    console.log("[LOG] Running Tests:",task.openTests)
+    switch(task.pluginCode) {
+        case "codeJS": return this.codingTests(task.openTests,userInput) 
         default: return "Failed Running"
     }
   }
 
   public submitTask(task:any,userInput:string):any {
-    switch(task.plugin) {
-      case "coding": return this.codingSubmit(userInput) 
+    switch(task.pluginCode) {
+      case "codeJS": return this.codingSubmit(userInput) 
       default: return "Failed Running"
     }
   }
 
-  private codingTests(task:any,userInput:string) {
-    let returnArgs = [];
+  private codingTests(tests:any,userInput:string) {
+    console.log("[LOG] Evaluating user input: ",userInput)
+    let functionArgs= ['a','b']; //TODO: Ersetzen durch Args vom Frontend
+    let returnArgs = []
     try {
       var safeEval = require('notevil')
-      let testCases = task.tests.opentests
-      let userFunction = safeEval.Function(...task.tests.functionsargs,userInput)
-      testCases.forEach(function(test) {
-          let currentoutput = userFunction.apply('sandbox',test.input)
-          let testDescription = "EXPECT "+JSON.stringify(test.input)+" TO BE "+JSON.stringify(test.output)+"-> GETTING "+currentoutput
-          if(currentoutput===test.output) {
+      let userFunction = safeEval.Function(...functionArgs,userInput)
+      tests.forEach(function(test) {
+        let input = JSON.parse(test.input)
+        let inputArray = []
+        input.forEach(element => {
+          if(element.a) {
+            inputArray.push(element.a)
+          } else {
+            inputArray.push(element.b)
+          }
+          
+        });
+        let output = JSON.parse(test.output)
+          let currentoutput = userFunction.apply('sandbox',inputArray)
+          let testDescription = "EXPECT "+JSON.stringify(input)+" TO BE "+JSON.stringify(output)+"-> GETTING "+JSON.stringify(currentoutput)
+          if(currentoutput===output) {
               returnArgs.push(testDescription+"...PASSED")
           } else {
               returnArgs.push(testDescription+"...NOT PASSED")
@@ -35,6 +47,7 @@ export default class taskRunner {
         console.log("Funktion konnte nicht erzeugt werden",e)
         returnArgs.push("Compile Error: "+e.message)
     }
+    console.log(returnArgs)
     return returnArgs
   }
 

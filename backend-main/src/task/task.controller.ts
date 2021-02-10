@@ -74,7 +74,7 @@ export class TaskController {
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
-      let solutions = mytaskrunner.runTests(task, taskinput.userinput);
+      let solutions = mytaskrunner.runTests(task, taskinput.defaultCode);
       return res.status(HttpStatus.OK).json({
         message: 'Tests:',
         opentests: solutions,

@@ -18,7 +18,7 @@
         columnResizeMode="expand"
         class="editable-cells-table"
       >
-        <Column field="input" header="Eingabe Wert(e): [a:'a', b:'b']">
+        <Column field="input" header="Eingabe Wert(e): [{''a'':1},{''b'':2}]">
           <template #editor="slotProps">
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
           </template>
@@ -48,7 +48,7 @@
         columnResizeMode="expand"
         class="editable-cells-table"
       >
-        <Column field="input" header="Eingabe Wert(e): ['a', 'b']">
+        <Column field="input" header="Eingabe Wert(e): [{''a'':1},{''b'':2}]">
           <template #editor="slotProps">
             <InputText v-model="slotProps.data[slotProps.column.props.field]" />
           </template>
