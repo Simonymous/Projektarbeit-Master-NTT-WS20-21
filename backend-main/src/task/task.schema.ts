@@ -41,9 +41,11 @@ export class Task {
   plugin: string;
   
   @Prop()
-  tests: {
-      hiddentest: [];
-      opentest: [];
+  tests: 
+  {
+      functionargs: [];
+      hiddentests: [];
+      opentests: [];
   };
 
   @Prop()

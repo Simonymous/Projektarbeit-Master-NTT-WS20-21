@@ -35,7 +35,6 @@ export class TaskController {
   async getTask(
     @Param('id') taskID: string,
     @Res() res) {
-    console.log("[LOG] Get Task")
     const returnObj = await this.taskService.getSingleTask(taskID);
     return res.status(HttpStatus.OK).json({
       message: 'Found Tasks:',
@@ -69,23 +68,35 @@ export class TaskController {
   }
 
   @Post('/testTask')
-  async getOpenTests(@Param('id') taskID: string, @Res() res) {
-    let tasks = this.taskService.getSingleTask(taskID)
-    let mytaskrunner = new taskRunner();
-    let solutions = mytaskrunner.runTests(tasks);
-    return res.status(HttpStatus.OK).json({
-      message: 'Gefundene Tasks:',
-      opentests : solutions
+  async getOpenTests(@Body() taskinput:any, @Res() res) {
+    let task = await this.taskService.getSingleTask(taskinput.id)
+    if(task) {
+      let mytaskrunner = new taskRunner();
+      let solutions = mytaskrunner.runTests(task,taskinput.userinput);
+      return res.status(HttpStatus.OK).json({
+        message: 'Tests:',
+        opentests : solutions
+      })
+    }
+    return res.status(HttpStatus.NOT_FOUND).json({
+      message: 'Task not found!'
     })
+
   }
 
   @Post('/submitTask')
   async submitTask(@Body() submission:any, @Res() res) {
-    let mytaskrunner = new taskRunner();
-    let feedback = mytaskrunner.submitTask(submission);
-    return res.status(HttpStatus.OK).json({
-      message: 'Gefundene Tasks:',
-      feedback: feedback
+    let task = await this.taskService.getSingleTask(submission.id)
+    if(task) {
+      let mytaskrunner = new taskRunner();
+      let feedback = mytaskrunner.submitTask(task,submission);
+      return res.status(HttpStatus.OK).json({
+        message: 'Task übermittelt:',
+        feedback: feedback
+      })
+    }
+    return res.status(HttpStatus.NOT_FOUND).json({
+      message: 'Task not found!',
     })
   }
 }

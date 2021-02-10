@@ -42,11 +42,11 @@ export class TaskService {
     if(taskDto.description){
       return this.taskModel.findByIdAndUpdate(taskId,{'description': taskDto.description}).exec();
     }
-    if(taskDto.tests.hiddentest){
-      return this.taskModel.findByIdAndUpdate(taskId,{'tests.hiddentest': taskDto.tests.hiddentest}).exec();
+    if(taskDto.tests.hiddentests){
+      return this.taskModel.findByIdAndUpdate(taskId,{'tests.hiddentest': taskDto.tests.hiddentests}).exec();
     }
-    if(taskDto.tests.opentest){
-      return this.taskModel.findByIdAndUpdate(taskId,{'tests.opentest': taskDto.tests.opentest}).exec();
+    if(taskDto.tests.opentests){
+      return this.taskModel.findByIdAndUpdate(taskId,{'tests.opentest': taskDto.tests.opentests}).exec();
     }
     if(taskDto.maxPoints){
       return this.taskModel.findByIdAndUpdate(taskId,{'maxPoints': taskDto.maxPoints}).exec();
