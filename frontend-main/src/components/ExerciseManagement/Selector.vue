@@ -53,7 +53,7 @@ export default {
 
     async function requestTasks(){
       try { //TODO: Remove || true when .env fixed
-        // if (process.env.BACKEND_ONLINE || true) {
+        // if (process.env.VUE_APP_BACKEND_ONLINE || true) {
         //   return await getBackendRequest(TASK_PATH);
         // } else {
         //   return getBackendRequestDummy(TASK_PATH);
@@ -64,10 +64,10 @@ export default {
         console.log(error);
       }
     }
-    
+
     async function requestTaskCollections(){
       try {
-        if (process.env.BACKEND_ONLINE) {
+        if (process.env.VUE_APP_BACKEND_ONLINE) {
           return await getBackendRequest(TASK_COLLECTION_PATH);
         } else {
           return getBackendRequestDummy(TASK_COLLECTION_PATH);
@@ -76,7 +76,7 @@ export default {
         console.log(error);
       }
     }
-    
+
     async function loadTasksOfProfessor() {
       try {
         listOfTasks.value = getBackendRequest(TASK_PATH + "/" + state.user._id);

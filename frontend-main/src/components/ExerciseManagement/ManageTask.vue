@@ -43,7 +43,7 @@ import {
 const PATHS = require('../../../config.json').URL_PATHS;
 
 const TASK_PATH = PATHS.TASK_PATH
-const CREATE_TASK_PATH = PATHS.CREATE_TASK_PATH    
+const CREATE_TASK_PATH = PATHS.CREATE_TASK_PATH
 const UPDATE_TASK_PATH = PATHS.UPDATE_TASK_PATH
 const DELETE_TASK_PATH = PATHS.DELETE_TASK_PATH;
 
@@ -96,7 +96,7 @@ export default {
 
     async function requestTask() {
       try {
-        // if (process.env.BACKEND_ONLINE) {
+        // if (process.env.VUE_APP_BACKEND_ONLINE) {
           task.value = await getBackendRequest(TASK_PATH + "/" + props.taskID);
         // } else {
         //   task.value = getBackendRequestDummy(TASK_PATH + "/" + props.taskID);

@@ -132,7 +132,7 @@ export default defineComponent({
     ]);
 
     async function getUsers() {
-      if (process.env.BACKEND_ONLINE) {
+      if (process.env.VUE_APP_BACKEND_ONLINE) {
         const response = await getBackendRequest("user/getUsers");
         users.value = response.data;
       }
