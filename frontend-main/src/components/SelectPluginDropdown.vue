@@ -36,7 +36,6 @@ export default {
       selectedPlugin.value = plugins.find(
         (plugin) => plugin.code == state.plugin
       );
-      console.log("pdsmf" + selectedPlugin.value)
     }
 
     function handleChangeComponent(event) {

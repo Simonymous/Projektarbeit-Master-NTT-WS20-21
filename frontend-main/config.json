@@ -8,6 +8,7 @@
     "UPDATE_TASK_PATH" : "updateTask",
     "DELETE_TASK_PATH" : "deleteTask",
     "TEST_TASK_PATH" : "task/testTask",
-    "SUBMIT_TASK_PATH" : "task/submitTask"
+    "SUBMIT_TASK_PATH" : "task/submitTask",
+    "TASK_COLLECTION_PATH" : "taskCollection"
   }
 }

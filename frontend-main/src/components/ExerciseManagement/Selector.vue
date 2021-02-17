@@ -1,6 +1,6 @@
 <template>
-  <Accordion :multiple="true" :activeIndex="[0, 1]">
-    <AccordionTab header="Task" :active="true">
+  <Accordion :multiple="true" :activeIndex="activeTabs">
+    <AccordionTab header="Task">
       <Button label="Create new Task" v-on:click="emitOpenTask()"></Button>
       <Listbox
         class="listbox"
@@ -16,8 +16,8 @@
         label="Create new TaskCollection"
         v-on:click="buttonClickCreateTaskCollection"
       ></Button>
-      <PanelMenu :model="listOfTaskCollections" :multiple="true"
-    /></AccordionTab>
+      <PanelMenu :model="listOfTaskCollections" :multiple="true" />
+    </AccordionTab>
     <AccordionTab header="Import"> </AccordionTab>
   </Accordion>
 </template>
@@ -32,7 +32,6 @@ import {
 } from "../../helper/requests";
 import { getBackendRequestDummy } from "../../helper/dummyRequests";
 
-
 export default {
   setup(props, { emit }) {
     const TASK_PATH = "task";
@@ -44,30 +43,29 @@ export default {
     const listOfTasks = ref();
     const listOfTaskCollections = ref();
 
-    init()
-    async function init(){
-      console.log(process.env)
+    const activeTabs = ref([0, 1]);
+
+    init();
+    async function init() {
       listOfTasks.value = await requestTasks();
       listOfTaskCollections.value = await requestTaskCollections();
     }
 
-    async function requestTasks(){
-      try { //TODO: Remove || true when .env fixed
-        // if (process.env.VUE_APP_BACKEND_ONLINE || true) {
-        //   return await getBackendRequest(TASK_PATH);
-        // } else {
-        //   return getBackendRequestDummy(TASK_PATH);
-        // }
-                  return await getBackendRequest(TASK_PATH);
-
+    async function requestTasks() {
+      try {
+        if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
+          return await getBackendRequest(TASK_PATH);
+        } else {
+          return getBackendRequestDummy(TASK_PATH);
+        }
       } catch (error) {
         console.log(error);
       }
     }
 
-    async function requestTaskCollections(){
+    async function requestTaskCollections() {
       try {
-        if (process.env.VUE_APP_BACKEND_ONLINE) {
+        if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
           return await getBackendRequest(TASK_COLLECTION_PATH);
         } else {
           return getBackendRequestDummy(TASK_COLLECTION_PATH);
@@ -90,7 +88,6 @@ export default {
     }
 
     function emitOpenTask(id = -1) {
-      console.log(listOfTasks.value);
       emit("exerciseSelected", { id: id, kindOfExercise: "task" });
     }
 
@@ -99,7 +96,8 @@ export default {
       listOfTasks,
       selectedTask,
       emitOpenTask,
-      listOfTaskCollections
+      listOfTaskCollections,
+      activeTabs,
     };
   },
 };

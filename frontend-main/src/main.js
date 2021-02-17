@@ -30,6 +30,8 @@ import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
+import MultiSelect from 'primevue/multiselect';
+import AutoComplete from 'primevue/autocomplete';
 import 'primevue/resources/themes/saga-blue/theme.css'
 // import 'primevue/resources/themes/md-light-indigo/theme.css'
 
@@ -79,6 +81,8 @@ app.component('AccordionTab', AccordionTab)
 app.component('TieredMenu', TieredMenu)
 app.component('PanelMenu', PanelMenu)
 app.component('Toast', Toast)
+app.component('MultiSelect', MultiSelect)
+app.component('AutoComplete', AutoComplete)
 
 
 app.mount('#app')

@@ -2,25 +2,21 @@
   <div class="ExerciseManagement">
     <h2>Exercise Management</h2>
     <Splitter layout="horizontal">
-      <SplitterPanel size='20'>
+      <SplitterPanel :size="20">
         <div>
           <Selector @exerciseSelected="exerciseSelected"/>
         </div>       
       </SplitterPanel>
-      <SplitterPanel size='80'>
+      <SplitterPanel :size="80">
         <div v-if="exerciseType=='task'">
           <ManageTask v-bind:taskID = "exerciseID" />
         </div>
         <div v-else-if="exerciseType=='collection'">
-          TaskColleaction Erstellen
+          <ManageTaskCollection/>
         </div>
         <div v-else>
         Bitte eine Aufgabe oder Aufgabenblatt auswählen.
         </div>
-
-
-<!--           <CreateTask/>
-        </div> -->
       </SplitterPanel>
     </Splitter>
   </div>
@@ -30,10 +26,12 @@
 import ManageTask from './ManageTask'
 import Selector from './Selector.vue'
 import { ref, onMounted, mounted } from 'vue'
+import ManageTaskCollection from './ManageTaskCollection'
 export default {
   components: {
     ManageTask,
     Selector,
+    ManageTaskCollection
   },
   setup(){
     const exerciseType = ref();

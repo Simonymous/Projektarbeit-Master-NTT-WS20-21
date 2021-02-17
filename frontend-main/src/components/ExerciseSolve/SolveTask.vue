@@ -78,11 +78,11 @@ export default {
 
     async function requestTask() {
       try {
-        // if (process.env.VUE_APP_BACKEND_ONLINE || true) {
+        if (process.env.VUE_APP_BACKEND_ONLINE) {
           return await getBackendRequest(TASK_PATH + "/" + props.taskID);
-        // } else {
-        //   return getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
-        // }
+        } else {
+          return getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -96,11 +96,11 @@ export default {
     async function testInput() {
       let testResults;
       try {
-        // if (process.env.VUE_APP_BACKEND_ONLINE ||true) {
+        if (process.env.VUE_APP_BACKEND_ONLINE) {
           testResults = await postBackendRequest(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
-        // } else {
-        //   testResults =  postBackendRequestDummy(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
-        // }
+        } else {
+          testResults =  postBackendRequestDummy(TEST_TASK_PATH + "/" + props.taskID, task.value.dataForPlugin);
+        }
 
         openToasts(testResults)
       } catch (error) {
