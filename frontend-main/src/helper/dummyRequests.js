@@ -52,7 +52,8 @@ export function getBackendRequestDummy(pathName) {
   } else if (pathName.includes('task')) {
     return [
       { title: 'Mathe 1', _id: 3 },
-      { title: 'Deutsch 1', _id: 2 }
+      { title: 'Deutsch 1', _id: 2 },
+      { title: 'Deutsch 2', _id: 4 }
     ]
   }
 }

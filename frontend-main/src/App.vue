@@ -3,6 +3,8 @@
     <GlobalNavBar />
     <div class="auth-wrapper">
       <div class="auth-inner">
+            <Toast />
+
         <router-view/>
       </div>
     </div> 

@@ -32,10 +32,14 @@ import {
 } from "../../helper/requests";
 import { getBackendRequestDummy } from "../../helper/dummyRequests";
 
+const PATHS = require('../../../config.json').URL_PATHS;
+
+const TASK_PATH = PATHS.TASK_PATH
+const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH
+
+
 export default {
   setup(props, { emit }) {
-    const TASK_PATH = "task";
-    const TASK_COLLECTION_PATH = "taskCollection";
     let state = useState();
     const selectedTask = ref();
     const selectedTaskCollection = ref(0);
