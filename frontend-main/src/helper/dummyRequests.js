@@ -32,20 +32,26 @@ export function getBackendRequestDummy(pathName) {
     return [
       {
         label: 'Aufgabenblatt 1',
+        _id: '45',
         items: [
           {
-            label: 'Exercise 1'
+            label: 'Exercise 1',
+            _id: '46',
           },
-          { label: 'Exercise 2' }
+          { label: 'Exercise 2',
+          _id: '47', }
         ]
       },
       {
         label: 'Aufgabenblatt 2',
+        _id: '48',
         items: [
           {
-            label: 'Exercise 3'
+            label: 'Exercise 3',
+            _id: '49',
           },
-          { label: 'Exercise 4' }
+          { label: 'Exercise 4',
+          _id: '50', }
         ]
       }
     ]

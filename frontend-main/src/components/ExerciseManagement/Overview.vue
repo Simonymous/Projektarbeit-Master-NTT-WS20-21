@@ -12,7 +12,7 @@
           <ManageTask v-bind:taskID = "exerciseID" />
         </div>
         <div v-else-if="exerciseType=='collection'">
-          <ManageTaskCollection/>
+          <ManageTaskCollection v-bind:taskCollectionID = "exerciseID"/>
         </div>
         <div v-else>
         Bitte eine Aufgabe oder Aufgabenblatt auswählen.
@@ -38,6 +38,7 @@ export default {
     const exerciseID = ref(-1)
     
     function exerciseSelected(payload){
+      console.log(payload)
       exerciseType.value = payload.kindOfExercise;
       exerciseID.value = payload.id;
     }

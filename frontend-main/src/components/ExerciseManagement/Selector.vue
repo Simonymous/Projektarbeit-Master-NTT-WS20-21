@@ -14,9 +14,19 @@
     <AccordionTab header="Task Collection">
       <Button
         label="Create new TaskCollection"
-        v-on:click="buttonClickCreateTaskCollection"
+        v-on:click="emitOpenTaskCollection()"
       ></Button>
-      <PanelMenu :model="listOfTaskCollections" :multiple="true" />
+      <div class="TaskCollectionAccordion">
+        <Accordion v-on:tab-open="emitOpenTaskCollection(listOfTaskCollections[$event.index]._id)">
+          <AccordionTab
+            v-for="taskCollection in listOfTaskCollections"
+            :key="taskCollection.label"
+            :header="taskCollection.label"
+          >
+            <Listbox :options="taskCollection.items" optionLabel="label" optionValue="_id" v-on:change="emitOpenTask($event.value)"/>
+          </AccordionTab>
+        </Accordion>
+      </div>
     </AccordionTab>
     <AccordionTab header="Import"> </AccordionTab>
   </Accordion>
@@ -32,11 +42,10 @@ import {
 } from "../../helper/requests";
 import { getBackendRequestDummy } from "../../helper/dummyRequests";
 
-const PATHS = require('../../../config.json').URL_PATHS;
+const PATHS = require("../../../config.json").URL_PATHS;
 
-const TASK_PATH = PATHS.TASK_PATH
-const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH
-
+const TASK_PATH = PATHS.TASK_PATH;
+const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
 
 export default {
   setup(props, { emit }) {
@@ -87,8 +96,8 @@ export default {
       }
     }
 
-    function buttonClickCreateTaskCollection() {
-      emit("exerciseSelected", { id: -1, kindOfExercise: "collection" });
+    function emitOpenTaskCollection(id = -1) {
+      emit("exerciseSelected", { id: id, kindOfExercise: "collection" });
     }
 
     function emitOpenTask(id = -1) {
@@ -96,7 +105,7 @@ export default {
     }
 
     return {
-      buttonClickCreateTaskCollection,
+      emitOpenTaskCollection,
       listOfTasks,
       selectedTask,
       emitOpenTask,
@@ -106,8 +115,16 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 button {
   width: 100%;
+}
+</style>
+
+<style lang="scss">
+.TaskCollectionAccordion {
+  .p-accordion-content {
+    padding: 0;
+  }
 }
 </style>

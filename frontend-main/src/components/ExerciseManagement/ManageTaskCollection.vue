@@ -1,9 +1,25 @@
 <template>
   <div>
-    <!-- Title:<InputText type="text" v-model="task.tags" placeholder="Tags" />
-Description:<InputText type="text" v-model="task.tags" placeholder="Tags" />
-Tags:<InputText type="text" v-model="task.tags" placeholder="Tags" />
-Fach:<InputText type="text" v-model="task.tags" placeholder="Tags" /> -->
+    Title:<InputText
+      type="text"
+      v-model="taskCollection.title"
+      placeholder="Title"
+    />
+    Description:<InputText
+      type="text"
+      v-model="taskCollection.description"
+      placeholder="Description"
+    />
+    Tags:<InputText
+      type="text"
+      v-model="taskCollection.tags"
+      placeholder="Tags"
+    />
+    Class:<InputText
+      type="text"
+      v-model="taskCollection.class"
+      placeholder="Class"
+    />
 
     <customAutocomplete @addTask="addTask" />
 
@@ -15,9 +31,16 @@ Fach:<InputText type="text" v-model="task.tags" placeholder="Tags" /> -->
       <Column :rowReorder="true" headerStyle="width: 3rem" />
 
       <Column field="taskName" header="Aufgabenname"> </Column>
-      <Column field="weighting" :header="'Gewichtung (Gesamt: ' + totalPoints + '/100)'" :headerClass='totalPoints==100?"pointsCorrect":"pointsIncorrect"' >
+      <Column
+        field="weighting"
+        :header="'Gewichtung (Gesamt: ' + totalPoints + '/100)'"
+        :headerClass="totalPoints == 100 ? 'pointsCorrect' : 'pointsIncorrect'"
+      >
         <template #editor="slotProps">
-          <InputText v-model="slotProps.data[slotProps.column.props.field]" @input="calcTotalPoints()"/>
+          <InputText
+            v-model="slotProps.data[slotProps.column.props.field]"
+            @input="calcTotalPoints()"
+          />
         </template>
       </Column>
       <Column :exportable="false">
@@ -35,6 +58,11 @@ Fach:<InputText type="text" v-model="task.tags" placeholder="Tags" /> -->
         </template>
       </Column>
     </DataTable>
+
+    <div class="createTaskCollectionFooter">
+      <Button label="Save" v-on:click="handleSaveClick"></Button>
+      <Button label="Delete" v-on:click="handleDeleteClick"></Button>
+    </div>
   </div>
 </template>
 <script>
@@ -51,23 +79,47 @@ import {
 const PATHS = require("../../../config.json").URL_PATHS;
 
 const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
+const CREATE_TASKCOLLECTION_PATH = PATHS.CREATE_TASKCOLLECTION_PATH;
+const UPDATE_TASKCOLLECTION_PATH = PATHS.UPDATE_TASKCOLLECTION_PATH;
+const DELETE_TASKCOLLECTION_PATH = PATHS.DELETE_TASKCOLLECTION_PATH;
 
 export default {
   components: {
     customAutocomplete: Autocomplete,
   },
   props: {
-    taskCollectionID: Number,
+    taskCollectionID: String,
   },
   setup(props) {
     const taskCollection = ref();
-    const totalPoints = ref()
+    const totalPoints = ref();
+
+    let emptyTaskCollection = {
+      ID: -1,
+      type: "TaskCollection",
+      title: "",
+      description: "",
+      date: new Date(),
+      tags: [],
+      class: "",
+      creator: "",
+      tasks: [],
+    };
 
     init();
     async function init() {
-      await getTaskCollections();
-      calcTotalPoints()
+      if (props.taskCollectionID === -1) {
+        taskCollection.value = { ...emptyTaskCollection };
+      } else {
+        await getTaskCollections();
+      }
+      calcTotalPoints();
     }
+
+    watch(
+      () => props.taskCollectionID,
+      () => init()
+    );
 
     async function getTaskCollections() {
       try {
@@ -85,10 +137,31 @@ export default {
       }
     }
 
-    function calcTotalPoints(){
-      totalPoints.value = 0
-      taskCollection.value.tasks.forEach(task => {
-        totalPoints.value += +task.weighting
+    async function handleSaveClick() {
+      try {
+        if (taskCollection.value.ID === -1) {
+          postBackendRequest(CREATE_TASKCOLLECTION_PATH, taskCollection.value);
+        } else {
+          postBackendRequest(UPDATE_TASKCOLLECTION_PATH, taskCollection.value);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    async function handleDeleteClick() {
+      try {
+        // deleteBackendRequest(DELETE_TASKCOLLECTION_PATH + "/" + taskCollection.value.ID);
+        taskCollection.value = { ...emptyTaskCollection };
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    function calcTotalPoints() {
+      totalPoints.value = 0;
+      taskCollection.value.tasks.forEach((task) => {
+        totalPoints.value += +task.weighting;
       });
     }
 
@@ -97,7 +170,11 @@ export default {
     }
 
     function addTask(payload) {
-      taskCollection.value.tasks.push({taskName: payload.title, ID:payload._id, weighting: 0})
+      taskCollection.value.tasks.push({
+        taskName: payload.title,
+        ID: payload._id,
+        weighting: 0,
+      });
       console.log(payload);
     }
 
@@ -106,18 +183,20 @@ export default {
       onRowReorder,
       addTask,
       totalPoints,
-      calcTotalPoints
+      calcTotalPoints,
+      handleSaveClick,
+      handleDeleteClick,
     };
   },
 };
 </script>
 <style lang="css">
-.pointsIncorrect{
+.pointsIncorrect {
   color: black !important;
-  background:red !important
+  background: red !important;
 }
 
-.pointsCorrect{
-  color:green !important
+.pointsCorrect {
+  color: green !important;
 }
 </style>

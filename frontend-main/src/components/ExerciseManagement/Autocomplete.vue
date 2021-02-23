@@ -6,6 +6,7 @@
     @complete="search($event)"
     @item-select="onItemSelect($event)"
     :dropdown="true"
+    placeholder='Tasks'
   />
 </template>
 <script>
