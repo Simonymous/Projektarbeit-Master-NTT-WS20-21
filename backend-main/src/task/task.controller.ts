@@ -12,6 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Task } from './task.schema';
+import { TaskCollection } from './taskcollection.schema';
 
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import taskRunner from './taskrunner';
@@ -26,7 +27,16 @@ export class TaskController {
   //@UseGuards(JwtAuthGuard)
   @Post('/createTask')
   async createNewTask(@Res() res, @Body() taskDTO: Task) {
-    const returnObj = await this.taskService.create(taskDTO);
+    const returnObj = await this.taskService.createTask(taskDTO);
+    return res.status(HttpStatus.OK).json({
+      message: 'Task created successfully!',
+      task: returnObj,
+    });
+  }
+
+  @Post('/createTaskCollection')
+  async createNewTaskCollection(@Res() res, @Body() taskCollectionDTO: TaskCollection) {
+    const returnObj = await this.taskService.createCollection(taskCollectionDTO);
     return res.status(HttpStatus.OK).json({
       message: 'Task created successfully!',
       task: returnObj,
@@ -35,7 +45,7 @@ export class TaskController {
 
   @Get()
   getAllTasks() {
-    return this.taskService.findAll();
+    return this.taskService.findAllTasks();
   }
 
   @Get(':id')

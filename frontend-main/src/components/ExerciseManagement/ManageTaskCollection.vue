@@ -17,7 +17,7 @@
     />
     Class:<InputText
       type="text"
-      v-model="taskCollection.class"
+      v-model="taskCollection.course"
       placeholder="Class"
     />
 
@@ -101,7 +101,7 @@ export default {
       description: "",
       date: new Date(),
       tags: [],
-      class: "",
+      course: "",
       creator: "",
       tasks: [],
     };

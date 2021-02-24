@@ -2,20 +2,33 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {Task, TaskDocument} from './task.schema';
+import {TaskCollection, TaskCollectionDocument } from './taskcollection.schema'
 
 @Injectable()
 export class TaskService {
-  constructor (@InjectModel('Task') private taskModel: Model<TaskDocument>) {}
+  constructor (@InjectModel('Task') private taskModel: Model<TaskDocument>,
+  @InjectModel('TaskCollection') private taskCollectionModel: Model<TaskCollectionDocument>) {}
 
-  async create(taskDto: Task): Promise<Task> {
+  async createTask(taskDto: Task): Promise<Task> {
     console.log("[LOG] Creating New Task:",taskDto)
     const createdTask = new this.taskModel(taskDto);
     return createdTask.save();
   }
 
-  async findAll(): Promise<Task[]> {
+  async createCollection(taskCollectionDto: TaskCollection): Promise<TaskCollection> {
+    console.log("[LOG] Creating New Task Collection:",taskCollectionDto)
+    const createdTaskCollection = new this.taskCollectionModel(taskCollectionDto);
+    return createdTaskCollection.save();
+  }
+
+  async findAllTasks(): Promise<Task[]> {
     console.log("[LOG] Getting all Tasks")
     return this.taskModel.find({}).exec();
+  }
+
+  async findAllTaskCollections(): Promise<TaskCollection[]> {
+    console.log("[LOG] Getting all Task Collections")
+    return this.taskCollectionModel.find({}).exec();
   }
 
   async getSingleTask(taskId: String): Promise<Task> {
@@ -27,6 +40,18 @@ export class TaskService {
     }
   }
 
+  async getSingleTaskCollection(taskCollectionId: String): Promise<TaskCollection> {
+    console.log("[LOG] Getting Task Collection with ID:",taskCollectionId)
+    if (taskCollectionId.match(/^[0-9a-fA-F]{24}$/)) {
+      return this.taskCollectionModel.findById({'_id': taskCollectionId}).exec();
+    } else {
+      return null;
+    }
+  }
+
+
+  //TODO: SEARCH, UPDATE for task and taskcollection
+
   // Objekt mit 2 Arrays: Suche nach Tags und Suche nach Name: TODO: SearchByTag, SearchByName
   async searchTask(searchQuery: any):Promise<Task[]> {
     console.log("[LOG] Search Task with query",searchQuery);
@@ -34,7 +59,7 @@ export class TaskService {
   }
 
   async updateTask(taskId: String, taskDto: Task): Promise<Task> {
-  
+
     /**if(taskDto.title){
       return this.taskModel.findByIdAndUpdate(taskId,{'title': taskDto.title}).exec();
     }
@@ -62,6 +87,14 @@ export class TaskService {
   async deleteTask(taskId: String): Promise<Task> {
     if (taskId.match(/^[0-9a-fA-F]{24}$/)) {
       return this.taskModel.findByIdAndRemove(taskId).exec();
+    } else {
+      return null;
+    }
+  }
+
+  async deleteTaskCollection(taskCollectionId: String): Promise<TaskCollection> {
+    if (taskCollectionId.match(/^[0-9a-fA-F]{24}$/)) {
+      return this.taskCollectionModel.findByIdAndRemove(taskCollectionId).exec();
     } else {
       return null;
     }
