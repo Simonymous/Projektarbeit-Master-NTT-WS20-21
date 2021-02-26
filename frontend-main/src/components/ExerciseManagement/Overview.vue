@@ -15,6 +15,7 @@
           <ManageTaskCollection v-bind:taskCollectionID = "exerciseID"/>
         </div>
         <div v-else>
+          <importExport/>
         Bitte eine Aufgabe oder Aufgabenblatt auswählen.
         </div>
       </SplitterPanel>
@@ -25,13 +26,15 @@
 <script>
 import ManageTask from './ManageTask'
 import Selector from './Selector.vue'
+import ImportExport from './ImportExport.vue'
 import { ref, onMounted, mounted } from 'vue'
 import ManageTaskCollection from './ManageTaskCollection'
 export default {
   components: {
     ManageTask,
     Selector,
-    ManageTaskCollection
+    ManageTaskCollection,
+    ImportExport
   },
   setup(){
     const exerciseType = ref();

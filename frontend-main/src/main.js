@@ -32,8 +32,12 @@ import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 import MultiSelect from 'primevue/multiselect';
 import AutoComplete from 'primevue/autocomplete';
+import FileUpload from 'primevue/fileupload';
 import 'primevue/resources/themes/saga-blue/theme.css'
 // import 'primevue/resources/themes/md-light-indigo/theme.css'
+
+import FileInput from 'vue3-simple-file-input'
+
 
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
@@ -83,6 +87,8 @@ app.component('PanelMenu', PanelMenu)
 app.component('Toast', Toast)
 app.component('MultiSelect', MultiSelect)
 app.component('AutoComplete', AutoComplete)
+app.component('FileUpload', FileUpload)
+app.component('FileInput', FileInput)
 
 
 app.mount('#app')
