@@ -1,57 +1,34 @@
+import * as plugins from './plugins.json' //Prüfen ob dynamisch funktioniert wenn sich json ändert...
+const pluginDirectoryPath = "./plugins/"
+
+interface IPlugin {
+  openTest: Function,
+  submit: Function
+}
 export default class taskRunner {
   constructor() {}
 
-  public runTests(task:any,userInput:string):any {
+  async runTests(task:any,userInput:string):Promise<any> {
     console.log("[LOG] Running Tests:",task.openTests)
-    switch(task.pluginCode) {
-        case "codeJS": return this.codingTests(task.openTests,userInput) 
-        default: return "Failed Running"
-    }
+    const plugin = await this.getPlugin(task.pluginCode)
+    const testResult = plugin.default.getOpenTests(task.openTests,userInput)
+    return testResult
   }
 
-  public submitTask(task:any,userInput:string):any {
-    switch(task.pluginCode) {
-      case "codeJS": return this.codingSubmit(userInput) 
-      default: return "Failed Running"
-    }
+  async submitTask(task:any,userInput:string):Promise<any> {
+      console.log("[LOG] Submitting:",task.closedTests)
+      const plugin = await this.getPlugin(task.pluginCode)
+      const submittedResult = plugin.default.submit(task.closedTests,userInput)
+      return submittedResult
   }
 
-  private codingTests(tests:any,userInput:string) {
-    console.log("[LOG] Evaluating user input: ",userInput)
-    let functionArgs= ['a','b']; //TODO: Ersetzen durch Args vom Frontend
-    let returnArgs = []
-    try {
-      var safeEval = require('notevil')
-      let userFunction = safeEval.Function(...functionArgs,userInput)
-      tests.forEach(function(test) {
-        let input = JSON.parse(test.input)
-        let inputArray = []
-        input.forEach(element => {
-          if(element.a) {
-            inputArray.push(element.a)
-          } else {
-            inputArray.push(element.b)
-          }
-          
-        });
-        let output = JSON.parse(test.output)
-          let currentoutput = userFunction.apply('sandbox',inputArray)
-          let testDescription = "EXPECT "+JSON.stringify(input)+" TO BE "+JSON.stringify(output)+"-> GETTING "+JSON.stringify(currentoutput)
-          if(currentoutput===output) {
-              returnArgs.push(testDescription+"...PASSED")
-          } else {
-              returnArgs.push(testDescription+"...NOT PASSED")
-          }
-      })
-    } catch(e) {
-        console.log("Funktion konnte nicht erzeugt werden",e)
-        returnArgs.push("Compile Error: "+e.message)
-    }
-    console.log(returnArgs)
-    return returnArgs
+  private async getPlugin(pluginCode:string) {
+    let pluginFileName:string
+    plugins.forEach(plugin=> {
+      if(plugin.name == pluginCode) pluginFileName=plugin.file
+    })
+    const pathToFile = pluginDirectoryPath+pluginFileName
+    return import(pathToFile)
   }
 
-  private codingSubmit(task:any) {
-    return "SUBMITTED"
-  }
 }

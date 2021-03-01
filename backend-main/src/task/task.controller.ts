@@ -84,7 +84,7 @@ export class TaskController {
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
-      let solutions = mytaskrunner.runTests(task, taskinput.defaultCode);
+      let solutions = await mytaskrunner.runTests(task, taskinput.userinput);
       return res.status(HttpStatus.OK).json({
         message: 'Tests:',
         opentests: solutions,
@@ -105,7 +105,7 @@ export class TaskController {
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
-      let feedback = mytaskrunner.submitTask(task, submission);
+      let feedback = await mytaskrunner.submitTask(task, submission.userinput);
       return res.status(HttpStatus.OK).json({
         message: 'Task übermittelt:',
         feedback: feedback,

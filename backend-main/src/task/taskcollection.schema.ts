@@ -3,6 +3,11 @@ import { Document } from 'mongoose';
 
 export type TaskCollectionDocument = TaskCollection & Document;
 
+interface TaskInCollection {
+  id: string,
+  weightening: number,
+  taskName: string
+}
 @Schema()
 export class TaskCollection {
   constructor(
@@ -12,7 +17,7 @@ export class TaskCollection {
     creator: string,
     tags: [],
     course: string,
-    tasks: [],
+    tasks: TaskInCollection[],
   ) {}
 
   @Prop()
@@ -37,7 +42,7 @@ export class TaskCollection {
   date: Date;
 
   @Prop()
-  tasks: [];
+  tasks: TaskInCollection[];
 
 }
 
