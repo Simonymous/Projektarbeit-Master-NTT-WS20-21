@@ -37,7 +37,7 @@ export default {
     
     function exerciseSelected(payload){
       exerciseType.value = payload.kindOfExercise;
-      exerciseId.value = payload.id;
+      exerciseId.value = payload._id;
     }
 
     return {

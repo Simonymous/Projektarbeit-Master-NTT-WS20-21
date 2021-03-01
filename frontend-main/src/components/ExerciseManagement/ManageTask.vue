@@ -1,7 +1,7 @@
 <template>
   <div class="manageTask">
     <div class="taskInputs">
-      TaskID: {{ task.ID }} Titel:<InputText
+      TaskID: {{ task._id }} Titel:<InputText
         type="text"
         v-model="task.title"
         placeholder="Titel"
@@ -62,7 +62,7 @@ export default {
     let state = useState();
 
     let emptyTask = {
-      ID: -1,
+      _id: -1,
       type: "task",
       pluginCode: "gradeDemo",
       title: "",
@@ -109,10 +109,9 @@ export default {
     }
 
     function handleSaveClick() {
-      // console.log( task.value.ID)
       try {
         task.value.pluginCode = state.plugin
-        if (task.value.ID === -1) {
+        if (task.value._id === -1) {
           postBackendRequest(CREATE_TASK_PATH, task.value);
         } else {
           console.log(task.value)
@@ -125,7 +124,7 @@ export default {
 
     function handleDeleteClick() {
       try {
-        // deleteBackendRequest(DELETE_TASK_PATH + "/" + task.value.ID);
+        // deleteBackendRequest(DELETE_TASK_PATH + "/" + task.value._id);
         task.value = { ...emptyTask };
       } catch (error) {
         console.log(error);
