@@ -20,10 +20,10 @@
         <Accordion v-on:tab-open="emitOpenTaskCollection(listOfTaskCollections[$event.index]._id)">
           <AccordionTab
             v-for="taskCollection in listOfTaskCollections"
-            :key="taskCollection.label"
-            :header="taskCollection.label"
+            :key="taskCollection.title"
+            :header="taskCollection.title"
           >
-            <Listbox :options="taskCollection.items" optionLabel="label" optionValue="_id" v-on:change="emitOpenTask($event.value)"/>
+            <Listbox :options="taskCollection.tasks" optionLabel="title" optionValue="_id" v-on:change="emitOpenTask($event.value)"/>
           </AccordionTab>
         </Accordion>
       </div>

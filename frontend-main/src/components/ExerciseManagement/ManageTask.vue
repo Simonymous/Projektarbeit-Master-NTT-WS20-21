@@ -1,7 +1,7 @@
 <template>
   <div class="manageTask">
     <div class="taskInputs">
-      TaskID: {{ task.ID }} Titel:<InputText
+      TaskID: {{ task._id }} Titel:<InputText
         type="text"
         v-model="task.title"
         placeholder="Titel"
@@ -14,14 +14,11 @@
       Tags:
       <InputText type="text" v-model="task.tags" placeholder="Tags" /> Course:
       <InputText type="text" v-model="task.course" placeholder="Course" />
+
     </div>
     Plugin:<SelectPluginDropdown />
 
-    <show-plugin
-      :taskData="task"
-      :pluginMode="'createTask'"
-      @pluginChangedData="pluginChangedTask"
-    />
+    <show-plugin :taskData="task"  :pluginMode="'createTask'" @pluginChangedData="pluginChangedTask"/>
     <div class="createTaskFooter">
       <Button label="Save" v-on:click="handleSaveClick"></Button>
       <Button label="Delete" v-on:click="handleDeleteClick"></Button>
@@ -43,12 +40,13 @@ import {
   putBackendRequest,
 } from "../../helper/requests";
 
-const PATHS = require("../../../config.json").URL_PATHS;
+const PATHS = require('../../../config.json').URL_PATHS;
 
-const TASK_PATH = PATHS.TASK_PATH;
-const CREATE_TASK_PATH = PATHS.CREATE_TASK_PATH;
-const UPDATE_TASK_PATH = PATHS.UPDATE_TASK_PATH;
+const TASK_PATH = PATHS.TASK_PATH
+const CREATE_TASK_PATH = PATHS.CREATE_TASK_PATH
+const UPDATE_TASK_PATH = PATHS.UPDATE_TASK_PATH
 const DELETE_TASK_PATH = PATHS.DELETE_TASK_PATH;
+
 
 export default {
   name: "manageTask",
@@ -64,7 +62,7 @@ export default {
     let state = useState();
 
     let emptyTask = {
-      ID: -1,
+      _id: -1,
       type: "task",
       pluginCode: "gradeDemo",
       title: "",
@@ -90,7 +88,7 @@ export default {
     function initialize() {
       if (props.taskID === -1) {
         task.value = { ...emptyTask, title: "ttt" };
-        state.plugin = task.value.pluginCode;
+        state.plugin = task.value.pluginCode
       } else {
         requestTask();
       }
@@ -98,13 +96,13 @@ export default {
 
     async function requestTask() {
       try {
-        if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
+        if (process.env.VUE_APP_BACKEND_ONLINE === 'true') {
           task.value = await getBackendRequest(TASK_PATH + "/" + props.taskID);
         } else {
           task.value = getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
         }
 
-        state.plugin = task.value.pluginCode;
+        state.plugin = task.value.pluginCode
       } catch (error) {
         console.log(error);
       }
@@ -112,11 +110,11 @@ export default {
 
     function handleSaveClick() {
       try {
-        task.value.pluginCode = state.plugin;
-        if (task.value.ID === -1) {
+        task.value.pluginCode = state.plugin
+        if (task.value._id === -1) {
           postBackendRequest(CREATE_TASK_PATH, task.value);
         } else {
-          console.log(task.value);
+          console.log(task.value)
           postBackendRequest(UPDATE_TASK_PATH, task.value);
         }
       } catch (error) {
@@ -133,15 +131,16 @@ export default {
       }
     }
 
-    function pluginChangedTask(payload) {
+    function pluginChangedTask(payload){
       task.value = payload;
     }
+
 
     return {
       task,
       handleSaveClick,
       handleDeleteClick,
-      pluginChangedTask,
+      pluginChangedTask
     };
   },
 };

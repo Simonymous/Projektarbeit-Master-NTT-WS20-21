@@ -30,17 +30,25 @@
     >
       <Column :rowReorder="true" headerStyle="width: 3rem" />
 
-      <Column field="taskName" header="Aufgabenname"> </Column>
+      <Column field="title" header="Aufgabenname"> </Column>
       <Column
         field="weighting"
-        :header="'Gewichtung (Gesamt: ' + totalPoints + '/100)'"
-        :headerClass="totalPoints == 100 ? 'pointsCorrect' : 'pointsIncorrect'"
+        :header="'Gewichtung (Absolut), Gesamt: ' + totalPoints"
       >
-        <template #editor="slotProps">
+        <template #body="slotProps">
           <InputText
             v-model="slotProps.data[slotProps.column.props.field]"
             @input="calcTotalPoints()"
+            className="p-inputtext p-component p-filled weightingInput"
           />
+        </template>
+      </Column>
+      <Column
+        field="weighting"
+        :header="'Gewichtung (in Relation)'"
+      >
+        <template #body="slotProps">
+          {{ Math.round(slotProps.data.weighting*10000 / this.totalPoints)/100 }} %
         </template>
       </Column>
       <Column :exportable="false">
@@ -48,12 +56,12 @@
           <Button
             icon="pi pi-search"
             class="p-button-rounded p-button-text"
-            @click="removeOpenTest(slotProps)"
+            @click="handleInspectTask(slotProps)"
           />
           <Button
             icon="pi pi-trash"
             class="p-button-rounded p-button-danger p-button-text"
-            @click="removeOpenTest(slotProps)"
+            @click="handleRemoveTask(slotProps)"
           />
         </template>
       </Column>
@@ -90,12 +98,12 @@ export default {
   props: {
     taskCollectionID: String,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const taskCollection = ref();
     const totalPoints = ref();
 
     let emptyTaskCollection = {
-      ID: -1,
+      _id: -1,
       type: "TaskCollection",
       title: "",
       description: "",
@@ -169,10 +177,19 @@ export default {
       taskCollection.value.tasks = event.value;
     }
 
+    function handleRemoveTask(event) {
+      console.log(event);
+      taskCollection.value.tasks.splice(event.index, 1);
+    }
+
+    function handleInspectTask(item) {
+      emit("exerciseSelected", { id: item.data._id, kindOfExercise: "task" });
+    }
+
     function addTask(payload) {
       taskCollection.value.tasks.push({
-        taskName: payload.title,
-        ID: payload._id,
+        title: payload.title,
+        _id: payload._id,
         weighting: 0,
       });
       console.log(payload);
@@ -186,6 +203,8 @@ export default {
       calcTotalPoints,
       handleSaveClick,
       handleDeleteClick,
+      handleRemoveTask,
+      handleInspectTask,
     };
   },
 };
@@ -198,5 +217,9 @@ export default {
 
 .pointsCorrect {
   color: green !important;
+}
+
+.weightingInput {
+  width:100%
 }
 </style>

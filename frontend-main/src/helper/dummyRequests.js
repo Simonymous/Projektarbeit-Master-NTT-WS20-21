@@ -2,7 +2,7 @@ export function getBackendRequestDummy(pathName) {
   //Spezifischer Task
   if (pathName.includes("task/")) {
     return {
-      ID: 69,
+      _id: 69,
       type: "task",
       pluginCode: "codeJS",
       title: "DummyPlugin",
@@ -16,13 +16,14 @@ export function getBackendRequestDummy(pathName) {
       dataForPlugin: {
         defaultCode:
           "[Vue warn]: Extraneous non-props attributes (active) were passed to component but could not be automatically inherited because component renders fragment or text root nodes. ",
-      },
+        inputParams: [],
+        },
       date: new Date("20/01/1999"),
     };
     //Spezifische TaskCollection:
   } else if (pathName.includes("taskCollection/")) {
     return {
-      ID: "187",
+      _id: "187",
       type: "taskCollection",
       title: "Ich bin ein Aufgabenblatt",
       description: "Beschreibung Beschreibung Beschreibung Beschreibung ",
@@ -31,9 +32,9 @@ export function getBackendRequestDummy(pathName) {
       course: "Prog5",
       creator: "Dr. Ucker",
       tasks: [
-        { ID: 96, weighting: 66, taskName: "qwertzuiop" },
-        { ID: 10, weighting: 34, taskName: "unwichtiger Task" },
-        { ID: 10, weighting: 35, taskName: "wichitger Task" },
+        { _id: 96, weighting: 66, title: "qwertzuiop" },
+        { _id: 10, weighting: 34, title: "unwichtiger Task" },
+        { _id: 10, weighting: 35, title: "wichitger Task" },
       ],
     };
 
@@ -41,25 +42,19 @@ export function getBackendRequestDummy(pathName) {
   } else if (pathName.includes("taskCollection")) {
     return [
       {
-        label: "Aufgabenblatt 1",
+        title: "Aufgabenblatt 1",
         _id: "45",
-        items: [
-          {
-            label: "Exercise 1",
-            _id: "46",
-          },
-          { label: "Exercise 2", _id: "47" },
+        tasks: [
+          { title: "Exercise 1", _id: "46" },
+          { title: "Exercise 2", _id: "47" },
         ],
       },
       {
-        label: "Aufgabenblatt 2",
+        title: "Aufgabenblatt 2",
         _id: "48",
-        items: [
-          {
-            label: "Exercise 3",
-            _id: "49",
-          },
-          { label: "Exercise 4", _id: "50" },
+        tasks: [
+          { title: "Exercise 3", _id: "49" },
+          { title: "Exercise 4", _id: "50" },
         ],
       },
     ];

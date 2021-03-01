@@ -1,7 +1,7 @@
 <template>
   <div class="solveTask">
     <div class="taskInputs">
-      TaskID: {{ task.ID }} Titel:{{task.title}} Description:{{task.description}}
+      TaskID: {{ task._id }} Titel:{{task.title}} Description:{{task.description}}
     </div>
 
     <show-plugin :taskData="task" :pluginMode="'solveTask'" @pluginChangedData="pluginChangedTask"/>
@@ -51,7 +51,7 @@ export default {
 
 
     let emptyTask = {
-      ID: -1,
+      _id: -1,
       type: "task",
       pluginCode: "gradeDemo",
       title: "",

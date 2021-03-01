@@ -12,7 +12,7 @@
           <ManageTask v-bind:taskID = "exerciseID" />
         </div>
         <div v-else-if="exerciseType=='collection'">
-          <ManageTaskCollection v-bind:taskCollectionID = "exerciseID"/>
+          <ManageTaskCollection v-bind:taskCollectionID = "exerciseID" @exerciseSelected="exerciseSelected"/>
         </div>
         <div v-else>
           <importExport/>

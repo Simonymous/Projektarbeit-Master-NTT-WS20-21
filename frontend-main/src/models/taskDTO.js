@@ -1,5 +1,5 @@
-module.exports = function (ID, type, pluginCode, dataForPlugin, title, tags, course, creator, description, openTests, closedTests, date) {
-  this.ID = ID
+module.exports = function (_id, type, pluginCode, dataForPlugin, title, tags, course, creator, description, openTests, closedTests, date) {
+  this._id = _id
   this.type = type
   this.pluginCode = pluginCode
   this.dataForPlugin = dataForPlugin

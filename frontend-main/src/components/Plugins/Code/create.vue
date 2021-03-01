@@ -10,6 +10,9 @@
       ></prism-editor>
     </div>
     <div>
+      Test Inputs: <InputText type="text"
+        v-model="inputParams"
+        placeholder="param1, param2, ..."/>
       <Button label="Neuer offener Test anlegen:" @click="addNewOpenTest()" />
       <DataTable
         :value="openTestsRows"
@@ -94,6 +97,7 @@ export default {
   setup(props, { emit }) {
     let openTestsRows = ref(props.taskData.openTests);
     let closedTestsRows = ref(props.taskData.closedTests);
+    const inputParams = ref('')
 
     // watch(props, () => {
     //   code.value = props.taskData.dataForPlugin.defaultCode;
@@ -136,10 +140,15 @@ export default {
       emitChanges();
     }
 
+    function splitInputParams(){
+      const splitedInputParams = inputParams.value.split(',')
+      return splitedInputParams
+    }
+
     function emitChanges() {
       let taskData = {
         ...props.taskData,
-        dataForPlugin: {defaultCode: code.value},
+        dataForPlugin: {defaultCode: code.value, inputParams: splitInputParams()},
         openTests: openTestsRows.value,
         closedTests: closedTestsRows.value,
       };
@@ -155,7 +164,8 @@ export default {
       removeOpenTest,
       removeClosedTest,
       addNewClosedTest,
-      closedTestsRows
+      closedTestsRows,
+      inputParams,
     };
   },
 };
