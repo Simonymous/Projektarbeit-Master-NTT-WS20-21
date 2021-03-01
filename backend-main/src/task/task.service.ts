@@ -40,6 +40,7 @@ export class TaskService {
     }
   }
 
+	//TODO: TaskCollection tasks[]title synchronisieren
   async getSingleTaskCollection(taskCollectionId: String): Promise<TaskCollection> {
     console.log("[LOG] Getting Task Collection with ID:",taskCollectionId)
     if (taskCollectionId.match(/^[0-9a-fA-F]{24}$/)) {
