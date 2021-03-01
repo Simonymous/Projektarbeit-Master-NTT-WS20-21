@@ -1,10 +1,14 @@
-export default class testPlugin2 {
-
-    public getOpenTests(input:any) {
-        return "Open Test"
+    function getOpenTests(tests:any,input:any) {
+        console.log(tests)
+        return "Open Test for "+input
     }
 
-    private codingTests(tests:any,userInput:string) {
+    function submit(tests:any,input:any) {
+        console.log(tests)
+        return "Submitted: "+input
+    }
+
+    function codingTests(tests:any,userInput:string) {
         console.log("[LOG] Evaluating user input: ",userInput)
         let functionArgs= ['a','b']; //TODO: Ersetzen durch Args vom Frontend
         let returnArgs = []
@@ -39,7 +43,8 @@ export default class testPlugin2 {
         return returnArgs
       }
 
-      private codingSubmit(task:any) {
+    function codingSubmit(task:any) {
         return "SUBMITTED"
-      }
-}
+    }
+
+export default {getOpenTests,submit}
