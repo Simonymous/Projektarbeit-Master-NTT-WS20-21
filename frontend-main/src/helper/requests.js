@@ -35,6 +35,11 @@ export async function getBackendRequest(pathName) {
  * @param {*} pathName without preceeding /
  */
 export async function postBackendRequest(pathName, postParam) {
+  try{
+    let {_id, ...rest} = postParam;
+    postParam = rest;
+  }catch(e){console.log("_id not removed",e)}
+
   axios.post(BACKEND_URL + pathName, postParam, requestOptions).then(function (response) {
     return response.data
   }).catch(function (error) {

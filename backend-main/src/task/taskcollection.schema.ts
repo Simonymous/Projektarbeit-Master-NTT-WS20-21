@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export type TaskCollectionDocument = TaskCollection & Document;
 
 interface TaskInCollection {
-  id: string,
+  _id: string,
   weightening: number,
   taskName: string
 }

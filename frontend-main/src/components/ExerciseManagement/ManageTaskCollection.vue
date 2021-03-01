@@ -99,7 +99,6 @@ export default {
     taskCollectionID: String,
   },
   setup(props, { emit }) {
-    const taskCollection = ref();
     const totalPoints = ref();
 
     let emptyTaskCollection = {
@@ -113,6 +112,9 @@ export default {
       creator: "",
       tasks: [],
     };
+
+    const taskCollection = ref({...emptyTaskCollection});
+
 
     init();
     async function init() {
@@ -147,7 +149,7 @@ export default {
 
     async function handleSaveClick() {
       try {
-        if (taskCollection.value.ID === -1) {
+        if (taskCollection.value._id === -1) {
           postBackendRequest(CREATE_TASK_COLLECTION_PATH, taskCollection.value);
         } else {
           postBackendRequest(UPDATE_TASK_COLLECTION_PATH, taskCollection.value);
@@ -159,7 +161,7 @@ export default {
 
     async function handleDeleteClick() {
       try {
-        deleteBackendRequest(DELETE_TASK_COLLECTION_PATH + "/" + taskCollection.value.ID);
+        deleteBackendRequest(DELETE_TASK_COLLECTION_PATH + "/" + taskCollection.value._id);
         taskCollection.value = { ...emptyTaskCollection };
       } catch (error) {
         console.log(error);
