@@ -4,11 +4,13 @@
   "pluginsPath" : "components/Plugins",
   "URL_PATHS":{
     "TASK_PATH" : "task",
-    "CREATE_TASK_PATH" : "task/createTask",
-    "UPDATE_TASK_PATH" : "updateTask",
-    "DELETE_TASK_PATH" : "deleteTask",
-    "TEST_TASK_PATH" : "task/testTask",
-    "SUBMIT_TASK_PATH" : "task/submitTask",
-    "TASK_COLLECTION_PATH" : "taskCollection"
+    "CREATE_TASK_PATH" : "task/create",
+    "UPDATE_TASK_PATH" : "task/update",
+    "DELETE_TASK_PATH" : "task/delete",
+    "TEST_TASK_PATH" : "task/test",
+    "SUBMIT_TASK_PATH" : "task/submit",
+    "TASK_COLLECTION_PATH" : "taskCollection",
+    "CREATE_TASK_COLLECTION_PATH" : "taskCollection/create",
+    "UPDATE_TASK_COLLECTION_PATH" : "taskCollection/update"
   }
 }

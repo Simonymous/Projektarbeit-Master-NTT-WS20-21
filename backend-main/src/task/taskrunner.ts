@@ -1,4 +1,5 @@
 import * as plugins from './plugins.json' //Prüfen ob dynamisch funktioniert wenn sich json ändert...
+//TODO: Ordner pro Plugin - siehe frontend prinzip
 const pluginDirectoryPath = "./plugins/"
 
 interface IPlugin {

@@ -111,7 +111,6 @@ export default {
     }
 
     function handleSaveClick() {
-      // console.log( task.value.ID)
       try {
         task.value.pluginCode = state.plugin;
         if (task.value.ID === -1) {
@@ -127,7 +126,7 @@ export default {
 
     function handleDeleteClick() {
       try {
-        // deleteBackendRequest(DELETE_TASK_PATH + "/" + task.value.ID);
+        deleteBackendRequest(DELETE_TASK_PATH + "/" + task.value.ID);
         task.value = { ...emptyTask };
       } catch (error) {
         console.log(error);

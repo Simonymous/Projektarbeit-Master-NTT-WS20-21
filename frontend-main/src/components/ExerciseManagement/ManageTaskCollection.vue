@@ -79,9 +79,9 @@ import {
 const PATHS = require("../../../config.json").URL_PATHS;
 
 const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
-const CREATE_TASKCOLLECTION_PATH = PATHS.CREATE_TASKCOLLECTION_PATH;
-const UPDATE_TASKCOLLECTION_PATH = PATHS.UPDATE_TASKCOLLECTION_PATH;
-const DELETE_TASKCOLLECTION_PATH = PATHS.DELETE_TASKCOLLECTION_PATH;
+const CREATE_TASK_COLLECTION_PATH = PATHS.CREATE_TASK_COLLECTION_PATH;
+const UPDATE_TASK_COLLECTION_PATH = PATHS.UPDATE_TASK_COLLECTION_PATH;
+const DELETE_TASK_COLLECTION_PATH = PATHS.DELETE_TASK_COLLECTION_PATH;
 
 export default {
   components: {
@@ -140,9 +140,9 @@ export default {
     async function handleSaveClick() {
       try {
         if (taskCollection.value.ID === -1) {
-          postBackendRequest(CREATE_TASKCOLLECTION_PATH, taskCollection.value);
+          postBackendRequest(CREATE_TASK_COLLECTION_PATH, taskCollection.value);
         } else {
-          postBackendRequest(UPDATE_TASKCOLLECTION_PATH, taskCollection.value);
+          postBackendRequest(UPDATE_TASK_COLLECTION_PATH, taskCollection.value);
         }
       } catch (error) {
         console.log(error);
@@ -151,7 +151,7 @@ export default {
 
     async function handleDeleteClick() {
       try {
-        // deleteBackendRequest(DELETE_TASKCOLLECTION_PATH + "/" + taskCollection.value.ID);
+        deleteBackendRequest(DELETE_TASK_COLLECTION_PATH + "/" + taskCollection.value.ID);
         taskCollection.value = { ...emptyTaskCollection };
       } catch (error) {
         console.log(error);
