@@ -14,14 +14,18 @@
       Tags:
       <InputText type="text" v-model="task.tags" placeholder="Tags" /> Course:
       <InputText type="text" v-model="task.course" placeholder="Course" />
-
     </div>
     Plugin:<SelectPluginDropdown />
 
-    <show-plugin :taskData="task"  :pluginMode="'createTask'" @pluginChangedData="pluginChangedTask"/>
+    <show-plugin
+      :taskData="task"
+      :pluginMode="'createTask'"
+      @pluginChangedData="pluginChangedTask"
+    />
     <div class="createTaskFooter">
       <Button label="Save" v-on:click="handleSaveClick"></Button>
       <Button label="Delete" v-on:click="handleDeleteClick"></Button>
+      <Button label="Export" v-on:click="handleExportClick"></Button>
     </div>
   </div>
 </template>
@@ -39,14 +43,15 @@ import {
   deleteBackendRequest,
   putBackendRequest,
 } from "../../helper/requests";
+const fs = require("fs");
 
-const PATHS = require('../../../config.json').URL_PATHS;
 
-const TASK_PATH = PATHS.TASK_PATH
-const CREATE_TASK_PATH = PATHS.CREATE_TASK_PATH
-const UPDATE_TASK_PATH = PATHS.UPDATE_TASK_PATH
+const PATHS = require("../../../config.json").URL_PATHS;
+
+const TASK_PATH = PATHS.TASK_PATH;
+const CREATE_TASK_PATH = PATHS.CREATE_TASK_PATH;
+const UPDATE_TASK_PATH = PATHS.UPDATE_TASK_PATH;
 const DELETE_TASK_PATH = PATHS.DELETE_TASK_PATH;
-
 
 export default {
   name: "manageTask",
@@ -88,7 +93,7 @@ export default {
     function initialize() {
       if (props.taskID === -1) {
         task.value = { ...emptyTask, title: "ttt" };
-        state.plugin = task.value.pluginCode
+        state.plugin = task.value.pluginCode;
       } else {
         requestTask();
       }
@@ -96,13 +101,13 @@ export default {
 
     async function requestTask() {
       try {
-        if (process.env.VUE_APP_BACKEND_ONLINE === 'true') {
+        if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
           task.value = await getBackendRequest(TASK_PATH + "/" + props.taskID);
         } else {
           task.value = getBackendRequestDummy(TASK_PATH + "/" + props.taskID);
         }
 
-        state.plugin = task.value.pluginCode
+        state.plugin = task.value.pluginCode;
       } catch (error) {
         console.log(error);
       }
@@ -110,11 +115,11 @@ export default {
 
     function handleSaveClick() {
       try {
-        task.value.pluginCode = state.plugin
+        task.value.pluginCode = state.plugin;
         if (task.value._id === -1) {
           postBackendRequest(CREATE_TASK_PATH, task.value);
         } else {
-          console.log(task.value)
+          console.log(task.value);
           postBackendRequest(UPDATE_TASK_PATH, task.value);
         }
       } catch (error) {
@@ -131,16 +136,26 @@ export default {
       }
     }
 
-    function pluginChangedTask(payload){
-      task.value = payload;
+    function handleExportClick() {
+      const data = JSON.stringify(task.value)
+       const blob = new Blob([data], { type: 'application/json' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = task.value.title + '-' + task.value._id
+        link.click()
+        URL.revokeObjectURL(link.href)
     }
 
+    function pluginChangedTask(payload) {
+      task.value = payload;
+    }
 
     return {
       task,
       handleSaveClick,
       handleDeleteClick,
-      pluginChangedTask
+      pluginChangedTask,
+      handleExportClick,
     };
   },
 };

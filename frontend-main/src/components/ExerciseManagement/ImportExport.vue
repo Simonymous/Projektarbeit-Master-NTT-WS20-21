@@ -1,32 +1,59 @@
 <template>
   <div>
-    <FileUpload name="demo[]" :customUpload="true" @uploader="myUploader" accept=".json"/>
+    <FileUpload
+      name="demo[]"
+      :customUpload="true"
+      @uploader="myUploader"
+      accept=".json"
+      :multiple="true"
+      :auto="true"
+      @remove="test()"
+      @upload="test()"
+      @clear="test()"
+    />
+    <Button
+      label="Task(s) neu erstellen"
+      v-on:click="handleCreateNewTasks"
+    ></Button>
+    <Button
+      label="Task(s) überschreiben"
+      v-on:click="handleOverwriteTasks"
+    ></Button>
   </div>
 </template>
 <script>
-    import {ref} from 'vue'
+import { ref } from "vue";
 
 export default {
-  //:customUpload="true" @uploader="myUploader"
   name: "importExport",
   setup(props) {
-
-      let myFile = ref();
+    let myFiles = ref([]);
 
     function myUploader(event) {
+      myFiles.value = []
 
-        // let file = event.files[0]
-
+      event.files.forEach((file) => {
         const reader = new FileReader();
-        reader.onload = e => console.log(e.target.result);
+      reader.onload = (e) => myFiles.value.push(JSON.parse(e.target.result));
+        reader.readAsText(file);
+      });
+    }
 
-        event.files.forEach(file => {
-            reader.readAsText(file);
-        });
+    function test(){
+      console.log("oksdnm")
+      // console.log(event)
+    }
 
-}
+    function handleCreateNewTasks() {
+      console.log(myFiles.value);
+    }
+
+    function handleOverwriteTasks() {}
     return {
       myUploader,
+      handleCreateNewTasks,
+      handleOverwriteTasks,
+      test
     };
   },
 };
