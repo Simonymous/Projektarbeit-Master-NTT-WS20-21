@@ -28,16 +28,15 @@ import Card from 'primevue/card'
 import Slider from 'primevue/slider'
 import Accordion from 'primevue/accordion'
 import AccordionTab from 'primevue/accordiontab'
-import ToastService from 'primevue/toastservice';
-import Toast from 'primevue/toast';
-import MultiSelect from 'primevue/multiselect';
-import AutoComplete from 'primevue/autocomplete';
-import FileUpload from 'primevue/fileupload';
+import ToastService from 'primevue/toastservice'
+import Toast from 'primevue/toast'
+import MultiSelect from 'primevue/multiselect'
+import AutoComplete from 'primevue/autocomplete'
+import FileUpload from 'primevue/fileupload'
 import 'primevue/resources/themes/saga-blue/theme.css'
 // import 'primevue/resources/themes/md-light-indigo/theme.css'
 
 import FileInput from 'vue3-simple-file-input'
-
 
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
@@ -56,12 +55,11 @@ const app = createApp(App)
 app.use(ConfirmationService)
 app.use(PrimeVue)
 app.use(router, VueCookies)
-app.use(ToastService);
+app.use(ToastService)
 
 app.provide(stateSymbol, createState())
 
 app.component('Button', Button)
-// app.component('PrismEditor', PrismEditor)
 app.component('DataTable', DataTable)
 app.component('Column', Column)
 app.component('Dropdown', Dropdown)
@@ -89,6 +87,5 @@ app.component('MultiSelect', MultiSelect)
 app.component('AutoComplete', AutoComplete)
 app.component('FileUpload', FileUpload)
 app.component('FileInput', FileInput)
-
 
 app.mount('#app')

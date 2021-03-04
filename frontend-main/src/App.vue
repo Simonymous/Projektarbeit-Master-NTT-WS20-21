@@ -1,26 +1,35 @@
 <template>
   <div id="app">
+    <div v-if="!this.$route.path.includes('/solvefullscreen')">
     <GlobalNavBar />
+    </div>
     <div class="auth-wrapper">
       <div class="auth-inner">
-            <Toast />
+        <Toast />
+      <!-- {{this.$route}} -->
 
-        <router-view/>
+        <router-view />
       </div>
-    </div> 
+    </div>
   </div>
 </template>
 
 <script>
+import GlobalNavBar from "./views/GlobalNavBar";
+import { useRoute } from 'vue-router'
 
-import GlobalNavBar from './views/GlobalNavBar'
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     GlobalNavBar,
+  },
+  setup(){
+        const route = useRoute()
+
+  return{route}
   }
-}
+};
 </script>
 
 <style>
@@ -32,8 +41,7 @@ export default {
   color: #2c3e50;
 }
 
-.body{
-  margin: 0px
-
+.body {
+  margin: 0px;
 }
 </style>

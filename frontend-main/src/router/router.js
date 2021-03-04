@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/SignUp.vue'
 import Settings from '../views/Settings'
+import SolveFullScreen from '../views/SolveFullScreen'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings
+  },
+  {
+    path: '/solvefullscreen',
+    name: 'SolveFullScreen',
+    component: SolveFullScreen
   },
 ]
 
