@@ -12,14 +12,14 @@ export default class taskRunner {
   async runTests(task:any,userInput:string):Promise<any> {
     console.log("[LOG] Running Tests:",task.openTests)
     const plugin = await this.getPlugin(task.pluginCode)
-    const testResult = plugin.default.getOpenTests(task.openTests,userInput)
+    const testResult = plugin.default.getOpenTests(task.dataForPlugin,task.openTests,userInput)
     return testResult
   }
 
   async submitTask(task:any,userInput:string):Promise<any> {
       console.log("[LOG] Submitting:",task.closedTests)
       const plugin = await this.getPlugin(task.pluginCode)
-      const submittedResult = plugin.default.submit(task.closedTests,userInput)
+      const submittedResult = plugin.default.submit(task.dataForPlugin,task.closedTests,userInput)
       return submittedResult
   }
 
