@@ -36,8 +36,6 @@ import FileUpload from 'primevue/fileupload'
 import 'primevue/resources/themes/saga-blue/theme.css'
 // import 'primevue/resources/themes/md-light-indigo/theme.css'
 
-import FileInput from 'vue3-simple-file-input'
-
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 // import PrismEditor from 'vue-prism-editor'
@@ -86,6 +84,5 @@ app.component('Toast', Toast)
 app.component('MultiSelect', MultiSelect)
 app.component('AutoComplete', AutoComplete)
 app.component('FileUpload', FileUpload)
-app.component('FileInput', FileInput)
 
 app.mount('#app')

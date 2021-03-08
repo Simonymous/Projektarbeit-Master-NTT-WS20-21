@@ -17,7 +17,7 @@ export function getBackendRequestDummy(pathName) {
         defaultCode:
           "[Vue warn]: Extraneous non-props attributes (active) were passed to component but could not be automatically inherited because component renders fragment or text root nodes. ",
         inputParams: [],
-        },
+      },
       date: new Date("20/01/1999"),
     };
     //Spezifische TaskCollection:
@@ -34,7 +34,7 @@ export function getBackendRequestDummy(pathName) {
       tasks: [
         { _id: 96, weighting: 66, title: "qwertzuiop" },
         { _id: 10, weighting: 34, title: "unwichtiger Task" },
-        { _id: 10, weighting: 35, title: "wichitger Task" },
+        { _id: 15, weighting: 35, title: "wichitger Task" },
       ],
     };
 

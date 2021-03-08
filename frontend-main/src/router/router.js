@@ -30,7 +30,7 @@ const routes = [
     path: '/solvefullscreen',
     name: 'SolveFullScreen',
     component: SolveFullScreen
-  },
+  }
 ]
 
 const router = createRouter({
