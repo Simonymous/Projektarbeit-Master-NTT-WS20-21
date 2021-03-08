@@ -120,7 +120,7 @@ export default {
           postBackendRequest(CREATE_TASK_PATH, task.value);
         } else {
           console.log(task.value);
-          postBackendRequest(UPDATE_TASK_PATH, task.value);
+          putBackendRequest(UPDATE_TASK_PATH, task.value);
         }
       } catch (error) {
         console.log(error);

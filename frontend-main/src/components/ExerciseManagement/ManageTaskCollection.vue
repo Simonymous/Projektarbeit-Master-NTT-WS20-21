@@ -152,7 +152,7 @@ export default {
         if (taskCollection.value._id === -1) {
           postBackendRequest(CREATE_TASK_COLLECTION_PATH, taskCollection.value);
         } else {
-          postBackendRequest(UPDATE_TASK_COLLECTION_PATH, taskCollection.value);
+          putBackendRequest(UPDATE_TASK_COLLECTION_PATH, taskCollection.value);
         }
       } catch (error) {
         console.log(error);

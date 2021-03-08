@@ -59,30 +59,18 @@ export class TaskService {
     return this.taskModel.find({searchQuery}).exec();
   }
 
-  async updateTask(taskId: String, taskDto: Task): Promise<Task> {
+  async updateTask(taskDto: any): Promise<Task> {
+    console.log("[LOG] Update Task ",taskDto)
+    const taskID = taskDto._id
+    let {_id, ...rest} = taskDto
+    return this.taskModel.findOneAndUpdate({_id: taskID},{...rest}, {new:true})
+  }
 
-    /**if(taskDto.title){
-      return this.taskModel.findByIdAndUpdate(taskId,{'title': taskDto.title}).exec();
-    }
-    if(taskDto.tags){
-      return this.taskModel.findByIdAndUpdate(taskId,{'tags': taskDto.tags}).exec();
-    }
-    if(taskDto.description){
-      return this.taskModel.findByIdAndUpdate(taskId,{'description': taskDto.description}).exec();
-    }
-    if(taskDto.tests.hiddentests){
-      return this.taskModel.findByIdAndUpdate(taskId,{'tests.hiddentest': taskDto.tests.hiddentests}).exec();
-    }
-    if(taskDto.tests.opentests){
-      return this.taskModel.findByIdAndUpdate(taskId,{'tests.opentest': taskDto.tests.opentests}).exec();
-    }
-    if(taskDto.maxPoints){
-      return this.taskModel.findByIdAndUpdate(taskId,{'maxPoints': taskDto.maxPoints}).exec();
-    }
-    if(taskDto.maxTime){
-      return this.taskModel.findByIdAndUpdate(taskId,{'maxTime': taskDto.maxTime}).exec();
-    }**/
-    return this.taskModel.findOne();
+  async updateTaskCollection(taskDto: any): Promise<TaskCollection> {
+    console.log("[LOG] Update Task Collection",taskDto)
+    const taskID = taskDto._id
+    let {_id, ...rest} = taskDto
+    return this.taskCollectionModel.findOneAndUpdate({_id: taskID},{...rest}, {new:true})
   }
 
   async deleteTask(taskId: String): Promise<Task> {
