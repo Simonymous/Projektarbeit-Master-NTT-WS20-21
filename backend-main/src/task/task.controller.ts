@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Patch,
+  Put,
   Delete,
   Res,
   HttpStatus,
@@ -55,11 +56,12 @@ export class TaskController {
     });
   }
 
-  @Patch(':id')
+  @Put('/update')
   updateTask(@Param('id') taskID: string, @Body() taskDTO: Task) {
-    this.taskService.updateTask(taskID, taskDTO);
+    this.taskService.updateTask(taskDTO);
     return 'updated';
   }
+
   @Delete(':id')
   deleteTask(@Param('id') taskID: string) {
     this.taskService.deleteTask(taskID);

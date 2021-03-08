@@ -5,7 +5,7 @@ import {
   Body,
   Get,
   Param,
-  Patch,
+  Put,
   Delete,
   Res,
   HttpStatus,
@@ -44,6 +44,11 @@ export class TaskCollectionController {
     return res.status(HttpStatus.OK).json(returnObj);
   }
 
+  @Put('/update')
+  updateTaskCollection(@Param('id') taskID: string, @Body() taskDTO: TaskCollection) {
+    this.taskService.updateTaskCollection(taskDTO);
+    return 'updated';
+  }
 
   @Delete(':id')
   deleteTaskCollection(@Param('id') taskID: string) {
