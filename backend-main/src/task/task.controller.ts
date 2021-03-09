@@ -43,7 +43,8 @@ export class TaskController {
   @Get(':id')
   async getTask(@Param('id') taskID: string, @Res() res) {
     const returnObj = await this.taskService.getSingleTask(taskID);
-    return res.status(HttpStatus.OK).json(returnObj);
+    if(returnObj) return res.status(HttpStatus.OK).json(returnObj);
+    else return res.status(HttpStatus.NOT_FOUND).json("")
   }
 
   // Suche primär nach Tags und dann nach Name -> erhalte Searchstring
@@ -77,11 +78,8 @@ export class TaskController {
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
-      let solutions = await mytaskrunner.runTests(task, taskinput.userinput);
-      return res.status(HttpStatus.OK).json({
-        message: 'Tests:',
-        opentests: solutions,
-      });
+      let solutions = await mytaskrunner.runTests(task, taskinput.userInput);
+      return res.status(HttpStatus.OK).json(solutions);
     }
 
     return res.status(HttpStatus.NOT_FOUND).json({

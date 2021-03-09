@@ -41,7 +41,9 @@ export class TaskCollectionController {
   @Get(':id')
   async getTaskCollection(@Param('id') taskID: string, @Res() res) {
     const returnObj = await this.taskService.getSingleTaskCollection(taskID);
-    return res.status(HttpStatus.OK).json(returnObj);
+    if(returnObj) return res.status(HttpStatus.OK).json(returnObj);
+    else return res.status(HttpStatus.NOT_FOUND).json("")
+
   }
 
   @Put('/update')

@@ -103,9 +103,10 @@ export default {
       let testResults;
       try {
         if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
+          console.log(task.value.dataForPlugin)
           testResults = await postBackendRequest(
             TEST_TASK_PATH + "/" + props.taskID,
-            task.value.dataForPlugin
+            {userInput: String(task.value.dataForPlugin.defaultCode)}
           );
         } else {
           testResults = postBackendRequestDummy(
@@ -135,29 +136,30 @@ export default {
     }
 
     function openToasts(dataArray) {
-      console.log(dataArray);
       toast.removeAllGroups();
-      toast.add({
-        severity: "info",
-        summary: "Info Message",
-        detail: "Message Content",
-        life: 3000,
-      });
 
-      dataArray.forEach((item) => {
+      if(dataArray.testResults.length == 0){
+      toast.add({
+        severity: "error",
+        summary: dataArray.message,
+      });
+      }
+
+
+      dataArray.testResults.forEach((item) => {
         console.log(item);
-        if (item.status === "success") {
+        if (item.passed) {
           toast.add({
             severity: "success",
-            summary: item.title,
-            detail: item.detail,
+            summary: item.message,
+            // detail: item.detail,
             life: 3000,
           });
-        } else if (item.status === "error") {
+        } else {
           toast.add({
             severity: "error",
-            summary: item.title,
-            detail: item.detail,
+            summary: item.message,
+            // detail: item.detail,
           });
         }
       });

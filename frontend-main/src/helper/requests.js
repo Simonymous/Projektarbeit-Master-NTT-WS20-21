@@ -19,7 +19,6 @@ const requestOptions = {
  */
 export async function getBackendRequest(pathName) {
   return axios.get(BACKEND_URL + pathName, requestOptions).then(function (response) {
-    console.log(response.data)
     return response.data
   }).catch(function (error) {
     if (error?.response.status === 401) {
@@ -40,7 +39,7 @@ export async function postBackendRequest(pathName, postParam) {
     postParam = rest;
   }catch(e){console.log("_id not removed",e)}
 
-  axios.post(BACKEND_URL + pathName, postParam, requestOptions).then(function (response) {
+  return axios.post(BACKEND_URL + pathName, postParam, requestOptions).then(function (response) {
     return response.data
   }).catch(function (error) {
     console.error(error)
@@ -49,7 +48,7 @@ export async function postBackendRequest(pathName, postParam) {
 }
 
 export async function putBackendRequest(pathName, putParam){
-  axios.put(BACKEND_URL + pathName, putParam, requestOptions).then(function(response){
+  return axios.put(BACKEND_URL + pathName, putParam, requestOptions).then(function(response){
     return response.data
   }).catch(function(error){
     return error

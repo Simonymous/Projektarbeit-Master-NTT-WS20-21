@@ -10,7 +10,7 @@ export default class taskRunner {
   constructor() {}
 
   async runTests(task:any,userInput:string):Promise<any> {
-    console.log("[LOG] Running Tests:",task.openTests)
+    console.log("[LOG] Running Tests:",task.openTests,"for data:",userInput)
     const plugin = await this.getPlugin(task.pluginCode)
     const testResult = plugin.default.getOpenTests(task.dataForPlugin,task.openTests,userInput)
     return testResult

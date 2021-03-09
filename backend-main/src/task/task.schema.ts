@@ -10,6 +10,7 @@ export class Task {
     description: string,
     content: string,
     creator: string,
+    type: string,
     tags: [],
     course: string,
     pluginCode: string,
@@ -31,6 +32,9 @@ export class Task {
   creator: string;
 
   @Prop()
+  type: string;
+
+  @Prop()
   tags: [];
 
   @Prop()
@@ -41,7 +45,7 @@ export class Task {
 
   @Prop()
   dataForPlugin:any;
-  
+
   @Prop()
   closedTests: [];
 
@@ -50,7 +54,7 @@ export class Task {
 
   @Prop()
   date: Date;
-  
+
   // @Prop()
   // maxPoints: number;
 

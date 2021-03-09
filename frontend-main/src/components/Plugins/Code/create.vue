@@ -97,15 +97,17 @@ export default {
   setup(props, { emit }) {
     let openTestsRows = ref(props.taskData.openTests);
     let closedTestsRows = ref(props.taskData.closedTests);
-    const inputParams = ref('')
-
-    // watch(props, () => {
-    //   code.value = props.taskData.dataForPlugin.defaultCode;
-    //   openTestsRows.value = props.taskData.openTests;
-    //   closedTestsRows.value = props.taskData.closedTests;
-    // });
-
+    let inputParams = ref(props.taskData?.dataForPlugin?.inputParams);
     let code = ref(props.taskData?.dataForPlugin?.defaultCode);
+
+
+    watch(props, () => {
+      code.value = props.taskData.dataForPlugin.defaultCode;
+      openTestsRows.value = props.taskData.openTests;
+      closedTestsRows.value = props.taskData.closedTests;
+      inputParams.value = props.taskData?.dataForPlugin?.inputParams;
+    });
+
 
     function highlighter(code) {
       return highlight(code, languages.js, "typescript"); // languages.<insert language> to return html with markup
@@ -141,8 +143,8 @@ export default {
     }
 
     function splitInputParams(){
-      const splitedInputParams = inputParams.value.split(',')
-      return splitedInputParams
+      const splittedInputParams = inputParams.value.split(',')
+      return splittedInputParams
     }
 
     function emitChanges() {

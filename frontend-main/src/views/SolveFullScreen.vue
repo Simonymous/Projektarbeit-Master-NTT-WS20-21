@@ -21,10 +21,13 @@
         </SplitterPanel>
       </Splitter>
     </div>
-    <div v-else>
+    <div v-else-if="exercise.type === 'task'">
       <p>Task ausgewählt</p>
-        <SolveTask :taskID="exercise._id"/>
+        <SolveTask :taskID="exercise?._id"/>
     </div>
+    <div v-else>
+      <p> Invalid ID</p>
+      </div>
   </div>
 </template>
 <script>
@@ -57,7 +60,7 @@ export default {
     const exercise = ref({});
     const toast = useToast();
 
-    let exerciseId = 'URL_PARAMS.get("exerciseId")';
+    let exerciseId = URL_PARAMS.get("exerciseId");
 
     initialize();
     function initialize() {
