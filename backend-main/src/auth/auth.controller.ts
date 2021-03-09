@@ -27,13 +27,13 @@ export class AuthController {
       @Res() response
     ) {
       const returnObj = await this.authService.moodleLogin(request);
-      return response.redirect('http://localhost:8080/moodle?taskId='+returnObj.taskId+'&token='+returnObj.access_token)
+      return response.redirect('http://localhost:8080/solvefullscreen?exerciseId='+returnObj.taskId+'&token='+returnObj.access_token)
       }
-  
+
     @Post('/register')
     async register(    @Res() res,
     @Body() userDTO: UserDTO, ) {
-        
+
         const returnObj = await this.usersService.create(userDTO);
         return res.status(HttpStatus.OK).json({
             message: 'User added successful!',
