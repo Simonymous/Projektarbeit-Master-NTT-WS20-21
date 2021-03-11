@@ -2,7 +2,7 @@
   <div>
     {{ exerciseId }}
     <h2>Solve Exercise</h2>
-    <div v-if="exercise.type === 'taskCollection'">
+    <div v-if="exercise.type === 'TaskCollection'">
       <Splitter layout="horizontal">
         <SplitterPanel size="20">
           <Listbox
