@@ -66,17 +66,34 @@ export class TaskService {
     return this.taskModel.findOneAndUpdate({_id: taskID},{...rest}, {new:true})
   }
 
-  async getTaskCollectionsForTask(taskId: string): Promise<TaskCollection[]> {
+  async getTaskCollectionsForTask(taskId: String): Promise<TaskCollection[]> {
+    console.log("[LOG] Finding TaskCollections for task ",taskId)
     const taskCollections = await this.findAllTaskCollections();
     let taskCollectionsFound:TaskCollection[] = []
     taskCollections.forEach(taskCollection => {
       const tasks = taskCollection.tasks
-
       tasks.forEach(task => {
         if(task._id === taskId) taskCollectionsFound.push(taskCollection)
       })
     })
     return taskCollectionsFound
+  }
+
+  private async deleteTasksInCollection(taskId) {
+    const taskCollections = await this.findAllTaskCollections();
+    taskCollections.forEach((taskCollection:any) => {
+      const tasks = taskCollection.tasks
+      const newTasksForCollection = []
+      tasks.forEach(task => {
+        if(!(task._id.toString() === taskId.toString())) newTasksForCollection.push(task)
+      })
+      if(tasks.length != newTasksForCollection.length) {
+        let newTaskCollection = taskCollection
+        newTaskCollection.tasks = newTasksForCollection;
+        this.updateTaskCollection(newTaskCollection)
+      }
+
+    })
   }
 
   async updateTaskCollection(taskDto: any): Promise<TaskCollection> {
@@ -88,6 +105,8 @@ export class TaskService {
 
   async deleteTask(taskId: String): Promise<Task> {
     if (taskId.match(/^[0-9a-fA-F]{24}$/)) {
+      //Cleanup: Task in den vorkommenden Collections auch löschen
+      this.deleteTasksInCollection(taskId)
       return this.taskModel.findByIdAndRemove(taskId).exec();
     } else {
       return null;

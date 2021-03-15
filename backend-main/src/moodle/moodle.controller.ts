@@ -1,9 +1,9 @@
 
 import { Controller, Post, Body, Get, Param, Patch, Delete, Res, HttpStatus, UseGuards, Req, Redirect } from '@nestjs/common';
 /**
- * 
+ *
  * https://developer.ibm.com/depmodels/cloud/tutorials/implement-learning-tool-interoperability/
- * 
+ *
  */
 var uuid = require("uuid4"); //Für das speichern der session -> Auch denkbar mit json token?
 var lti = require("ims-lti"); //Modifiziertes ims lti, siehe outcomes.js l206
@@ -27,7 +27,7 @@ export class MoodleController {
           }
           console.log("[LOG] INVALID Grade:")
           console.log(err)
-          
+
           return "INVALID GRADE "+err
         }
         console.log("[LOG] Note erfolgreich übermittelt")
@@ -47,12 +47,12 @@ export class MoodleController {
     provider.valid_request(request, (err, isValid) => {
       if (!isValid) {
         console.log("[LOG] INVALID LTI REQUEST..")
-        
-        return "INVALID:"+err
+
+        return "INVALID: "+err
       }
 
       a = provider; //Temporäre Lösung bis die Sesssions in die DB geschoben werden
-      
+
       return "Provider läuft.."
     })
 

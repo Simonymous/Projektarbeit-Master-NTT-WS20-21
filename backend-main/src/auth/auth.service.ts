@@ -7,7 +7,7 @@ import moodleSessions from './moodleSessions'
 var lti = require("ims-lti");
 @Injectable()
 export class AuthService {
-  
+
   constructor( private usersService: UsersService,
                private jwtService: JwtService
               ) {}
@@ -24,7 +24,7 @@ export class AuthService {
   }
 
 
-  async login(user: any) {    
+  async login(user: any) {
     const validatedUser = await this.usersService.findOne(user.username)
     //console.log(validatedUser)
     const payload = { username: validatedUser.username, sub: validatedUser.password};
@@ -43,28 +43,28 @@ export class AuthService {
     provider.valid_request(request, (err, isValid) => {
       if (!isValid) {
         console.log("[LOG] INVALID LTI REQUEST..")
-        
+
         return "INVALID:"+err
       }
       console.log("[LOG] LTI Session initiiert:")
-      //console.log(provider)
+      console.log(provider)
       taskId = provider.body.custom_taskId;
       //console.log(taskId)
 
       const payload = {'obj':'test'}
       access_token = this.jwtService.sign(payload)
       sessions.addSession(access_token,provider)
-      
+
       //return "Provider läuft.."
     })
 
-    
+
     //console.log(sessions)
 
     //const payload = {}
 
     return {access_token: access_token,
             taskId: taskId}
-    
+
   }
 }
