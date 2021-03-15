@@ -31,7 +31,7 @@ export class TaskService {
     return this.taskCollectionModel.find({}).exec();
   }
 
-  async getSingleTask(taskId: String): Promise<Task> {
+  async getSingleTask(taskId: string): Promise<Task> {
     console.log("[LOG] Getting Task with ID:",taskId)
     if (taskId.match(/^[0-9a-fA-F]{24}$/)) {
       return this.taskModel.findById({'_id': taskId}).exec();
@@ -41,7 +41,7 @@ export class TaskService {
   }
 
 	//TODO: TaskCollection tasks[]title synchronisieren
-  async getSingleTaskCollection(taskCollectionId: String): Promise<TaskCollection> {
+  async getSingleTaskCollection(taskCollectionId: string): Promise<TaskCollection> {
     console.log("[LOG] Getting Task Collection with ID:",taskCollectionId)
     if (taskCollectionId.match(/^[0-9a-fA-F]{24}$/)) {
       return this.taskCollectionModel.findById({'_id': taskCollectionId}).exec();
@@ -66,7 +66,7 @@ export class TaskService {
     return this.taskModel.findOneAndUpdate({_id: taskID},{...rest}, {new:true})
   }
 
-  async getTaskCollectionsForTask(taskId: String): Promise<TaskCollection[]> {
+  async getTaskCollectionsForTask(taskId: string): Promise<TaskCollection[]> {
     console.log("[LOG] Finding TaskCollections for task ",taskId)
     const taskCollections = await this.findAllTaskCollections();
     let taskCollectionsFound:TaskCollection[] = []
@@ -103,7 +103,7 @@ export class TaskService {
     return this.taskCollectionModel.findOneAndUpdate({_id: taskID},{...rest}, {new:true})
   }
 
-  async deleteTask(taskId: String): Promise<Task> {
+  async deleteTask(taskId: string): Promise<Task> {
     if (taskId.match(/^[0-9a-fA-F]{24}$/)) {
       //Cleanup: Task in den vorkommenden Collections auch löschen
       this.deleteTasksInCollection(taskId)
@@ -113,7 +113,7 @@ export class TaskService {
     }
   }
 
-  async deleteTaskCollection(taskCollectionId: String): Promise<TaskCollection> {
+  async deleteTaskCollection(taskCollectionId: string): Promise<TaskCollection> {
     if (taskCollectionId.match(/^[0-9a-fA-F]{24}$/)) {
       return this.taskCollectionModel.findByIdAndRemove(taskCollectionId).exec();
     } else {

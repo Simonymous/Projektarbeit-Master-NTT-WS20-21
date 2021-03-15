@@ -41,18 +41,18 @@ export class TaskController {
   }
 
   @Get('/getTaskCollections/:id')
-  async getTaskCollectionsForTask(@Param('id') taskID: String) {
+  async getTaskCollectionsForTask(@Param('id') taskID: string) {
     return await this.taskService.getTaskCollectionsForTask(taskID);
   }
 
   @Get(':id')
-  async getTask(@Param('id') taskID: String, @Res() res) {
+  async getTask(@Param('id') taskID: string, @Res() res) {
     const returnObj = await this.taskService.getSingleTask(taskID);
     if(returnObj) return res.status(HttpStatus.OK).json(returnObj);
     else return res.status(HttpStatus.NOT_FOUND).json("")
   }
 
-  // Suche primär nach Tags und dann nach Name -> erhalte SearchString
+  // Suche primär nach Tags und dann nach Name -> erhalte Searchstring
   @Post('/searchTask')
   async searchTask(@Res() res, @Body() searchQuery: any) {
     const returnObj = await this.taskService.searchTask(searchQuery);
@@ -63,14 +63,14 @@ export class TaskController {
   }
 
   @Put('/update')
-  async updateTask(@Param('id') taskID: String, @Body() taskDTO: Task) {
+  async updateTask(@Param('id') taskID: string, @Body() taskDTO: Task) {
     if(await this.taskService.updateTask(taskDTO)) return 'updated'
     else return 'not updated'
 
   }
 
   @Delete(':id')
-  async deleteTask(@Param('id') taskID: String) {
+  async deleteTask(@Param('id') taskID: string) {
 
     if(await this.taskService.deleteTask(taskID)) return 'deleted'
     else return 'not deleted'
@@ -79,7 +79,7 @@ export class TaskController {
 
   @Post('/test/:id')
   async getOpenTests(
-    @Param('id') taskID: String,
+    @Param('id') taskID: string,
     @Body() taskinput: any,
     @Res() res,
   ) {
@@ -97,7 +97,7 @@ export class TaskController {
 
   @Post('/submit/:id')
   async submitTask(
-    @Param('id') taskID: String,
+    @Param('id') taskID: string,
     @Body() submission: any,
     @Res() res,
   ) {
