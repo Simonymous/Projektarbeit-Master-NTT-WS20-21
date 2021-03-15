@@ -66,6 +66,19 @@ export class TaskService {
     return this.taskModel.findOneAndUpdate({_id: taskID},{...rest}, {new:true})
   }
 
+  async getTaskCollectionsForTask(taskId: string): Promise<TaskCollection[]> {
+    const taskCollections = await this.findAllTaskCollections();
+    let taskCollectionsFound:TaskCollection[] = []
+    taskCollections.forEach(taskCollection => {
+      const tasks = taskCollection.tasks
+
+      tasks.forEach(task => {
+        if(task._id === taskId) taskCollectionsFound.push(taskCollection)
+      })
+    })
+    return taskCollectionsFound
+  }
+
   async updateTaskCollection(taskDto: any): Promise<TaskCollection> {
     console.log("[LOG] Update Task Collection",taskDto)
     const taskID = taskDto._id

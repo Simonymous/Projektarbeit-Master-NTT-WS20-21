@@ -40,6 +40,11 @@ export class TaskController {
     return this.taskService.findAllTasks();
   }
 
+  @Get('/getTaskCollections/:id')
+  async getTaskCollectionsForTask(@Param('id') taskID: string) {
+    return await this.taskService.getTaskCollectionsForTask(taskID);
+  }
+
   @Get(':id')
   async getTask(@Param('id') taskID: string, @Res() res) {
     const returnObj = await this.taskService.getSingleTask(taskID);
