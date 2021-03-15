@@ -24,7 +24,7 @@ export function getBackendRequestDummy(pathName) {
   } else if (pathName.includes("taskCollection/")) {
     return {
       _id: "187",
-      type: "taskCollection",
+      type: "TaskCollection",
       title: "Ich bin ein Aufgabenblatt",
       description: "Beschreibung Beschreibung Beschreibung Beschreibung ",
       date: new Date("20/01/1999"),

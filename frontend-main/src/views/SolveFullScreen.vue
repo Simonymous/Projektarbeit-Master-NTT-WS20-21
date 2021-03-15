@@ -12,10 +12,18 @@
             optionDisabled="disabled"
             metaKeySelection="false"
           />
+          <Button
+            v-on:click="submitWholeCollection"
+            label="Submit Collection"
+          ></Button>
         </SplitterPanel>
         <SplitterPanel size="80">
           <div v-if="selectedTaskLite?._id">
-            <SolveTask :taskID="selectedTaskLite._id" v-on:taskSubmitted="taskSubmitted"/>
+            <SolveTask
+              :taskID="selectedTaskLite._id"
+              :customSubmitPath="SUBMIT_TASK_IN_COLLECTION_PATH"
+              v-on:taskSubmitted="taskSubmitted"
+            />
           </div>
           <div v-else>Bitte eine Aufgabe auswählen.</div>
         </SplitterPanel>
@@ -23,11 +31,14 @@
     </div>
     <div v-else-if="exercise.type === 'task'">
       <p>Task ausgewählt</p>
-        <SolveTask :taskID="exercise?._id"/>
+      <SolveTask :taskID="exercise?._id" v-on:taskSubmitted="terminateInputProcess"/>
+    </div>
+    <div v-else-if="exercise.type === 'finished'">
+      <p>Aufgabe abgegeben</p>
     </div>
     <div v-else>
-      <p> Invalid ID</p>
-      </div>
+      <p>Invalid ID</p>
+    </div>
   </div>
 </template>
 <script>
@@ -47,6 +58,9 @@ const PATHS = require("../../config.json").URL_PATHS;
 
 const TASK_PATH = PATHS.TASK_PATH;
 const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
+const SUBMIT_TASK_IN_COLLECTION_PATH = PATHS.SUBMIT_TASK_IN_COLLECTION_PATH;
+const SUBMIT_TASK_COLLECTION_PATH = PATHS.SUBMIT_TASK_COLLECTION_PATH;
+
 
 export default {
   name: "SolveFullScreen",
@@ -99,13 +113,30 @@ export default {
       selectedTaskLite.value = {}
     }
 
+    async function submitWholeCollection(){
+      await getBackendRequest(SUBMIT_TASK_COLLECTION_PATH + "/" + exerciseId);
+      terminateInputProcess()
+    }
+
+    function terminateInputProcess(){
+      exercise.value.type = 'finished'
+    }
+
     return {
       exerciseId,
       selectedTaskLite,
       exerciseType,
       exercise,
-      taskSubmitted
+      taskSubmitted,
+      SUBMIT_TASK_IN_COLLECTION_PATH,
+      submitWholeCollection,
+      terminateInputProcess
     };
   },
 };
 </script>
+<style lang="scss" scoped>
+button {
+  margin: 5px;
+}
+</style>

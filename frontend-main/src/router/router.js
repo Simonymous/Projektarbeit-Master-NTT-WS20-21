@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Signup from '../views/SignUp.vue'
 import Settings from '../views/Settings'
 import SolveFullScreen from '../views/SolveFullScreen'
+import AlreadySubmitted from '../views/AlreadySubmitted'
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings
+  },
+  {
+    path: '/solveFullScreen/alreadySubmitted',
+    name: 'Error',
+    component: AlreadySubmitted
   },
   {
     path: '/solvefullscreen',

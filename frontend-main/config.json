@@ -9,8 +9,12 @@
     "DELETE_TASK_PATH" : "task/delete",
     "TEST_TASK_PATH" : "task/test",
     "SUBMIT_TASK_PATH" : "task/submit",
+    "TASK_GET_LINKED_TASK_COLLECTIONS" : "task/getTaskCollections",
     "TASK_COLLECTION_PATH" : "taskCollection",
     "CREATE_TASK_COLLECTION_PATH" : "taskCollection/create",
-    "UPDATE_TASK_COLLECTION_PATH" : "taskCollection/update"
+    "UPDATE_TASK_COLLECTION_PATH" : "taskCollection/update",
+    "SUBMIT_TASK_IN_COLLECTION_PATH" : "taskCollection/submitTask",
+    "SUBMIT_TASK_COLLECTION_PATH" :  "taskCollection/submitCollection",
+    "DEEP_EXPORT_TASK_COLLECTION" : "taskCollection/deepexportCollection"
   }
 }

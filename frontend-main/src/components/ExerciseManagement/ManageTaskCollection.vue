@@ -43,12 +43,13 @@
           />
         </template>
       </Column>
-      <Column
-        field="weighting"
-        :header="'Gewichtung (in Relation)'"
-      >
+      <Column field="weighting" :header="'Gewichtung (in Relation)'">
         <template #body="slotProps">
-          {{ Math.round(slotProps.data.weighting*10000 / this.totalPoints)/100 }} %
+          {{
+            Math.round((slotProps.data.weighting * 10000) / this.totalPoints) /
+            100
+          }}
+          %
         </template>
       </Column>
       <Column :exportable="false">
@@ -69,13 +70,15 @@
 
     <div class="createTaskCollectionFooter">
       <Button label="Save" v-on:click="handleSaveClick"></Button>
-      <Button label="Delete" v-on:click="handleDeleteClick"></Button>
+      <Button label="Delete" v-on:click="handleDeleteClick" class="p-button-danger"></Button>
+      <Button label="Export" v-on:click="handleExportClick" disabled="true"></Button>
     </div>
   </div>
 </template>
 <script>
 import { ref, watch, onMounted } from "vue";
 import Autocomplete from "./Autocomplete";
+import { useConfirm } from "primevue/useconfirm";
 
 import { getBackendRequestDummy } from "../../helper/dummyRequests";
 import {
@@ -90,6 +93,7 @@ const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
 const CREATE_TASK_COLLECTION_PATH = PATHS.CREATE_TASK_COLLECTION_PATH;
 const UPDATE_TASK_COLLECTION_PATH = PATHS.UPDATE_TASK_COLLECTION_PATH;
 const DELETE_TASK_COLLECTION_PATH = PATHS.DELETE_TASK_COLLECTION_PATH;
+const DEEP_EXPORT_TASK_COLLECTION = PATH.DEEP_EXPORT_TASK_COLLECTION
 
 export default {
   components: {
@@ -100,6 +104,7 @@ export default {
   },
   setup(props, { emit }) {
     const totalPoints = ref();
+    const confirm = useConfirm();
 
     let emptyTaskCollection = {
       _id: -1,
@@ -113,8 +118,7 @@ export default {
       tasks: [],
     };
 
-    const taskCollection = ref({...emptyTaskCollection});
-
+    const taskCollection = ref({ ...emptyTaskCollection });
 
     init();
     async function init() {
@@ -161,8 +165,17 @@ export default {
 
     async function handleDeleteClick() {
       try {
-        deleteBackendRequest(DELETE_TASK_COLLECTION_PATH + "/" + taskCollection.value._id);
-        taskCollection.value = { ...emptyTaskCollection };
+        confirm.require({
+          message: "Möchten sie das Aufgabenblatt löschen?",
+          header: "Aufgabenblatt löschen",
+          icon: "pi pi-exclamation-triangle",
+          accept: () => {
+            deleteBackendRequest(
+              DELETE_TASK_COLLECTION_PATH + "/" + taskCollection.value._id
+            );
+            taskCollection.value = { ...emptyTaskCollection };
+          },
+        });
       } catch (error) {
         console.log(error);
       }
@@ -182,6 +195,18 @@ export default {
     function handleRemoveTask(event) {
       console.log(event);
       taskCollection.value.tasks.splice(event.index, 1);
+    }
+
+    async function handleExportClick(event) {
+      let exportTaskCollection = await getBackendRequest(DEEP_EXPORT_TASK_COLLECTION + '/' + taskCollection.value.id)
+      const data = JSON.stringify(exportTaskCollection);
+      const blob = new Blob([data], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download =
+        exportTaskCollection.title + "-" + exportTaskCollection._id;
+      link.click();
+      URL.revokeObjectURL(link.href);
     }
 
     function handleInspectTask(item) {
@@ -207,6 +232,7 @@ export default {
       handleDeleteClick,
       handleRemoveTask,
       handleInspectTask,
+      handleExportClick,
     };
   },
 };
@@ -222,6 +248,6 @@ export default {
 }
 
 .weightingInput {
-  width:100%
+  width: 100%;
 }
 </style>

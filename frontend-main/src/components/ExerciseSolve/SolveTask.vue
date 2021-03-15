@@ -46,12 +46,14 @@ export default {
   },
   props: {
     taskID: String,
+    customSubmitPath: String
   },
 
   setup(props, { emit }) {
     let state = useState();
     let userInput = ref();
     const toast = useToast();
+    let submitPath = SUBMIT_TASK_PATH;
 
     let emptyTask = {
       _id: -1,
@@ -71,7 +73,7 @@ export default {
     const task = ref({ ...emptyTask });
 
     watch(
-      () => props.taskID,
+      () => props,
       () => init()
     );
 
@@ -81,6 +83,10 @@ export default {
       task.value = await requestTask();
       console.log(task.value);
       state.plugin = task.value.pluginCode;
+      console.log(props.customSubmitPath)
+      if(props.customSubmitPath){
+        submitPath=props.customSubmitPath;
+      }
     }
 
     async function requestTask() {
@@ -123,12 +129,12 @@ export default {
 
     async function submitSolution() {
       try {
-        if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
+        // if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
           await postBackendRequest(
-            SUBMIT_TASK_PATH + "/" + props.taskID,
+            submitPath + "/" + props.taskID,
             task.value.dataForPlugin
           );
-        }
+        // }
         emit("taskSubmitted", { id: props.taskID });
       } catch (error) {
         console.log(error);

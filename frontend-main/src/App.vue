@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <div v-if="!this.$route.path.includes('/solvefullscreen')">
-    <GlobalNavBar />
+      <GlobalNavBar />
     </div>
     <div class="auth-wrapper">
       <div class="auth-inner">
         <Toast />
-      <!-- {{this.$route}} -->
+        <ConfirmDialog />
+        <!-- {{this.$route}} -->
 
         <router-view />
       </div>
@@ -16,19 +17,18 @@
 
 <script>
 import GlobalNavBar from "./views/GlobalNavBar";
-import { useRoute } from 'vue-router'
-
+import { useRoute } from "vue-router";
 
 export default {
   name: "App",
   components: {
     GlobalNavBar,
   },
-  setup(){
-        const route = useRoute()
+  setup() {
+    const route = useRoute();
 
-  return{route}
-  }
+    return { route };
+  },
 };
 </script>
 

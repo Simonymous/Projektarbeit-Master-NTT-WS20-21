@@ -24,8 +24,16 @@
     />
     <div class="createTaskFooter">
       <Button label="Save" v-on:click="handleSaveClick"></Button>
-      <Button label="Delete" v-on:click="handleDeleteClick"></Button>
-      <Button label="Export" v-on:click="handleExportClick"></Button>
+      <Button
+        label="Delete"
+        v-on:click="handleDeleteClick"
+        class="p-button-danger"
+      ></Button>
+      <Button
+        label="Export"
+        v-on:click="handleExportClick"
+        disabled="true"
+      ></Button>
     </div>
   </div>
 </template>
@@ -43,8 +51,8 @@ import {
   deleteBackendRequest,
   putBackendRequest,
 } from "../../helper/requests";
+import { useConfirm } from "primevue/useconfirm";
 const fs = require("fs");
-
 
 const PATHS = require("../../../config.json").URL_PATHS;
 
@@ -52,6 +60,7 @@ const TASK_PATH = PATHS.TASK_PATH;
 const CREATE_TASK_PATH = PATHS.CREATE_TASK_PATH;
 const UPDATE_TASK_PATH = PATHS.UPDATE_TASK_PATH;
 const DELETE_TASK_PATH = PATHS.DELETE_TASK_PATH;
+const TASK_GET_LINKED_TASK_COLLECTIONS = PATHS.TASK_GET_LINKED_TASK_COLLECTIONS;
 
 export default {
   name: "manageTask",
@@ -65,6 +74,7 @@ export default {
   setup(props) {
     const TaskModel = require("../../models/taskDTO");
     let state = useState();
+    const confirm = useConfirm();
 
     let emptyTask = {
       _id: -1,
@@ -127,23 +137,38 @@ export default {
       }
     }
 
-    function handleDeleteClick() {
+    async function handleDeleteClick() {
       try {
-        deleteBackendRequest(DELETE_TASK_PATH + "/" + task.value.ID);
-        task.value = { ...emptyTask };
+        let linkedTaskCollections = await getBackendRequest(TASK_GET_LINKED_TASK_COLLECTIONS + "/" + props.taskID);
+        let message = "Möchten sie den Task löschen?"
+        message = linkedTaskCollections.length ? message+"\n Die Aufgabe ist in folgenden Aufgabenblättern vorhanden und wird herausgelöscht: \n":message
+
+        linkedTaskCollections.forEach((taskCollection) => {
+          message+="\n " + taskCollection;
+        })
+
+        confirm.require({
+          message: message,
+          header: "Task löschen",
+          icon: "pi pi-exclamation-triangle",
+          accept: () => {
+            deleteBackendRequest(DELETE_TASK_PATH + "/" + task.value.ID);
+            task.value = { ...emptyTask };
+          },
+        });
       } catch (error) {
         console.log(error);
       }
     }
 
     function handleExportClick() {
-      const data = JSON.stringify(task.value)
-       const blob = new Blob([data], { type: 'application/json' })
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
-        link.download = task.value.title + '-' + task.value._id
-        link.click()
-        URL.revokeObjectURL(link.href)
+      const data = JSON.stringify(task.value);
+      const blob = new Blob([data], { type: "application/json" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = task.value.title + "-" + task.value._id;
+      link.click();
+      URL.revokeObjectURL(link.href);
     }
 
     function pluginChangedTask(payload) {
