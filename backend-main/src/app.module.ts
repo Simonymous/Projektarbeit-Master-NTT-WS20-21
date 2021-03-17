@@ -10,8 +10,9 @@ import {MoodleModule} from './moodle/moodle.module';
 import { UsersModule } from './users/users.module';
 import { CodeTestModule } from './code-test/codetest.module';
 
+const MONGODB_PATH = 'mongodb://root:example@mongo:27017/test?authSource=admin'
 @Module({
-  imports: [FirstquestionsModule, TaskModule, MongooseModule.forRoot('mongodb://root:example@mongo:27017/test?authSource=admin'), AuthModule, UsersModule, MoodleModule, CodeTestModule],
+  imports: [FirstquestionsModule, TaskModule, MongooseModule.forRoot(MONGODB_PATH), AuthModule, UsersModule, MoodleModule, CodeTestModule],
   controllers: [AppController],
   providers: [AppService],
 })

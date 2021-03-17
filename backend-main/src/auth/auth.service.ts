@@ -3,6 +3,8 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import moodleSessions from './moodleSessions'
+const moodleKey = "top"
+const moodlePassword = "secret"
 
 var lti = require("ims-lti");
 @Injectable()
@@ -35,10 +37,12 @@ export class AuthService {
   }
 
   async moodleLogin(request) {
-    let provider = new lti.Provider("top", "secret"); //Shared und public Secret aus moodle
+    let solved = false
+    let provider = new lti.Provider(moodleKey, moodlePassword); //Shared und public Secret aus moodle
     let sessions = moodleSessions.getInstance();
     let access_token = "";
     let taskId;
+    let that = this;
 
     provider.valid_request(request, (err, isValid) => {
       if (!isValid) {
@@ -47,21 +51,27 @@ export class AuthService {
         return "INVALID:"+err
       }
       console.log("[LOG] LTI Session initiiert:",provider)
-      taskId = provider.body.custom_taskId;
+      taskId = provider.body.custom_taskId
+      let userId = provider.body.user_id
+      let userName = provider.body.ext_user_username
+      let userMail = provider.body.lis_person_contact_email_primary
 
+      that.usersService.findMoodleUser(userMail,userName).then((user)=> {
+        //Wenn der moodle Nutzer noch nicht im System ist->einpflegen
+        if(!user) {
+          this.usersService.createMoodleUser(userMail,userName)
+        } else {
+          solved = user.solvedTasksOrCollections.includes(taskId)
+        }
+      })
       const payload = {'obj':'test'}
       access_token = this.jwtService.sign(payload)
       sessions.addSession(access_token,provider)
 
-      //return "Provider läuft.."
     })
 
-
-    //console.log(sessions)
-
-    //const payload = {}
-
+    //TODO: ASYNC BUGFIX FOR SOLVED
     return {access_token: access_token,
-            taskId: taskId}
+            taskId: taskId, solved: solved}
   }
 }

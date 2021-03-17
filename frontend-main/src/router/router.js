@@ -28,7 +28,7 @@ const routes = [
     component: Settings
   },
   {
-    path: '/solveFullScreen/alreadySubmitted',
+    path: '/solvefullScreen/alreadySubmitted',
     name: 'Error',
     component: AlreadySubmitted
   },
