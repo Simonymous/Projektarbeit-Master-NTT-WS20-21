@@ -144,7 +144,7 @@ export default {
         message = linkedTaskCollections.length ? message+"\n Die Aufgabe ist in folgenden Aufgabenblättern vorhanden und wird herausgelöscht: \n":message
 
         linkedTaskCollections.forEach((taskCollection) => {
-          message+="\n " + taskCollection;
+          message+="\r\n " + taskCollection.title;
         })
 
         confirm.require({
