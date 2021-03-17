@@ -36,42 +36,45 @@ export class AuthService {
     };
   }
 
-  async moodleLogin(request) {
-    let solved = false
+  async ltiSessionInitiate(request):Promise<any> {
     let provider = new lti.Provider(moodleKey, moodlePassword); //Shared und public Secret aus moodle
-    let sessions = moodleSessions.getInstance();
-    let access_token = "";
     let taskId;
-    let that = this;
-
+    let userId;
+    let userName;
+    let userMail;
+    let access_token;
     provider.valid_request(request, (err, isValid) => {
       if (!isValid) {
         console.log("[LOG] INVALID LTI REQUEST..")
 
-        return "INVALID:"+err
+        return "INVALID: "+err
       }
       console.log("[LOG] LTI Session initiiert:",provider)
-      taskId = provider.body.custom_taskId
-      let userId = provider.body.user_id
-      let userName = provider.body.ext_user_username
-      let userMail = provider.body.lis_person_contact_email_primary
+      if(provider.body.custom_taskId) taskId = provider.body.custom_taskId
+      userId = provider.body.user_id
+      userName = provider.body.ext_user_username
+      userMail = provider.body.lis_person_contact_email_primary
 
-      that.usersService.findMoodleUser(userMail,userName).then((user)=> {
-        //Wenn der moodle Nutzer noch nicht im System ist->einpflegen
-        if(!user) {
-          this.usersService.createMoodleUser(userMail,userName)
-        } else {
-          solved = user.solvedTasksOrCollections.includes(taskId)
-        }
-      })
-      const payload = {'obj':'test'}
+      const payload = {'obj': userMail}
       access_token = this.jwtService.sign(payload)
+
+      const sessions = moodleSessions.getInstance();
       sessions.addSession(access_token,provider)
 
     })
 
-    //TODO: ASYNC BUGFIX FOR SOLVED
-    return {access_token: access_token,
-            taskId: taskId, solved: solved}
+    return {name:userName,userId:userId,mail:userMail,token:access_token, taskId: taskId}
+
+  }
+
+  async loginMoodleUserAndGetTask(userName,userMail,taskId):Promise<any> {
+    const moodleUser = await this.usersService.findMoodleUser(userMail)
+    let solved = false;
+    if(!moodleUser) {
+      this.usersService.createMoodleUser(userMail,userName)
+    } else {
+      solved = moodleUser.solvedTasksOrCollections.includes(taskId)
+    }
+      return {user:moodleUser, solved: solved}
   }
 }

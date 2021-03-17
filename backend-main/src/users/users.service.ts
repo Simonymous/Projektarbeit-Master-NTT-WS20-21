@@ -60,8 +60,8 @@ export class UsersService {
     return createdUser.save()
   }
 
-  async findMoodleUser(mail:string,username:string): Promise<User | undefined> {
-    return this.userModel.findOne({'email': mail,'username': username}).exec()
+  async findMoodleUser(mail:string): Promise<User | undefined> {
+    return this.userModel.findOne({'email': mail}).exec()
   }
 
   async findOne(username: string): Promise<User | undefined> {

@@ -26,10 +26,15 @@ export class AuthController {
       @Req() request,
       @Res() response
     ) {
-        const returnObj = await this.authService.moodleLogin(request);
-        //console.log(returnObj)
-        if(!returnObj.solved) return response.redirect('http://localhost:8080/solvefullscreen?exerciseId='+returnObj.taskId+'&token='+returnObj.access_token)
-        else return response.redirect('http://localhost:8080/solvefullscreen/alreadySubmitted')
+        const {name,userId,mail,token,taskId} = await this.authService.ltiSessionInitiate(request)
+
+        const {moodleUser,solved} = await this.authService.loginMoodleUserAndGetTask(name,mail,taskId)
+
+        if(solved) {
+          return response.redirect('http://localhost:8080/solvefullscreen/alreadySubmitted')
+        } else {
+          return response.redirect('http://localhost:8080/solvefullscreen?exerciseId='+taskId+'&token='+token)
+        }
 
       }
 
