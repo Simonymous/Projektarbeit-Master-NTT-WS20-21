@@ -1,4 +1,5 @@
 import { TaskService } from './task.service';
+import { UsersService } from '../users/users.service'
 import {
   Controller,
   Post,
@@ -14,7 +15,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Task } from './task.schema';
-
+import moodleSessions from '../auth/moodleSessions'
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import taskRunner from './taskrunner';
 import moodleSubmitHelper from './moodleSubmitHelper'
@@ -86,7 +87,7 @@ export class TaskController {
     @Headers() headers,
     @Res() res,
   ) {
-    console.log("HEADERS",headers)
+    //console.log("HEADERS",headers)
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
@@ -110,15 +111,28 @@ export class TaskController {
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
-      console.log(headers)
+      let authToken = headers.authorization;
       let feedback = await mytaskrunner.submitTask(task, submission.userinput);
       //Taskergebnis an moodle senden
-      let submitHelper = new moodleSubmitHelper();
-      let status = submitHelper.submitSingleTask("",100)
-      return res.status(HttpStatus.OK).json({
-        message: 'Task übermittelt:',
-        feedback: status,
-      });
+      const sessions = moodleSessions.getInstance()
+      const session = sessions.getSession(authToken)
+      if(session) {
+        let userId = session.body.user_id
+        let userName = session.body.ext_user_username
+        let userMail = session.body.lis_person_contact_email_primary
+        let submitHelper = new moodleSubmitHelper();
+        let status = submitHelper.submitSingleTask(session,100)
+        this.taskService.markTaskAsSubmitted(userName,userMail,taskID)
+        return res.status(HttpStatus.OK).json({
+          message: 'Task übermittelt:',
+          feedback: status,
+        });
+      } else {
+        return res.status(HttpStatus.UNAUTHORIZED).json({
+          message: 'Session Fehler. Task nicht übermittelt',
+        });
+      }
+
     }
     return res.status(HttpStatus.NOT_FOUND).json({
       message: 'Task not found!',

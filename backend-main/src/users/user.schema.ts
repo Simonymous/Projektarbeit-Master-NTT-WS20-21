@@ -8,7 +8,7 @@ export class User {
 
   @Prop()
   name: string;
-  
+
   @Prop()
   username: string;
 
@@ -17,6 +17,12 @@ export class User {
 
   @Prop()
   password: string;
+
+  @Prop()
+  solvedTasksOrCollections: string[];
+
+  @Prop()
+  solvedTasksInCollection: [];
 
   @Prop()
   role: string;

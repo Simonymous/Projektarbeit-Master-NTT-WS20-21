@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {Task, TaskDocument} from './task.schema';
-import {TaskCollection, TaskCollectionDocument } from './taskcollection.schema'
+import { Task, TaskDocument } from './task.schema';
+import { User, UserDocument } from '../users/user.schema';
+import { TaskCollection, TaskCollectionDocument } from './taskcollection.schema'
 
 @Injectable()
 export class TaskService {
-  constructor (@InjectModel('Task') private taskModel: Model<TaskDocument>,
-  @InjectModel('TaskCollection') private taskCollectionModel: Model<TaskCollectionDocument>) {}
+  constructor (
+    @InjectModel('Task') private taskModel: Model<TaskDocument>,
+    @InjectModel('TaskCollection') private taskCollectionModel: Model<TaskCollectionDocument>,
+    @InjectModel('User') private userModel: Model<UserDocument>
+  ) {}
 
   async createTask(taskDto: Task): Promise<Task> {
     console.log("[LOG] Creating New Task:",taskDto)
@@ -119,5 +123,17 @@ export class TaskService {
     } else {
       return null;
     }
+  }
+
+  async markTaskAsSubmitted(username:string,usermail:string,taskOrCollectionId:string):Promise<User> {
+    let moodleUser = await this.userModel.findOne({'username': username,'email': usermail}).exec()
+    if(moodleUser) {
+      let tasksSolved = moodleUser.solvedTasksOrCollections
+      tasksSolved.push(taskOrCollectionId)
+      moodleUser.solvedTasksOrCollections = tasksSolved
+      let {_id, ...rest} = moodleUser
+      return this.userModel.findOneAndUpdate({'username': username,'email': usermail},{...rest}, {new:true})
+    } else return null
+
   }
 }

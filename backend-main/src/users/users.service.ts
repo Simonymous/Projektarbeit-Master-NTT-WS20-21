@@ -48,6 +48,22 @@ export class UsersService {
     return createdUser.save()
   }
 
+  async createMoodleUser(mail:string,username:string) : Promise<User> {
+    var that = this;
+    const userDto:any = {
+      username: username,
+      email: mail,
+      password: "",
+      role: "moodleuser"
+    }
+    const createdUser = await new that.userModel(userDto);
+    return createdUser.save()
+  }
+
+  async findMoodleUser(mail:string,username:string): Promise<User | undefined> {
+    return this.userModel.findOne({'email': mail,'username': username}).exec()
+  }
+
   async findOne(username: string): Promise<User | undefined> {
     return this.userModel.findOne({'username': username}).exec();
   }
