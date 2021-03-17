@@ -89,6 +89,7 @@ import {
 } from "../../helper/requests";
 const PATHS = require("../../../config.json").URL_PATHS;
 
+const TASK_PATH = PATHS.TASK_PATH
 const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
 const CREATE_TASK_COLLECTION_PATH = PATHS.CREATE_TASK_COLLECTION_PATH;
 const UPDATE_TASK_COLLECTION_PATH = PATHS.UPDATE_TASK_COLLECTION_PATH;
@@ -198,7 +199,10 @@ export default {
     }
 
     async function handleExportClick(event) {
-      let exportTaskCollection = await getBackendRequest(DEEP_EXPORT_TASK_COLLECTION + '/' + taskCollection.value.id)
+      let exportTaskCollection = taskCollection.value
+      exportTaskCollection = exportTaskCollection.tasks.slice(0,exportTaskCollection.tasks.length) 
+      taskCollection.value.tasks.forEach(async task => exportTaskCollection.push( await getBackendRequest(TASK_PATH + '/' + task._id)))
+      //let exportTaskCollection = await getBackendRequest(DEEP_EXPORT_TASK_COLLECTION + '/' + taskCollection.value.id)
       const data = JSON.stringify(exportTaskCollection);
       const blob = new Blob([data], { type: "application/json" });
       const link = document.createElement("a");
