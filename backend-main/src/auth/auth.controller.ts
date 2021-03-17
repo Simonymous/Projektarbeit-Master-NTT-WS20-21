@@ -26,8 +26,8 @@ export class AuthController {
       @Req() request,
       @Res() response
     ) {
-      const returnObj = await this.authService.moodleLogin(request);
-      return response.redirect('http://localhost:8080/solvefullscreen?exerciseId='+returnObj.taskId+'&token='+returnObj.access_token)
+        const returnObj = await this.authService.moodleLogin(request);
+        return response.redirect('http://localhost:8080/solvefullscreen?exerciseId='+returnObj.taskId+'&token='+returnObj.access_token)
       }
 
     @Post('/register')

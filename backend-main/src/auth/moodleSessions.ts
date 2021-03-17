@@ -15,14 +15,14 @@ export default class moodleSessions {
     }
 
     public addSession(key : string, session : any) {
-            this.sessions.set(key,session)
+        this.sessions.set(key,session)
     }
 
     public removeSession(key : string) {
         this.sessions.delete(key)
     }
 
-    public checkSession(key : string) {
+    public getSession(key : string) {
         return this.sessions.get(key)
     }
 }

@@ -48,6 +48,7 @@ import {
   postBackendRequest,
   deleteBackendRequest,
   putBackendRequest,
+  setAccessToken
 } from "../helper/requests";
 import { useToast } from "primevue/usetoast";
 import SolveTask from "../components/ExerciseSolve/SolveTask";
@@ -75,10 +76,12 @@ export default {
     const toast = useToast();
 
     let exerciseId = URL_PARAMS.get("exerciseId");
+    //console.log(URL_PARAMS.get("token"))
 
     initialize();
     function initialize() {
       getExercise();
+      setAccessToken(URL_PARAMS.get("token"));
     }
 
     async function getExercise() {

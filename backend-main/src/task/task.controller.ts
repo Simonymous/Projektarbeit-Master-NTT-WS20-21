@@ -3,6 +3,7 @@ import {
   Controller,
   Post,
   Body,
+  Headers,
   Get,
   Param,
   Patch,
@@ -16,6 +17,7 @@ import { Task } from './task.schema';
 
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import taskRunner from './taskrunner';
+import moodleSubmitHelper from './moodleSubmitHelper'
 
 @Controller('task')
 //@UseGuards(JwtAuthGuard)
@@ -81,8 +83,10 @@ export class TaskController {
   async getOpenTests(
     @Param('id') taskID: string,
     @Body() taskinput: any,
+    @Headers() headers,
     @Res() res,
   ) {
+    console.log("HEADERS",headers)
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
@@ -98,16 +102,22 @@ export class TaskController {
   @Post('/submit/:id')
   async submitTask(
     @Param('id') taskID: string,
+    //@Param('token') token: string,
+    @Headers() headers,
     @Body() submission: any,
     @Res() res,
   ) {
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
+      console.log(headers)
       let feedback = await mytaskrunner.submitTask(task, submission.userinput);
+      //Taskergebnis an moodle senden
+      let submitHelper = new moodleSubmitHelper();
+      let status = submitHelper.submitSingleTask("",100)
       return res.status(HttpStatus.OK).json({
         message: 'Task übermittelt:',
-        feedback: feedback,
+        feedback: status,
       });
     }
     return res.status(HttpStatus.NOT_FOUND).json({

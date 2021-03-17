@@ -46,10 +46,8 @@ export class AuthService {
 
         return "INVALID:"+err
       }
-      console.log("[LOG] LTI Session initiiert:")
-      console.log(provider)
+      console.log("[LOG] LTI Session initiiert:",provider)
       taskId = provider.body.custom_taskId;
-      //console.log(taskId)
 
       const payload = {'obj':'test'}
       access_token = this.jwtService.sign(payload)
@@ -65,6 +63,5 @@ export class AuthService {
 
     return {access_token: access_token,
             taskId: taskId}
-
   }
 }

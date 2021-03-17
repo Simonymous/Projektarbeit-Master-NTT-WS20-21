@@ -5,13 +5,21 @@ import axios from 'axios'
 const BACKEND_URL = require('../../config.json').backendURL
 // const BACKEND_URL = process.env.MY_BACKEND_URL
 
-const ACCESS_TOKEN = VueCookies.get('access-token')
+// const ACCESS_TOKEN = VueCookies.get('access-token')
+
+let ACCESS_TOKEN;
+const URL_PARAMS = new URLSearchParams(window.location.search);
+
 
 const requestOptions = {
   headers: {
-    Authorization: ACCESS_TOKEN,
+    Authorization: URL_PARAMS.get("token"),
     'Content-Type': 'application/json',
   }
+}
+
+export function setAccessToken(token){
+  ACCESS_TOKEN=token
 }
 
 /**
