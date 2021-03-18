@@ -46,6 +46,10 @@ export default {
       emit("pluginChangedData", value);
     }
 
+        watch(props.taskData, () =>{
+      console.log("Changed in ShowPlugin")
+    })
+
     async function getSelectedPluginPath() {
       try {
         let pluginConfigPath =

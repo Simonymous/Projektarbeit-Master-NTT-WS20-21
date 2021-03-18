@@ -6,13 +6,13 @@
         v-model="code"
         :highlight="highlighter"
         line-numbers
-        @input="codeChanged"
       ></prism-editor>
     </div>
     <div>
       Test Inputs: <InputText type="text"
-        v-model="inputParams"
-        placeholder="param1, param2, ..."/>
+        v-model="testFunctionParams"
+        placeholder="param1, param2, ..."
+        />
       <Button label="Neuer offener Test anlegen:" @click="addNewOpenTest()" />
       <DataTable
         :value="openTestsRows"
@@ -95,18 +95,43 @@ export default {
     taskData: Object,
   },
   setup(props, { emit }) {
-    let openTestsRows = ref(props.taskData.openTests);
-    let closedTestsRows = ref(props.taskData.closedTests);
-    let inputParams = ref(props.taskData?.dataForPlugin?.inputParams);
+    // let openTestsRows = ref([...props.taskData.openTests]);
+    let openTestsRows = ref(JSON.parse(JSON.stringify(props.taskData.openTests)));
+    let closedTestsRows = ref([...props.taskData.closedTests]);
+    let testFunctionParams = ref(arrayToString(props.taskData?.dataForPlugin?.inputParams));
     let code = ref(props.taskData?.dataForPlugin?.defaultCode);
 
 
-    watch(props, () => {
+    watch(props, (now, prev) => {
       code.value = props.taskData.dataForPlugin.defaultCode;
-      openTestsRows.value = props.taskData.openTests;
-      closedTestsRows.value = props.taskData.closedTests;
-      inputParams.value = props.taskData?.dataForPlugin?.inputParams;
+      openTestsRows.value = JSON.parse(JSON.stringify(props.taskData.openTests));
+      closedTestsRows.value = [...props.taskData.openTests];
+      testFunctionParams.value = arrayToString(props.taskData?.dataForPlugin?.inputParams);
     });
+
+    watch(openTestsRows, () => {
+      console.log("watch rest")
+      emitChanges()
+    });
+
+    watch(testFunctionParams, (now, prev) => {
+      console.log(prev + " " + now)
+      // if(now != prev){
+      //   emitChanges()
+      // }
+    })
+
+    function arrayToString(arr=[]){
+
+      let returnString = ""
+      arr.forEach(item => {
+        returnString += item.toString() + ", "
+      })
+      console.log(returnString)
+
+      returnString = returnString.length?returnString.slice(0, -2):"";
+      return returnString
+    }
 
 
     function highlighter(code) {
@@ -138,36 +163,38 @@ export default {
       emitChanges();
     }
 
-    function codeChanged() {
-      emitChanges();
-    }
 
-    function splitInputParams(){
-      const splittedInputParams = inputParams.value.split(',')
+    function splitTestFunctionParams(){
+      console.log(testFunctionParams.value);
+      const splittedInputParams = testFunctionParams.value.split(',')
+      console.log(splittedInputParams)
+      console.log("tzui")
       return splittedInputParams
     }
 
     function emitChanges() {
+      console.log(testFunctionParams.value)
       let taskData = {
         ...props.taskData,
-        dataForPlugin: {defaultCode: code.value, inputParams: splitInputParams()},
+        dataForPlugin: {defaultCode: code.value, inputParams: splitTestFunctionParams()},
         openTests: openTestsRows.value,
         closedTests: closedTestsRows.value,
       };
+      console.log(taskData)
       emit("pluginChangedData", taskData);
     }
 
     return {
       code,
       highlighter,
-      codeChanged,
       addNewOpenTest,
       openTestsRows,
       removeOpenTest,
       removeClosedTest,
       addNewClosedTest,
       closedTestsRows,
-      inputParams,
+      testFunctionParams,
+      emitChanges
     };
   },
 };
