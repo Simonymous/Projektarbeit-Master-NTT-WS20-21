@@ -16,7 +16,7 @@ export function getBackendRequestDummy(pathName) {
       dataForPlugin: {
         defaultCode:
           "[Vue warn]: Extraneous non-props attributes (active) were passed to component but could not be automatically inherited because component renders fragment or text root nodes. ",
-        // inputParams: [],
+        inputParams: [],
       },
       date: new Date("20/01/1999"),
     };
