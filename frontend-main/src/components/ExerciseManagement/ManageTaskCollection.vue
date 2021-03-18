@@ -80,26 +80,27 @@
   </div>
 </template>
 <script>
-import { ref, watch, onMounted } from 'vue'
-import Autocomplete from './Autocomplete'
-import { useConfirm } from 'primevue/useconfirm'
-import { useToast } from 'primevue/usetoast'
+import { ref, watch, onMounted } from "vue";
+import Autocomplete from "./Autocomplete";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
 
-import { getBackendRequestDummy } from '../../helper/dummyRequests'
+import { getBackendRequestDummy } from "../../helper/dummyRequests";
 import {
   getBackendRequest,
   postBackendRequest,
   deleteBackendRequest,
   putBackendRequest,
-} from '../../helper/requests'
-const PATHS = require('../../../config.json').URL_PATHS
+} from "../../helper/requests";
+const PATHS = require("../../../config.json").URL_PATHS;
 
-const TASK_PATH = PATHS.TASK_PATH
-const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH
-const CREATE_TASK_COLLECTION_PATH = PATHS.CREATE_TASK_COLLECTION_PATH
-const UPDATE_TASK_COLLECTION_PATH = PATHS.UPDATE_TASK_COLLECTION_PATH
-const DELETE_TASK_COLLECTION_PATH = PATHS.DELETE_TASK_COLLECTION_PATH
-const DEEP_EXPORT_TASK_COLLECTION = PATHS.DEEP_EXPORT_TASK_COLLECTION
+const TASK_PATH = PATHS.TASK_PATH;
+const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
+const CREATE_TASK_COLLECTION_PATH = PATHS.CREATE_TASK_COLLECTION_PATH;
+const UPDATE_TASK_COLLECTION_PATH = PATHS.UPDATE_TASK_COLLECTION_PATH;
+const DELETE_TASK_COLLECTION_PATH = PATHS.DELETE_TASK_COLLECTION_PATH;
+const DEEP_EXPORT_TASK_COLLECTION = PATHS.DEEP_EXPORT_TASK_COLLECTION;
 
 export default {
   components: {
@@ -109,131 +110,141 @@ export default {
     taskCollectionID: String,
   },
   setup(props, { emit }) {
-    const totalPoints = ref()
-    const confirm = useConfirm()
-    const toast = useToast()
+    const totalPoints = ref();
+    const confirm = useConfirm();
+    const toast = useToast();
+    const router = useRouter();
 
     let emptyTaskCollection = {
       _id: -1,
-      type: 'TaskCollection',
-      title: '',
-      description: '',
+      type: "TaskCollection",
+      title: "",
+      description: "",
       date: new Date(),
       tags: [],
-      course: '',
-      creator: '',
+      course: "",
+      creator: "",
       tasks: [],
-    }
+    };
 
-    const taskCollection = ref({ ...emptyTaskCollection })
+    const taskCollection = ref({ ...emptyTaskCollection });
 
-    init()
+    init();
     async function init() {
       if (props.taskCollectionID === -1) {
-        taskCollection.value = { ...emptyTaskCollection }
+        taskCollection.value = { ...emptyTaskCollection };
       } else {
-        await getTaskCollections()
+        await getTaskCollections();
       }
-      calcTotalPoints()
+      calcTotalPoints();
     }
 
     watch(
       () => props.taskCollectionID,
-      () => init(),
-    )
+      () => init()
+    );
 
     async function getTaskCollections() {
       try {
-        if (process.env.VUE_APP_BACKEND_ONLINE === 'true') {
+        if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
           taskCollection.value = await getBackendRequest(
-            TASK_COLLECTION_PATH + '/' + props.taskCollectionID,
-          )
+            TASK_COLLECTION_PATH + "/" + props.taskCollectionID
+          );
         } else {
           taskCollection.value = getBackendRequestDummy(
-            TASK_COLLECTION_PATH + '/' + props.taskCollectionID,
-          )
+            TASK_COLLECTION_PATH + "/" + props.taskCollectionID
+          );
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
 
     async function handleSaveClick() {
       try {
         if (taskCollection.value._id === -1) {
-          postBackendRequest(CREATE_TASK_COLLECTION_PATH, taskCollection.value)
+          await postBackendRequest(
+            CREATE_TASK_COLLECTION_PATH,
+            taskCollection.value
+          );
         } else {
-          putBackendRequest(UPDATE_TASK_COLLECTION_PATH, taskCollection.value)
+          await putBackendRequest(
+            UPDATE_TASK_COLLECTION_PATH,
+            taskCollection.value
+          );
         }
+        router.go();
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
+      router.go();
     }
 
     async function handleDeleteClick() {
       try {
         confirm.require({
-          message: 'Möchten sie das Aufgabenblatt löschen?',
-          header: 'Aufgabenblatt löschen',
-          icon: 'pi pi-exclamation-triangle',
-          accept: () => {
-            deleteBackendRequest(
-              DELETE_TASK_COLLECTION_PATH + '/' + taskCollection.value._id,
-            )
-            taskCollection.value = { ...emptyTaskCollection }
+          message: "Möchten sie das Aufgabenblatt löschen?",
+          header: "Aufgabenblatt löschen",
+          icon: "pi pi-exclamation-triangle",
+          accept: async () => {
+            await deleteBackendRequest(
+              DELETE_TASK_COLLECTION_PATH + "/" + taskCollection.value._id
+            );
+            taskCollection.value = { ...emptyTaskCollection };
+            router.go();
           },
-        })
+        });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
 
     function calcTotalPoints() {
-      totalPoints.value = 0
+      totalPoints.value = 0;
       taskCollection.value.tasks.forEach((task) => {
-        totalPoints.value += +task.weighting
-      })
+        totalPoints.value += +task.weighting;
+      });
     }
 
     function onRowReorder(event) {
-      taskCollection.value.tasks = event.value
+      taskCollection.value.tasks = event.value;
     }
 
     function handleRemoveTask(event) {
-      console.log(event)
-      taskCollection.value.tasks.splice(event.index, 1)
+      console.log(event);
+      taskCollection.value.tasks.splice(event.index, 1);
     }
 
     async function handleExportClick(event) {
       try {
-        let exportCollection = [taskCollection.value]
+        let exportCollection = [taskCollection.value];
         for (let i = 0; i < taskCollection.value.tasks.length; i++) {
           exportCollection.push(
             await getBackendRequest(
-              TASK_PATH + '/' + taskCollection.value.tasks[i]._id,
-            ),
-          )
+              TASK_PATH + "/" + taskCollection.value.tasks[i]._id
+            )
+          );
         }
 
-        const data = JSON.stringify(exportCollection)
-        const blob = new Blob([data], { type: 'application/json' })
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
+        const data = JSON.stringify(exportCollection);
+        const blob = new Blob([data], { type: "application/json" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
         link.download =
-          exportCollection[0].title + '-' + exportCollection[0]._id
-        link.click()
-        URL.revokeObjectURL(link.href)
+          exportCollection[0].title + "-" + exportCollection[0]._id;
+        link.click();
+        URL.revokeObjectURL(link.href);
       } catch (e) {
         toast.add({
-          severity: 'error',
+          severity: "error",
           summary: e.message,
           life: 10000,
-        })
+        });
       }
     }
 
     function handleInspectTask(item) {
-      emit('exerciseSelected', { id: item.data._id, kindOfExercise: 'task' })
+      emit("exerciseSelected", { id: item.data._id, kindOfExercise: "task" });
     }
 
     function addTask(payload) {
@@ -241,8 +252,8 @@ export default {
         title: payload.title,
         _id: payload._id,
         weighting: 0,
-      })
-      console.log(payload)
+      });
+      console.log(payload);
     }
 
     return {
@@ -256,9 +267,9 @@ export default {
       handleRemoveTask,
       handleInspectTask,
       handleExportClick,
-    }
+    };
   },
-}
+};
 </script>
 <style lang="css">
 .pointsIncorrect {

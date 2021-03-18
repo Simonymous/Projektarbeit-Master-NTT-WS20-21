@@ -6,6 +6,7 @@
         v-model="code"
         :highlight="highlighter"
         line-numbers
+        @input="emitChanges"
       ></prism-editor>
     </div>
     <div>
@@ -140,7 +141,7 @@ export default {
     let code = ref(props.taskData?.dataForPlugin?.defaultCode)
 
     watch(props, () => {
-      code.value = props.taskData.dataForPlugin.defaultCode
+      code.value = props.taskData?.dataForPlugin?.defaultCode
       openTestsRows.value = JSON.parse(
         JSON.stringify(props.taskData?.openTests),
       )
@@ -199,7 +200,6 @@ export default {
     }
 
     function emitChanges() {
-      console.log(testFunctionParams.value)
       let taskData = {
         ...props.taskData,
         dataForPlugin: {

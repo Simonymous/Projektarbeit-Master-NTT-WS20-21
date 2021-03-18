@@ -45,6 +45,8 @@ import { useState } from "../../store/store";
 import ShowPlugin from "../ShowPlugin.vue";
 import SelectPluginDropdown from "../SelectPluginDropdown";
 import { getBackendRequestDummy } from "../../helper/dummyRequests";
+import { useRouter } from "vue-router";
+
 import {
   getBackendRequest,
   postBackendRequest,
@@ -75,6 +77,7 @@ export default {
     const TaskModel = require("../../models/taskDTO");
     let state = useState();
     const confirm = useConfirm();
+    const router = useRouter();
 
     let emptyTask = {
       _id: -1,
@@ -123,14 +126,16 @@ export default {
       }
     }
 
-    function handleSaveClick() {
+    async function handleSaveClick() {
       try {
         task.value.pluginCode = state.plugin;
         if (task.value._id === -1) {
-          postBackendRequest(CREATE_TASK_PATH, task.value);
+          await postBackendRequest(CREATE_TASK_PATH, task.value);
+          router.go();
         } else {
           console.log(task.value);
-          putBackendRequest(UPDATE_TASK_PATH, task.value);
+          await putBackendRequest(UPDATE_TASK_PATH, task.value);
+          router.go();
         }
       } catch (error) {
         console.log(error);
@@ -139,21 +144,32 @@ export default {
 
     async function handleDeleteClick() {
       try {
-        let linkedTaskCollections = await getBackendRequest(TASK_GET_LINKED_TASK_COLLECTIONS + "/" + props.taskID);
-        let message = "Möchten sie den Task löschen?"
-        message = linkedTaskCollections.length ? message+"\n Die Aufgabe ist in folgenden Aufgabenblättern vorhanden und wird herausgelöscht: \n":message
+        let linkedTaskCollections = await getBackendRequest(
+          TASK_GET_LINKED_TASK_COLLECTIONS + "/" + props.taskID
+        );
+        let message = "Möchten sie den Task löschen?";
+        message = linkedTaskCollections.length
+          ? message +
+            "\n Die Aufgabe ist in folgenden Aufgabenblättern vorhanden und wird herausgelöscht: \n"
+          : message;
 
         linkedTaskCollections.forEach((taskCollection) => {
-          message+="\r\n " + taskCollection.title;
-        })
+          message += "\r\n " + taskCollection.title;
+        });
 
         confirm.require({
           message: message,
           header: "Task löschen",
           icon: "pi pi-exclamation-triangle",
-          accept: () => {
-            deleteBackendRequest(DELETE_TASK_PATH + "/" + task.value.ID);
+          accept: async () => {
+            console.log(
+              (await deleteBackendRequest(
+                DELETE_TASK_PATH + "/" + task.value._id
+              )) + "fghjk"
+            );
+            console.log("after delete");
             task.value = { ...emptyTask };
+            router.go();
           },
         });
       } catch (error) {
