@@ -14,15 +14,7 @@
         return 100
     }
 
-    interface ITestResult {
-        passed: boolean,
-        message: string
-    }
-
-    interface IFeedback {
-        message: string,
-        testResults : ITestResult[]
-    }
+    import { ITestResult, IFeedback } from './codingPluginInterfaces'
 
     function codingTests(inputparams:string[],tests:any[],userInput:string) {
         let returnTests = []
