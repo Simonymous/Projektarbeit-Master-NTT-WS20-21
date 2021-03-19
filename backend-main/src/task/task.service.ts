@@ -164,9 +164,16 @@ export class TaskService {
   async markTaskOrCollectionAsSubmitted(usermail:string,taskOrCollectionId:string):Promise<User> {
     let moodleUser = await this.userModel.findOne({'email': usermail}).exec()
     if(moodleUser) {
+      //Clean Up User Tasks In Collection Submitted
+      let solvedTasksInCollection = moodleUser.solvedTasksInCollection
+      if(solvedTasksInCollection && solvedTasksInCollection.has(taskOrCollectionId)) {
+        solvedTasksInCollection.delete(taskOrCollectionId)
+      }
       let tasksSolved = moodleUser.solvedTasksOrCollections
       tasksSolved.push(taskOrCollectionId)
       moodleUser.solvedTasksOrCollections = tasksSolved
+      moodleUser.solvedTasksInCollection = solvedTasksInCollection
+      //Filter id
       let {_id, ...rest} = moodleUser
       return this.userModel.findOneAndUpdate({'email': usermail},{...rest}, {new:true})
     } else return null
