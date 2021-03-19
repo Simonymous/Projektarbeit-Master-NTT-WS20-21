@@ -54,9 +54,6 @@ export class TaskService {
     }
   }
 
-
-  //TODO: SEARCH, UPDATE for task and taskcollection
-
   // Objekt mit 2 Arrays: Suche nach Tags und Suche nach Name: TODO: SearchByTag, SearchByName
   async searchTask(searchQuery: any):Promise<Task[]> {
     console.log("[LOG] Search Task with query",searchQuery);
@@ -170,7 +167,7 @@ export class TaskService {
           solvedTasksInCollection = solvedTasksInCollectionMap.get(taskCollectionID)
           let taskAlreadySubmittedFlag = false;
           solvedTasksInCollection.forEach(submittedTask => {
-            if(submittedTask.taskID == taskID) { console.log("ALREADY SUBMITTED"); taskAlreadySubmittedFlag = true}
+            if(submittedTask.taskID == taskID) { taskAlreadySubmittedFlag = true }
           })
           if(!taskAlreadySubmittedFlag) {
             solvedTasksInCollection.push(taskAndNoteObj)
@@ -191,7 +188,7 @@ export class TaskService {
 
   }
 
-  async markTaskOrCollectionAsSubmitted(usermail:string,taskOrCollectionId:string):Promise<User> {
+  async markTaskOrCollectionAsSubmitted(usermail:string,taskOrCollectionId:string,note:number):Promise<User> {
     let moodleUser = await this.userModel.findOne({'email': usermail}).exec()
     if(moodleUser) {
       //Clean Up User Tasks In Collection Submitted
@@ -199,9 +196,14 @@ export class TaskService {
       if(solvedTasksInCollection && solvedTasksInCollection.has(taskOrCollectionId)) {
         solvedTasksInCollection.delete(taskOrCollectionId)
       }
-      let tasksSolved = moodleUser.solvedTasksOrCollections
-      tasksSolved.push(taskOrCollectionId)
-      moodleUser.solvedTasksOrCollections = tasksSolved
+      let tasksSolvedMap = moodleUser.solvedTasksOrCollections
+      if(tasksSolvedMap) {
+        tasksSolvedMap.set(taskOrCollectionId,note)
+      } else {
+        tasksSolvedMap = new Map([[taskOrCollectionId,note]])
+      }
+
+      moodleUser.solvedTasksOrCollections = tasksSolvedMap
       moodleUser.solvedTasksInCollection = solvedTasksInCollection
       //Filter id
       let {_id, ...rest} = moodleUser

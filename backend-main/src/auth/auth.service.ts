@@ -45,7 +45,7 @@ export class AuthService {
     let access_token;
     provider.valid_request(request, (err, isValid) => {
       if (!isValid) {
-        console.log("[LOG] INVALID LTI REQUEST..")
+        console.log("[LOG] INVALID LTI REQUEST"+err)
 
         return "INVALID: "+err
       }
@@ -73,7 +73,9 @@ export class AuthService {
     if(!moodleUser) {
       this.usersService.createMoodleUser(userMail,userName)
     } else {
-      solved = moodleUser.solvedTasksOrCollections.includes(taskId)
+      //Hat der User die Task oder Task Collection schon gemacht?
+      if(moodleUser.solvedTasksOrCollections) solved = moodleUser.solvedTasksOrCollections.has(taskId)
+
     }
       return {user:moodleUser, solved: solved}
   }

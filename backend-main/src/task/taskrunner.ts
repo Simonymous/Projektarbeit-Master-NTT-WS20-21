@@ -2,10 +2,6 @@ import * as plugins from '../plugins/plugins.json' //Prüfen ob dynamisch funkti
 //TODO: Ordner pro Plugin - siehe frontend prinzip
 const pluginDirectoryPath = "../plugins/"
 
-interface IPlugin {
-  openTest: Function,
-  submit: Function
-}
 export default class taskRunner {
   constructor() {}
 

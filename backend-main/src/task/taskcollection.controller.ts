@@ -95,7 +95,7 @@ export class TaskCollectionController {
       const note = await this.taskService.getTaskCollectionNote(userMail,taskCollectionID)
       if(note) {
         let status = submitHelper.submitNoteToMoodle(session,note)
-        this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskCollectionID)
+        this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskCollectionID,note)
         return res.status(HttpStatus.OK).json({
           message: 'Task Collection übermittelt:',
           feedback: status,

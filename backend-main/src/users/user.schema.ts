@@ -23,7 +23,7 @@ export class User {
   password: string;
 
   @Prop()
-  solvedTasksOrCollections: string[];
+  solvedTasksOrCollections: Map<string,number>;
 
   //<TASKCOLLECTIONID,[TASKS WITH NOTE...]
   @Prop()
