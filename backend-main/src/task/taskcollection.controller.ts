@@ -94,13 +94,19 @@ export class TaskCollectionController {
       let userMail = session.body.lis_person_contact_email_primary
       let submitHelper = new moodleSubmitHelper();
       const note = await this.taskService.getTaskCollectionNote(userMail,taskCollectionID)
-      console.log("NOTE: ",note)
-      let status = submitHelper.submitNoteToMoodle(session,note)
-      //this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskCollectionID)
-      return res.status(HttpStatus.OK).json({
-        message: 'Task Collection übermittelt:',
-        feedback: status,
-      });
+      if(note) {
+        let status = submitHelper.submitNoteToMoodle(session,note)
+        this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskCollectionID)
+        return res.status(HttpStatus.OK).json({
+          message: 'Task Collection übermittelt:',
+          feedback: status,
+        });
+      } else {
+        return res.status(HttpStatus.UNAUTHORIZED).json({
+          message: 'Session Fehler. Task nicht übermittelt',
+        });
+      }
+
     } else {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         message: 'Session Fehler. Task nicht übermittelt',

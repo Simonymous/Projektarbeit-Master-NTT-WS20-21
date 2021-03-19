@@ -153,6 +153,8 @@ export class TaskService {
         note = archievedPoints/totalPoints *100
       }
 
+    } else {
+      return null
     }
     return note
   }
