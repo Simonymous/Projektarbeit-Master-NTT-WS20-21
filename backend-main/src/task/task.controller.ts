@@ -84,15 +84,14 @@ export class TaskController {
   async getOpenTests(
     @Param('id') taskID: string,
     @Body() taskinput: any,
-    @Headers() headers,
+    //@Headers() headers,
     @Res() res,
   ) {
-    //console.log("HEADERS",headers)
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
-      let solutions = await mytaskrunner.runTests(task, taskinput.userInput);
-      return res.status(HttpStatus.OK).json(solutions);
+      let runnedTests = await mytaskrunner.runTests(task, taskinput.userInput);
+      return res.status(HttpStatus.OK).json(runnedTests);
     }
 
     return res.status(HttpStatus.NOT_FOUND).json({
@@ -112,7 +111,7 @@ export class TaskController {
     if (task) {
       let mytaskrunner = new taskRunner();
       let authToken = headers.authorization;
-      let feedback = await mytaskrunner.submitTask(task, submission.userinput);
+      let note = await mytaskrunner.submitTask(task, submission.userinput);
       //Taskergebnis an moodle senden
       const sessions = moodleSessions.getInstance()
       const session = sessions.getSession(authToken)
@@ -121,7 +120,6 @@ export class TaskController {
         let userName = session.body.ext_user_username
         let userMail = session.body.lis_person_contact_email_primary
         let submitHelper = new moodleSubmitHelper();
-        const note = 100
         let status = submitHelper.submitNoteToMoodle(session,note)
         this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskID)
         return res.status(HttpStatus.OK).json({

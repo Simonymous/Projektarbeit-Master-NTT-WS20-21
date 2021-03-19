@@ -1,12 +1,27 @@
     //@param data : dataForPlugin from Task
     //@param tests : open tests
-    function getOpenTests(data:any,tests:any,input:any) {
+    //@param input: userInput
+    //@return Return to Frontend Plugin
+    function getOpenTests(data:any,tests:any,input:any):any {
         return codingTests(data.inputParams,tests,input)
     }
-
-    function submit(data:any,tests:any,input:any) {
+    //@param data : dataForPlugin from Task
+    //@param tests : closed tests
+    //@param input: userInput
+    //@return Return note in percent (0-100)
+    function submit(data:any,tests:any,input:any):number {
         console.log(tests)
-        return "Submitted: "+input
+        return 100
+    }
+
+    interface ITestResult {
+        passed: boolean,
+        message: string
+    }
+
+    interface IFeedback {
+        message: string,
+        testResults : ITestResult[]
     }
 
     function codingTests(inputparams:string[],tests:any[],userInput:string) {
@@ -22,19 +37,21 @@
             let expectedOutput = JSON.parse(openTest.output)
             let currentoutput = userFunction.apply('sandbox',testInput)
             let testDescription = "EXPECT "+JSON.stringify(testInput)+" TO BE "+JSON.stringify(expectedOutput)+"-> GETTING "+JSON.stringify(currentoutput)
+            let testResult:ITestResult
             if(currentoutput===expectedOutput) {
-                returnTests.push({passed:true,message:testDescription})
+                testResult = {passed:true,message:testDescription}
                 countPassed++
             } else {
-                returnTests.push({passed:false,message:testDescription})
+                testResult = {passed:false,message:testDescription}
             }
+            returnTests.push(testResult)
           })
           message = countPassed+"/"+tests.length+" PASSED"
         } catch(e) {
             console.log("Funktion konnte nicht erzeugt werden",e)
             message = "Compile Error: "+e.message
         }
-        const returnObj = {
+        const returnObj:IFeedback = {
             message: message,
             testResults: returnTests
         }
@@ -46,10 +63,7 @@
         return "SUBMITTED"
     }
 
-    const getBody = (string) => string.substring(
-        string.indexOf("{") + 1,
-        string.lastIndexOf("}")
-      )
+    const getBody = (string) => string.substring(string.indexOf("{") + 1,string.lastIndexOf("}"))
 
-export default {getOpenTests,submit}
+export default { getOpenTests,submit }
 

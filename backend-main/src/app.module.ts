@@ -7,7 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 
-const MONGODB_PATH = 'mongodb://root:example@mongo:27017/test?authSource=admin'
+const DBNAME = 'test'
+const MONGODB_PATH = 'mongodb://root:example@mongo:27017/'+DBNAME+'?authSource=admin'
 @Module({
   imports: [TaskModule, MongooseModule.forRoot(MONGODB_PATH), AuthModule, UsersModule],
   controllers: [AppController],

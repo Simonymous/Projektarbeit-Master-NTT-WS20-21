@@ -25,7 +25,7 @@ export class User {
   @Prop()
   solvedTasksOrCollections: string[];
 
-  //<TASKCOLLECTIONID,[TASKIDS...]
+  //<TASKCOLLECTIONID,[TASKS WITH NOTE...]
   @Prop()
   solvedTasksInCollection: Map<string,taskAndNote[]>;
 

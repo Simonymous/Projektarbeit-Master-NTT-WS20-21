@@ -1,6 +1,6 @@
-import * as plugins from './plugins.json' //Prüfen ob dynamisch funktioniert wenn sich json ändert...
+import * as plugins from '../plugins/plugins.json' //Prüfen ob dynamisch funktioniert wenn sich json ändert...
 //TODO: Ordner pro Plugin - siehe frontend prinzip
-const pluginDirectoryPath = "./plugins/"
+const pluginDirectoryPath = "../plugins/"
 
 interface IPlugin {
   openTest: Function,
@@ -16,7 +16,7 @@ export default class taskRunner {
     return testResult
   }
 
-  async submitTask(task:any,userInput:string):Promise<any> {
+  async submitTask(task:any,userInput:string):Promise<number> {
       console.log("[LOG] Submitting:",task.closedTests)
       const plugin = await this.getPlugin(task.pluginCode)
       const submittedResult = plugin.default.submit(task.dataForPlugin,task.closedTests,userInput)
@@ -25,10 +25,14 @@ export default class taskRunner {
 
   private async getPlugin(pluginCode:string) {
     let pluginFileName:string
+    let pluginDirectory:string
     plugins.forEach(plugin=> {
-      if(plugin.name == pluginCode) pluginFileName=plugin.file
+      if(plugin.name == pluginCode) {
+        pluginFileName=plugin.mainFile
+        pluginDirectory=plugin.directory
+      }
     })
-    const pathToFile = pluginDirectoryPath+pluginFileName
+    const pathToFile = pluginDirectoryPath+pluginDirectory+'/'+pluginFileName
     return import(pathToFile)
   }
 
