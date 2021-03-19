@@ -21,7 +21,7 @@
           <div v-if="selectedTaskLite?._id">
             <SolveTask
               :taskID="selectedTaskLite._id"
-              :customSubmitPath="SUBMIT_TASK_IN_COLLECTION_PATH"
+              :customSubmitPath="SUBMIT_TASK_IN_COLLECTION_PATH + '/' + exerciseId"
               v-on:taskSubmitted="taskSubmitted"
             />
           </div>
@@ -117,7 +117,7 @@ export default {
     }
 
     async function submitWholeCollection(){
-      await getBackendRequest(SUBMIT_TASK_COLLECTION_PATH + "/" + exerciseId);
+      await postBackendRequest(SUBMIT_TASK_COLLECTION_PATH + "/" + exerciseId);
       terminateInputProcess()
     }
 

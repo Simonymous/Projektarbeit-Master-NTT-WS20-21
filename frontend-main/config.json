@@ -15,7 +15,7 @@
     "UPDATE_TASK_COLLECTION_PATH" : "taskCollection/update",
     "DELETE_TASK_COLLECTION_PATH" : "taskCollection",
     "SUBMIT_TASK_IN_COLLECTION_PATH" : "taskCollection/submitTask",
-    "SUBMIT_TASK_COLLECTION_PATH" :  "taskCollection/submitCollection",
+    "SUBMIT_TASK_COLLECTION_PATH" :  "taskCollection/submit",
     "DEEP_EXPORT_TASK_COLLECTION" : "taskCollection/deepexportCollection"
   }
 }

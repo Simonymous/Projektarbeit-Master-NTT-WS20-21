@@ -38,9 +38,22 @@ export class TaskCollectionController {
     return this.taskService.findAllTaskCollections();
   }
 
+  @Post('/submitTask/:taskcollectionID/:taskID')
+  async submitTaskInCollection(
+    @Param('taskcollectionID') taskCollectionID: string,
+    @Param('taskID') taskID: string
+  ) {
+    console.log("TASK IN COLLECTION SUBMITTED",taskCollectionID,taskID)
+  }
+
+  @Post('/submit/:id')
+  async submit(@Param('id') taskCollectionID: string) {
+    console.log("SUBMITTED",taskCollectionID)
+  }
+
   @Get(':id')
-  async getTaskCollection(@Param('id') taskID: string, @Res() res) {
-    const returnObj = await this.taskService.getSingleTaskCollection(taskID);
+  async getTaskCollection(@Param('id') taskCollectionID: string, @Res() res) {
+    const returnObj = await this.taskService.getSingleTaskCollection(taskCollectionID);
     if(returnObj) return res.status(HttpStatus.OK).json(returnObj);
     else return res.status(HttpStatus.NOT_FOUND).json("")
 
