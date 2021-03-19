@@ -1,7 +1,7 @@
 export default class moodleSubmitHelper {
     constructor() {}
 
-    public submitSingleTask(session:any,grade:number) {
+    public submitNoteToMoodle(session:any,grade:number) {
     session.outcome_service.send_replace_result(grade/100, (err, isValid) => {
       if (!isValid) {
         if(!session.outcome_service) {

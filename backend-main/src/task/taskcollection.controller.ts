@@ -5,6 +5,7 @@ import {
   Body,
   Get,
   Param,
+  Headers,
   Put,
   Delete,
   Res,
@@ -12,8 +13,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TaskCollection } from './taskcollection.schema';
-
+import taskRunner from './taskrunner';
+import moodleSessions from '../auth/moodleSessions';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import moodleSubmitHelper from './moodleSubmitHelper'
 
 @Controller('taskcollection')
 //@UseGuards(JwtAuthGuard)
@@ -41,14 +44,67 @@ export class TaskCollectionController {
   @Post('/submitTask/:taskcollectionID/:taskID')
   async submitTaskInCollection(
     @Param('taskcollectionID') taskCollectionID: string,
-    @Param('taskID') taskID: string
+    @Param('taskID') taskID: string,
+    @Headers() headers,
+    @Body() submission: any,
+    @Res() res
   ) {
-    console.log("TASK IN COLLECTION SUBMITTED",taskCollectionID,taskID)
+    const userInput = submission.defaultCode; //TODO: Prüfen
+    let task = await this.taskService.getSingleTask(taskID);
+    if(task) {
+      const authToken = headers.authorization;
+      let mytaskrunner = new taskRunner();
+      let feedback = await mytaskrunner.submitTask(task, userInput);
+      const note = 50
+      const sessions = moodleSessions.getInstance()
+      const session = sessions.getSession(authToken)
+      if(session) {
+        let userId = session.body.user_id
+        let userName = session.body.ext_user_username
+        let userMail = session.body.lis_person_contact_email_primary
+        this.taskService.markTaskInCollectionAsSubmitted(userMail,taskCollectionID,taskID,note)
+        return res.status(HttpStatus.OK).json({
+          message: 'Task übermittelt:',
+          feedback: "OK",
+        });
+      } else {
+        return res.status(HttpStatus.UNAUTHORIZED).json({
+          message: 'Session Fehler. Task nicht übermittelt',
+        });
+      }
+    } else {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        message: 'Fehler. Task existiert nicht',
+      });
+    }
   }
 
   @Post('/submit/:id')
-  async submit(@Param('id') taskCollectionID: string) {
-    console.log("SUBMITTED",taskCollectionID)
+  async submit(
+    @Param('id') taskCollectionID: string,
+    @Headers() headers,
+    @Res() res
+  ) {
+    const authToken = headers.authorization;
+    const sessions = moodleSessions.getInstance()
+    const session = sessions.getSession(authToken)
+    if(session) {
+      let userId = session.body.user_id
+      let userName = session.body.ext_user_username
+      let userMail = session.body.lis_person_contact_email_primary
+      let submitHelper = new moodleSubmitHelper();
+      const note = await this.taskService.getTaskCollectionNote(userMail,taskCollectionID)
+      let status = submitHelper.submitNoteToMoodle(session,note)
+      this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskCollectionID)
+      return res.status(HttpStatus.OK).json({
+        message: 'Task Collection übermittelt:',
+        feedback: status,
+      });
+    } else {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        message: 'Session Fehler. Task nicht übermittelt',
+      });
+    }
   }
 
   @Get(':id')

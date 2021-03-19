@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Task, TaskDocument } from './task.schema';
-import { User, UserDocument } from '../users/user.schema';
+import { User, UserDocument, taskAndNote } from '../users/user.schema';
 import { TaskCollection, TaskCollectionDocument } from './taskcollection.schema'
 
 @Injectable()
@@ -125,14 +125,50 @@ export class TaskService {
     }
   }
 
-  async markTaskAsSubmitted(username:string,usermail:string,taskOrCollectionId:string):Promise<User> {
-    let moodleUser = await this.userModel.findOne({'username': username,'email': usermail}).exec()
+  async getTaskCollectionNote(usermail:string,taskCollectionID:string):Promise<number> {
+    return 0
+  }
+
+  async markTaskInCollectionAsSubmitted(usermail:string,taskCollectionID:string,taskID:string,note:number):Promise<User> {
+    let moodleUser = await this.userModel.findOne({'email': usermail}).exec()
+    if(moodleUser) {
+      let solvedTasksInCollectionMap = moodleUser.solvedTasksInCollection
+      let solvedTasksInCollection = []
+      let taskAndNoteObj:taskAndNote = {taskID: taskID,note:note}
+      if(solvedTasksInCollectionMap) {
+        if(solvedTasksInCollectionMap.has(taskCollectionID)) {
+          solvedTasksInCollection = solvedTasksInCollectionMap.get(taskCollectionID)
+          let taskAlreadySubmittedFlag = false;
+          solvedTasksInCollection.forEach(submittedTask => {
+            if(submittedTask.taskID == taskID) { console.log("ALREADY SUBMITTED"); taskAlreadySubmittedFlag = true}
+          })
+          if(!taskAlreadySubmittedFlag) {
+            solvedTasksInCollection.push(taskAndNoteObj)
+            solvedTasksInCollectionMap.set(taskCollectionID,solvedTasksInCollection)
+          }
+        } else {
+          solvedTasksInCollection.push(taskAndNoteObj)
+          solvedTasksInCollectionMap.set(taskCollectionID,solvedTasksInCollection)
+        }
+      } else {
+        solvedTasksInCollection.push(taskAndNoteObj)
+        solvedTasksInCollectionMap = new Map([[taskCollectionID,solvedTasksInCollection]])
+      }
+      moodleUser.solvedTasksInCollection = solvedTasksInCollectionMap
+      let {_id, ...rest} = moodleUser
+      return this.userModel.findOneAndUpdate({'email': usermail},{...rest}, {new:true})
+    } else return null
+
+  }
+
+  async markTaskOrCollectionAsSubmitted(usermail:string,taskOrCollectionId:string):Promise<User> {
+    let moodleUser = await this.userModel.findOne({'email': usermail}).exec()
     if(moodleUser) {
       let tasksSolved = moodleUser.solvedTasksOrCollections
       tasksSolved.push(taskOrCollectionId)
       moodleUser.solvedTasksOrCollections = tasksSolved
       let {_id, ...rest} = moodleUser
-      return this.userModel.findOneAndUpdate({'username': username,'email': usermail},{...rest}, {new:true})
+      return this.userModel.findOneAndUpdate({'email': usermail},{...rest}, {new:true})
     } else return null
 
   }

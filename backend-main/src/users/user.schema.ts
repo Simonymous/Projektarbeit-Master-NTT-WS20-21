@@ -3,6 +3,10 @@ import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
 
+export interface taskAndNote {
+  taskID: string,
+  note: number
+}
 @Schema()
 export class User {
 
@@ -21,8 +25,9 @@ export class User {
   @Prop()
   solvedTasksOrCollections: string[];
 
+  //<TASKCOLLECTIONID,[TASKIDS...]
   @Prop()
-  solvedTasksInCollection: [];
+  solvedTasksInCollection: Map<string,taskAndNote[]>;
 
   @Prop()
   role: string;
