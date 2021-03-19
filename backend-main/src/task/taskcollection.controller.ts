@@ -49,12 +49,11 @@ export class TaskCollectionController {
     @Body() submission: any,
     @Res() res
   ) {
-    const userInput = submission.defaultCode; //TODO: Prüfen
     let task = await this.taskService.getSingleTask(taskID);
     if(task) {
       const authToken = headers.authorization;
       let mytaskrunner = new taskRunner();
-      const note = await mytaskrunner.submitTask(task, userInput);
+      const note = await mytaskrunner.submitTask(task, submission);
       const sessions = moodleSessions.getInstance()
       const session = sessions.getSession(authToken)
       if(session) {

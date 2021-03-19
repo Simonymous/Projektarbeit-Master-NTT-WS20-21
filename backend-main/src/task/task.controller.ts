@@ -83,14 +83,15 @@ export class TaskController {
   @Post('/test/:id')
   async getOpenTests(
     @Param('id') taskID: string,
-    @Body() taskinput: any,
+    @Body() input: any,
     //@Headers() headers,
     @Res() res,
   ) {
+
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
-      let runnedTests = await mytaskrunner.runTests(task, taskinput.userInput);
+      let runnedTests = await mytaskrunner.runTests(task, input);
       return res.status(HttpStatus.OK).json(runnedTests);
     }
 
@@ -104,14 +105,14 @@ export class TaskController {
     @Param('id') taskID: string,
     //@Param('token') token: string,
     @Headers() headers,
-    @Body() submission: any,
+    @Body() input: any,
     @Res() res,
   ) {
     let task = await this.taskService.getSingleTask(taskID);
     if (task) {
       let mytaskrunner = new taskRunner();
       let authToken = headers.authorization;
-      let note = await mytaskrunner.submitTask(task, submission.userinput);
+      let note = await mytaskrunner.submitTask(task, input);
       //Taskergebnis an moodle senden
       const sessions = moodleSessions.getInstance()
       const session = sessions.getSession(authToken)

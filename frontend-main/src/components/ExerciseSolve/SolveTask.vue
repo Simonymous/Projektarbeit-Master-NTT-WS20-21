@@ -109,10 +109,9 @@ export default {
       let testResults;
       try {
         if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
-          console.log(task.value.dataForPlugin)
           testResults = await postBackendRequest(
             TEST_TASK_PATH + "/" + props.taskID,
-            {userInput: String(task.value.dataForPlugin.defaultCode)}
+            task.value.dataForPlugin
           );
         } else {
           testResults = postBackendRequestDummy(

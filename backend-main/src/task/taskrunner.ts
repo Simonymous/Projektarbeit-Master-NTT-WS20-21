@@ -5,17 +5,17 @@ const pluginDirectoryPath = "../plugins/"
 export default class taskRunner {
   constructor() {}
 
-  async runTests(task:any,userInput:string):Promise<any> {
-    console.log("[LOG] Running Tests:",task.openTests,"for data:",userInput)
+  async runTests(task:any,input:any):Promise<any> {
+    console.log("[LOG] Running Tests:",task.openTests,"for data:",input)
     const plugin = await this.getPlugin(task.pluginCode)
-    const testResult = plugin.default.getOpenTests(task.dataForPlugin,task.openTests,userInput)
+    const testResult = plugin.default.getOpenTests(task.dataForPlugin,task.openTests,input)
     return testResult
   }
 
-  async submitTask(task:any,userInput:string):Promise<number> {
-      console.log("[LOG] Submitting:",task.closedTests,"for data:",userInput)
+  async submitTask(task:any,input:any):Promise<number> {
+      console.log("[LOG] Submitting:",task.closedTests,"for data:",input)
       const plugin = await this.getPlugin(task.pluginCode)
-      const submittedResult = plugin.default.submit(task.dataForPlugin,task.closedTests,userInput)
+      const submittedResult = plugin.default.submit(task.dataForPlugin,task.closedTests,input)
       return submittedResult
   }
 

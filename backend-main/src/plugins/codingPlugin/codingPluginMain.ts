@@ -3,14 +3,16 @@
     //@param input: userInput
     //@return Return to Frontend Plugin
     function getOpenTests(data:any,tests:any,input:any):any {
-        return codingTests(data.inputParams,tests,input)
+        const userinput = input.defaultCode
+        return codingTests(data.inputParams,tests,userinput)
     }
     //@param data : dataForPlugin from Task
     //@param tests : closed tests
     //@param input: userInput
     //@return Return note in percent (0-100)
     function submit(data:any,tests:any,input:any):number {
-        return getNote(data.inputParams,tests,input)
+        const userinput = input.defaultCode
+        return getNote(data.inputParams,tests,userinput)
     }
 
     import { ITestResult, IFeedback } from './codingPluginInterfaces'
