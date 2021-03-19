@@ -156,7 +156,11 @@ export default {
           );
         }
       } catch (error) {
-        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: error.message,
+          life: 10000,
+        });
       }
     }
 
@@ -174,8 +178,17 @@ export default {
           );
         }
         router.go();
+        toast.add({
+          severity: "success",
+          summary: "TaskCollection wurde gespeichert",
+          life: 10000,
+        });
       } catch (error) {
-        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: error.message,
+          life: 10000,
+        });
       }
       router.go();
     }
@@ -194,8 +207,17 @@ export default {
             router.go();
           },
         });
+        toast.add({
+          severity: "success",
+          summary: "TaskCollection wurde gelöscht",
+          life: 10000,
+        });
       } catch (error) {
-        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: error.message,
+          life: 10000,
+        });
       }
     }
 
@@ -234,6 +256,11 @@ export default {
           exportCollection[0].title + "-" + exportCollection[0]._id;
         link.click();
         URL.revokeObjectURL(link.href);
+        toast.add({
+          severity: "success",
+          summary: "TaskCollection wurde exportiert",
+          life: 10000,
+        });
       } catch (e) {
         toast.add({
           severity: "error",

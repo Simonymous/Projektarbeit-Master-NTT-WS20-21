@@ -1,7 +1,3 @@
 [
-  {"label": "HelloWorld", "code": "demo1", "path": "/HelloWorld.vue"},
-  {"label": "ByeWorld", "code": "demo2", "path": "/ByeWorld.vue"},
-  {"label": "BasicMathCreate", "code": "basicMath", "path": "/BasicMath/config.json"},
-  {"label": "Grade", "code": "gradeDemo", "path": "/Grade/config.json"},
   {"label": "Code", "code": "codeJS", "path": "/Code/config.json"}
 ]

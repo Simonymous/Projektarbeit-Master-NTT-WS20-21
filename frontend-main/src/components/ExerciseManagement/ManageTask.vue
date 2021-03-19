@@ -46,6 +46,7 @@ import ShowPlugin from "../ShowPlugin.vue";
 import SelectPluginDropdown from "../SelectPluginDropdown";
 import { getBackendRequestDummy } from "../../helper/dummyRequests";
 import { useRouter } from "vue-router";
+import { useToast } from "primevue/usetoast";
 
 import {
   getBackendRequest,
@@ -78,6 +79,7 @@ export default {
     let state = useState();
     const confirm = useConfirm();
     const router = useRouter();
+    const toast = useToast();
 
     let emptyTask = {
       _id: -1,
@@ -122,7 +124,11 @@ export default {
 
         state.plugin = task.value.pluginCode;
       } catch (error) {
-        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: error.message,
+          life: 10000,
+        });
       }
     }
 
@@ -136,9 +142,18 @@ export default {
           console.log(task.value);
           await putBackendRequest(UPDATE_TASK_PATH, task.value);
           router.go();
+          toast.add({
+            severity: "success",
+            summary: "Task wurde gespeichert",
+            life: 10000,
+          });
         }
       } catch (error) {
-        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: error.message,
+          life: 10000,
+        });
       }
     }
 
@@ -170,10 +185,19 @@ export default {
             console.log("after delete");
             task.value = { ...emptyTask };
             router.go();
+            toast.add({
+              severity: "success",
+              summary: "Task wurde gelöscht",
+              life: 10000,
+            });
           },
         });
       } catch (error) {
-        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: error.message,
+          life: 10000,
+        });
       }
     }
 
@@ -185,6 +209,11 @@ export default {
       link.download = task.value.title + "-" + task.value._id;
       link.click();
       URL.revokeObjectURL(link.href);
+      toast.add({
+        severity: "success",
+        summary: "Task wurde exportiert",
+        life: 10000,
+      });
     }
 
     function pluginChangedTask(payload) {
