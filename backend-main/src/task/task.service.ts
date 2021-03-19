@@ -134,8 +134,8 @@ export class TaskService {
         const tasksInCollectionArray = taskCollection.tasks
         let totalPoints = 0
         tasksInCollectionArray.forEach(task => {
-          const weighting = task.weighting
-          totalPoints += weighting
+          const weighting = +task.weighting
+          totalPoints += +weighting
         })
         let archievedPoints = 0
         tasksInCollectionArray.forEach(task => {
