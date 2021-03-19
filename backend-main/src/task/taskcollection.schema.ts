@@ -5,7 +5,7 @@ export type TaskCollectionDocument = TaskCollection & Document;
 
 interface TaskInCollection {
   _id: string,
-  weightening: number,
+  weighting: number,
   taskName: string
 }
 @Schema()

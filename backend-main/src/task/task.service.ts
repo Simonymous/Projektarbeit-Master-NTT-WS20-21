@@ -126,7 +126,35 @@ export class TaskService {
   }
 
   async getTaskCollectionNote(usermail:string,taskCollectionID:string):Promise<number> {
-    return 0
+    let moodleUser = await this.userModel.findOne({'email': usermail}).exec()
+    let note = 0
+    if(moodleUser) {
+      const solvedTasksInCollectionMap = moodleUser.solvedTasksInCollection
+
+      if(solvedTasksInCollectionMap && solvedTasksInCollectionMap.has(taskCollectionID)) {
+        const solvedTasksInCollection = solvedTasksInCollectionMap.get(taskCollectionID)
+        const taskCollection = await this.getSingleTaskCollection(taskCollectionID)
+        const tasksInCollectionArray = taskCollection.tasks
+        let totalPoints = 0
+        tasksInCollectionArray.forEach(task => {
+          const weighting = task.weighting
+          totalPoints += weighting
+        })
+        let archievedPoints = 0
+        tasksInCollectionArray.forEach(task => {
+          const taskID = task._id
+          const taskweightening = task.weighting
+          solvedTasksInCollection.forEach(solvedTask => {
+            if(solvedTask.taskID == taskID) {
+              archievedPoints += (taskweightening * (solvedTask.note/100))
+            }
+          })
+        })
+        note = archievedPoints/totalPoints *100
+      }
+
+    }
+    return note
   }
 
   async markTaskInCollectionAsSubmitted(usermail:string,taskCollectionID:string,taskID:string,note:number):Promise<User> {

@@ -121,7 +121,8 @@ export class TaskController {
         let userName = session.body.ext_user_username
         let userMail = session.body.lis_person_contact_email_primary
         let submitHelper = new moodleSubmitHelper();
-        let status = submitHelper.submitNoteToMoodle(session,100)
+        const note = 100
+        let status = submitHelper.submitNoteToMoodle(session,note)
         this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskID)
         return res.status(HttpStatus.OK).json({
           message: 'Task übermittelt:',
