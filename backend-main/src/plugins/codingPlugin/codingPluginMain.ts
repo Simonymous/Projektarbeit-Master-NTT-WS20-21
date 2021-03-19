@@ -10,8 +10,7 @@
     //@param input: userInput
     //@return Return note in percent (0-100)
     function submit(data:any,tests:any,input:any):number {
-        console.log(tests)
-        return 100
+        return getNote(data.inputParams,tests,input)
     }
 
     import { ITestResult, IFeedback } from './codingPluginInterfaces'
@@ -51,8 +50,25 @@
         return returnObj
       }
 
-    function codingSubmit(task:any) {
-        return "SUBMITTED"
+    function getNote(inputparams:string[],tests:any[],userInput:string) {
+        let countPassed = 0
+        try {
+            userInput = getBody(userInput)
+            var safeEval = require('notevil')
+            let userFunction = safeEval.Function(...inputparams,userInput)
+
+            tests.forEach(openTest => {
+              let testInput = JSON.parse(openTest.input)
+              let expectedOutput = JSON.parse(openTest.output)
+              let currentoutput = userFunction.apply('sandbox',testInput)
+              if(currentoutput===expectedOutput) {
+                  countPassed++
+              }
+            })
+          } catch(e) {
+              console.log("Funktion konnte nicht erzeugt werden",e)
+        }
+        return countPassed/tests.length * 100
     }
 
     const getBody = (string) => string.substring(string.indexOf("{") + 1,string.lastIndexOf("}"))

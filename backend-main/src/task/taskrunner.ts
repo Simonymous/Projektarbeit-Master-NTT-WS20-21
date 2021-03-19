@@ -17,7 +17,7 @@ export default class taskRunner {
   }
 
   async submitTask(task:any,userInput:string):Promise<number> {
-      console.log("[LOG] Submitting:",task.closedTests)
+      console.log("[LOG] Submitting:",task.closedTests,"for data:",userInput)
       const plugin = await this.getPlugin(task.pluginCode)
       const submittedResult = plugin.default.submit(task.dataForPlugin,task.closedTests,userInput)
       return submittedResult

@@ -54,8 +54,7 @@ export class TaskCollectionController {
     if(task) {
       const authToken = headers.authorization;
       let mytaskrunner = new taskRunner();
-      let feedback = await mytaskrunner.submitTask(task, userInput);
-      const note = 50 //TODO: Ersetzen durch echte Note
+      const note = await mytaskrunner.submitTask(task, userInput);
       const sessions = moodleSessions.getInstance()
       const session = sessions.getSession(authToken)
       if(session) {
