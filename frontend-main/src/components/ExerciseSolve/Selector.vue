@@ -1,68 +1,114 @@
 <template>
-  <Accordion :multiple="true" :activeIndex="[0,1]">
+  <Accordion :multiple="true" :activeIndex="[0, 1]">
     <AccordionTab header="Task" :active="true">
-      <Button label="TODO: Suchleiste?" v-on:click="emitOpenTask"></Button>
-      <Listbox class="listbox" :options="listOfTasks" optionLabel="name" optionValue='code' v-on:change="emitOpenTask($event.value)"  listStyle="max-height:250px"/>
+      <Listbox
+        class="listbox"
+        :options="listOfTasks"
+        optionLabel="title"
+        optionValue="_id"
+        v-on:change="emitOpenTask($event.value)"
+        listStyle="max-height:250px"
+      />
     </AccordionTab>
     <AccordionTab header="Task Collection">
-      <Button label="TODO: Suchleiste?" v-on:click="emitOpenTaskCollection"></Button>
-      <PanelMenu :model="TaskCollectionItems" :multiple="true"
-    /></AccordionTab>
+      <div class="TaskCollectionAccordion">
+        <Accordion
+          v-on:tab-open="
+            emitOpenTaskCollection(listOfTaskCollections[$event.index]._id)
+          "
+        >
+          <AccordionTab
+            v-for="taskCollection in listOfTaskCollections"
+            :key="taskCollection.title"
+            :header="taskCollection.title"
+          >
+            <Listbox
+              :options="taskCollection.tasks"
+              optionLabel="title"
+              optionValue="_id"
+              v-on:change="emitOpenTask($event.value)"
+            />
+          </AccordionTab>
+        </Accordion>
+      </div>
+    </AccordionTab>
   </Accordion>
 </template>
 <script>
-// import { ref, onMounted, watch } from "vue"
-// import { useState } from '../../store/store'
-// import { getBackendRequest, postBackendRequest, deleteBackendRequest, putBackendRequest } from "../../helper/requests";
+import { ref, onMounted, watch } from "vue";
+import { useState } from "../../store/store";
+import {
+  getBackendRequest,
+  postBackendRequest,
+  deleteBackendRequest,
+  putBackendRequest,
+} from "../../helper/requests";
+import { getBackendRequestDummy } from "../../helper/dummyRequests";
 
-// export default {
-//   setup(props,{emit}) {
-//     const TASK_PATH = 'task'
-//     let state = useState()
-//     const selectedTask = ref()
-//     const selectedTaskCollection = ref(0)
-//     const listOfTasks = ref([{name: 'Mathe 1', code: 3}, {name: 'Deutsch 1', code: 2}])
-//     const TaskCollectionItems = ref([
-//       {
-//         label: "Aufgabenblatt 1",
-//         items: [
-//           {
-//             label: "Exercise 1",
-//           },
-//           { label: "Exercise 2" },
-//         ],
-//       },
-//       {
-//         label: "Aufgabenblatt 2",
-//         items: [
-//           {
-//             label: "Exercise 3",
-//           },
-//           { label: "Exercise 4" },
-//         ],
-//       },
-//     ]);
+const PATHS = require("../../../config.json").URL_PATHS;
 
-//     async function loadTasksOfProfessor(){
-//       try{
-//       listOfTasks.value = getBackendRequest(TASK_PATH + '/' + state.user._id)
-//       }catch(error){
-//         console.log(error)
-//       }
-//     }
+const TASK_PATH = PATHS.TASK_PATH;
+const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
 
+export default {
+  setup(props, { emit }) {
+    let state = useState();
+    const selectedTask = ref();
+    const selectedTaskCollection = ref(0);
 
-//     function emitOpenTaskCollection(){
-//       emit('exerciseSelected', {id:-1, kindOfExercise:'collection'})
-//     }
+    const listOfTasks = ref();
+    const listOfTaskCollections = ref();
 
-//     function emitOpenTask(id=-1){
-//       emit('exerciseSelected', {id:id, kindOfExercise:'task'})
-//     }
+    const activeTabs = ref([0, 1]);
 
-//     return { TaskCollectionItems, emitOpenTaskCollection, listOfTasks, selectedTask, emitOpenTask };
-//   },
-// };
+    init();
+    async function init() {
+      listOfTasks.value = await requestTasks();
+      listOfTaskCollections.value = await requestTaskCollections();
+    }
+
+    async function requestTasks() {
+      try {
+        if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
+          return await getBackendRequest(TASK_PATH);
+        } else {
+          return getBackendRequestDummy(TASK_PATH);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    async function requestTaskCollections() {
+      try {
+        if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
+          return await getBackendRequest(TASK_COLLECTION_PATH);
+        } else {
+          return getBackendRequestDummy(TASK_COLLECTION_PATH);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    function emitOpenTaskCollection(id = -1) {
+      emit("exerciseSelected", { id: id, kindOfExercise: "collection" });
+    }
+
+    function emitOpenTask(id = -1) {
+      emit("exerciseSelected", { id: id, kindOfExercise: "task" });
+    }
+
+    return {
+      emitOpenTaskCollection,
+      listOfTasks,
+      selectedTask,
+      emitOpenTask,
+      listOfTaskCollections,
+      activeTabs,
+    };
+  },
+};
 </script>
 <style scoped>
 button {

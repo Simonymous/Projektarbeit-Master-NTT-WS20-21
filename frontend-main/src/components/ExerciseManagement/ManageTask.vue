@@ -1,21 +1,44 @@
 <template>
   <div class="manageTask">
-    <div class="taskInputs">
-      TaskID: {{ task._id }} Titel:<InputText
-        type="text"
-        v-model="task.title"
-        placeholder="Titel"
-      />
-      Description:<InputText
-        type="text"
-        v-model="task.description"
-        placeholder="Description"
-      />
-      Tags:
-      <InputText type="text" v-model="task.tags" placeholder="Tags" /> Course:
-      <InputText type="text" v-model="task.course" placeholder="Course" />
+    <div class="taskInputs p-grid">
+      <div class="p-col-12 p-md-6 p-lg-3">
+        <span class="p-float-label">
+          <InputText type="text" v-model="task._id" id="ID" disabled="true" />
+          <label for="ID">ID</label>
+        </span>
+      </div>
+      <div class="p-col-12 p-md-6 p-lg-3">
+        <span class="p-float-label">
+          <InputText type="text" v-model="task.title" id="Titel" />
+          <label for="Titel">Titel</label>
+        </span>
+      </div>
+      <div class="p-col-12 p-md-6 p-lg-3">
+        <span class="p-float-label">
+          <InputText type="text" v-model="task.tags" id="Tags" />
+          <label for="Tags">Tags</label>
+        </span>
+      </div>
+      <div class="p-col-12 p-md-6 p-lg-3">
+        <span class="p-float-label">
+          <InputText type="text" v-model="task.course" id="Course" />
+          <label for="Course">Course</label>
+        </span>
+      </div>
+      <div class="p-col-12">
+        <span class="p-float-label">
+          <Textarea
+            v-model="task.description"
+            id="Description"
+            rows="5"
+            cols="60"
+          />
+          <label for="Description">Description</label>
+        </span>
+      </div>
     </div>
-    Plugin:<SelectPluginDropdown />
+    <div class="pluginSelect"><div class="p-text-center">Center:</div>
+ <SelectPluginDropdown /></div>
 
     <show-plugin
       :taskData="task"
@@ -233,9 +256,27 @@ export default {
 
 <style scoped>
 .p-inputtext {
-  margin: 5px;
+  width: 100%;
 }
 button {
   margin: 5px;
+}
+.taskInputs {
+  padding-top: 15px;
+}
+
+.p-float-label {
+  margin-top: 15px;
+}
+
+.pluginSelect {
+  display:flex;
+  justify-content: center;
+  padding:5px;
+  align-items:center;
+}
+
+.p-text-center{
+  padding:5px
 }
 </style>

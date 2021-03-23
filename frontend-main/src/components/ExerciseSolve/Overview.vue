@@ -24,7 +24,7 @@
 
 <script>
 import SolveTask from './SolveTask'
-import Selector from '../ExerciseManagement/Selector'
+import Selector from '../ExerciseSolve/Selector'
 import { ref, onMounted, mounted } from 'vue'
 export default {
   components: {

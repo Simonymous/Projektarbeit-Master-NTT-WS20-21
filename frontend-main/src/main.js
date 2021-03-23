@@ -33,6 +33,8 @@ import Toast from 'primevue/toast'
 import MultiSelect from 'primevue/multiselect'
 import AutoComplete from 'primevue/autocomplete'
 import FileUpload from 'primevue/fileupload'
+import Textarea from 'primevue/textarea';
+
 
 
 import 'primevue/resources/themes/saga-blue/theme.css'
@@ -41,7 +43,10 @@ import 'primevue/resources/themes/saga-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 // import PrismEditor from 'vue-prism-editor'
-import 'vue-prism-editor/dist/prismeditor.min.css' // import the styles somewhere
+import 'vue-prism-editor/dist/prismeditor.min.css'
+import 'primeflex/primeflex.css';
+
+
 
 // import highlighting library (you can use any library you want just return html string)
 // import { highlight, languages } from 'prismjs/components/prism-core'
@@ -86,5 +91,6 @@ app.component('Toast', Toast)
 app.component('MultiSelect', MultiSelect)
 app.component('AutoComplete', AutoComplete)
 app.component('FileUpload', FileUpload)
+app.component('Textarea', Textarea)
 
 app.mount('#app')
