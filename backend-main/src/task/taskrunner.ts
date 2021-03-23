@@ -1,5 +1,4 @@
-import * as plugins from '../plugins/plugins.json' //Prüfen ob dynamisch funktioniert wenn sich json ändert...
-//TODO: Ordner pro Plugin - siehe frontend prinzip
+import * as plugins from '../plugins/plugins.json'
 const pluginDirectoryPath = "../plugins/"
 
 export default class taskRunner {

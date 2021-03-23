@@ -3,8 +3,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import moodleSessions from './moodleSessions'
-const moodleKey = "top"
-const moodlePassword = "secret"
+import * as config from '../config.json'
 
 var lti = require("ims-lti");
 @Injectable()
@@ -37,7 +36,7 @@ export class AuthService {
   }
 
   async ltiSessionInitiate(request):Promise<any> {
-    let provider = new lti.Provider(moodleKey, moodlePassword); //Shared und public Secret aus moodle
+    let provider = new lti.Provider(config.moodle_consumer_key, config.moodle_consumer_secret); //Shared und public Secret aus moodle
     let taskId;
     let userId;
     let userName;
@@ -49,7 +48,7 @@ export class AuthService {
 
         return "INVALID: "+err
       }
-      console.log("[LOG] LTI Session initiiert:",provider)
+      console.log("[LOG] LTI Session initiated:",provider)
       if(provider.body.custom_taskId) taskId = provider.body.custom_taskId
       userId = provider.body.user_id
       userName = provider.body.ext_user_username
@@ -73,7 +72,7 @@ export class AuthService {
     if(!moodleUser) {
       this.usersService.createMoodleUser(userMail,userName)
     } else {
-      //Hat der User die Task oder Task Collection schon gemacht?
+      //Has The User already solved it?
       if(moodleUser.solvedTasksOrCollections) solved = moodleUser.solvedTasksOrCollections.has(taskId)
 
     }

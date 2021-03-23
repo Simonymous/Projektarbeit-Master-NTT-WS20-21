@@ -62,18 +62,18 @@ export class TaskCollectionController {
         let userMail = session.body.lis_person_contact_email_primary
         this.taskService.markTaskInCollectionAsSubmitted(userMail,taskCollectionID,taskID,note)
         return res.status(HttpStatus.OK).json({
-          message: 'Task übermittelt:',
-          feedback: "OK",
-        });
+          message: 'Task submitted',
+          feedback: "OK", //Placeholder for future submission Feedback support
+        })
       } else {
         return res.status(HttpStatus.UNAUTHORIZED).json({
-          message: 'Session Fehler. Task nicht übermittelt',
-        });
+          message: 'Session Error. Task not submitted',
+        })
       }
     } else {
       return res.status(HttpStatus.NOT_FOUND).json({
-        message: 'Fehler. Task existiert nicht',
-      });
+        message: 'Error. Task not found',
+      })
     }
   }
 
@@ -96,39 +96,49 @@ export class TaskCollectionController {
         let status = submitHelper.submitNoteToMoodle(session,note)
         this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskCollectionID,note)
         return res.status(HttpStatus.OK).json({
-          message: 'Task Collection übermittelt:',
+          message: 'Task Collection submitted:',
           feedback: status,
-        });
+        })
       } else {
         return res.status(HttpStatus.UNAUTHORIZED).json({
-          message: 'Session Fehler. Task nicht übermittelt',
-        });
+          message: 'Session Error. Task not submitted',
+        })
       }
 
     } else {
       return res.status(HttpStatus.UNAUTHORIZED).json({
-        message: 'Session Fehler. Task nicht übermittelt',
-      });
+        message: 'Session Error. Task not submitted',
+      })
     }
   }
 
   @Get(':id')
   async getTaskCollection(@Param('id') taskCollectionID: string, @Res() res) {
-    const returnObj = await this.taskService.getSingleTaskCollection(taskCollectionID);
-    if(returnObj) return res.status(HttpStatus.OK).json(returnObj);
-    else return res.status(HttpStatus.NOT_FOUND).json("")
+    const returnObj = await this.taskService.getSingleTaskCollection(taskCollectionID)
+    if(returnObj) return res.status(HttpStatus.OK).json(returnObj)
+    else return res.status(HttpStatus.NOT_FOUND).json({
+      message:"Task Collection not found"
+    })
 
   }
 
   @Put('/update')
-  updateTaskCollection(@Param('id') taskID: string, @Body() taskDTO: TaskCollection) {
-    this.taskService.updateTaskCollection(taskDTO);
-    return 'updated';
+ async  updateTaskCollection(@Param('id') taskID: string, @Body() taskDTO: TaskCollection, @Res() res) {
+    if(await this.taskService.updateTaskCollection(taskDTO)) return res.status(HttpStatus.OK).json({
+      message: 'updatedTaskCollection'
+    })
+    else return res.status(HttpStatus.NOT_FOUND).json({
+      message: 'not updated'
+    })
   }
 
   @Delete(':id')
-  deleteTaskCollection(@Param('id') taskID: string) {
-    this.taskService.deleteTaskCollection(taskID);
-    return 'deleted';
+  async deleteTaskCollection(@Param('id') taskCollectionID: string, @Res() res) {
+    if(await this.taskService.deleteTaskCollection(taskCollectionID)) return res.status(HttpStatus.OK).json({
+      message: 'deleted TaskCollection'
+    })
+    else return res.status(HttpStatus.NOT_FOUND).json({
+      message: 'not deleted'
+    })
   }
 }

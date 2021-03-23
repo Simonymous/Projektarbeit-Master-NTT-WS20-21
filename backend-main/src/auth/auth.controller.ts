@@ -14,10 +14,14 @@ export class AuthController {
     async login(@Res() res, @Body() userDTO: UserDTO) {
       const returnObj = await this.authService.login(userDTO)
        res.cookie('session',returnObj)
-      return res.status(HttpStatus.OK).json({
+      if(returnObj) {return res.status(HttpStatus.OK).json({
         message: 'User logged In successful!',
         token: returnObj
-      })
+      })} else {
+        return res.status(HttpStatus.NOT_FOUND).json({
+          message: 'Could Not Login User',
+        })
+      }
       //return this.authService.login(userDTO)
     }
 
@@ -43,9 +47,14 @@ export class AuthController {
     @Body() userDTO: UserDTO, ) {
 
         const returnObj = await this.usersService.create(userDTO);
-        return res.status(HttpStatus.OK).json({
-            message: 'User added successful!',
+        if(returnObj) {return res.status(HttpStatus.OK).json({
+            message: 'User added successfully!',
             returnObj
           })
+        } else {
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+            message: 'User not added!',
+          })
+        }
     }
 }

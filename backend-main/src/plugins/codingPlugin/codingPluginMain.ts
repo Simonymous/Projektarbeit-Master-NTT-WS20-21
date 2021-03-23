@@ -41,7 +41,6 @@
           })
           message = countPassed+"/"+tests.length+" PASSED"
         } catch(e) {
-            console.log("Funktion konnte nicht erzeugt werden",e)
             message = "Compile Error: "+e.message
         }
         const returnObj:IFeedback = {
@@ -68,7 +67,7 @@
               }
             })
           } catch(e) {
-              console.log("Funktion konnte nicht erzeugt werden",e)
+              //console.log("Funktion konnte nicht erzeugt werden",e)
         }
         return countPassed/tests.length * 100
     }

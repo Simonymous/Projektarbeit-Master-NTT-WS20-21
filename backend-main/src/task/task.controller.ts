@@ -32,10 +32,12 @@ export class TaskController {
   async createNewTask(@Res() res, @Body() taskDTO: Task) {
 
     const returnObj = await this.taskService.createTask(taskDTO);
-    return res.status(HttpStatus.OK).json({
+    if (returnObj) {return res.status(HttpStatus.OK).json({
       message: 'Task created successfully!',
       task: returnObj,
-    });
+    })} else return  res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      message: 'Could not create Task!',
+    })
   }
 
   @Get()
@@ -52,7 +54,9 @@ export class TaskController {
   async getTask(@Param('id') taskID: string, @Res() res) {
     const returnObj = await this.taskService.getSingleTask(taskID);
     if(returnObj) return res.status(HttpStatus.OK).json(returnObj);
-    else return res.status(HttpStatus.NOT_FOUND).json("")
+    else return res.status(HttpStatus.NOT_FOUND).json({
+      message: 'no Task found'
+    })
   }
 
   // Suche primär nach Tags und dann nach Name -> erhalte Searchstring
@@ -66,17 +70,28 @@ export class TaskController {
   }
 
   @Put('/update')
-  async updateTask(@Param('id') taskID: string, @Body() taskDTO: Task) {
-    if(await this.taskService.updateTask(taskDTO)) return 'updated'
-    else return 'not updated'
-
+  async updateTask(
+    @Param('id') taskID: string,
+    @Body() taskDTO: Task,
+    @Res() res
+  ) {
+    if(await this.taskService.updateTask(taskDTO)) return res.status(HttpStatus.OK).json({
+      message: 'updated Task'
+    });
+    else return res.status(HttpStatus.NOT_MODIFIED).json({
+      message: 'not deleted'
+    });
   }
 
   @Delete(':id')
-  async deleteTask(@Param('id') taskID: string) {
+  async deleteTask(@Param('id') taskID: string, @Res() res) {
 
-    if(await this.taskService.deleteTask(taskID)) return 'deleted'
-    else return 'not deleted'
+    if(await this.taskService.deleteTask(taskID)) return res.status(HttpStatus.OK).json({
+      message: 'deleted Task'
+    });
+    else return res.status(HttpStatus.NOT_FOUND).json({
+      message: 'not deleted'
+    });
 
   }
 
@@ -124,12 +139,12 @@ export class TaskController {
         let status = submitHelper.submitNoteToMoodle(session,note)
         this.taskService.markTaskOrCollectionAsSubmitted(userMail,taskID,note)
         return res.status(HttpStatus.OK).json({
-          message: 'Task übermittelt:',
+          message: 'Task submitted:',
           feedback: status,
         });
       } else {
         return res.status(HttpStatus.UNAUTHORIZED).json({
-          message: 'Session Fehler. Task nicht übermittelt',
+          message: 'Session Error. Task not submitted',
         });
       }
 

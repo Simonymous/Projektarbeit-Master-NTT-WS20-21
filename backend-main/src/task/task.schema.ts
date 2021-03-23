@@ -55,11 +55,6 @@ export class Task {
   @Prop()
   date: Date;
 
-  // @Prop()
-  // maxPoints: number;
-
-  // @Prop()
-  // maxTime: Date;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

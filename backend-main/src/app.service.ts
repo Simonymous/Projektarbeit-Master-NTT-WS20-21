@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
-  getHello(): string {
+  getStatus(): string {
     return 'Backend STATUS OK :-)';
   }
 }
