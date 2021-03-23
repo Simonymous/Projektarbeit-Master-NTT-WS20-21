@@ -39,7 +39,7 @@
           />
         </template>
       </Column>
-      <Column field="weighting" :header="'Gewichtung (in Relation)'">
+      <Column :header="'Gewichtung (in Relation)'">
         <template #body="slotProps">
           {{
             Math.round((slotProps.data.weighting * 10000) / this.totalPoints) /
@@ -74,7 +74,6 @@
       <Button
         label="Export"
         v-on:click="handleExportClick"
-        disabled="true"
       ></Button>
     </div>
   </div>
@@ -223,9 +222,12 @@ export default {
 
     function calcTotalPoints() {
       totalPoints.value = 0;
-      taskCollection.value.tasks.forEach((task) => {
-        totalPoints.value += +task.weighting;
-      });
+
+      for(let i = 0; i<taskCollection.value.tasks.length; i++){
+        totalPoints.value += +taskCollection.value.tasks[i].weighting;
+      }
+      // taskCollection.value.tasks.forEach((task) => {
+      //});
     }
 
     function onRowReorder(event) {

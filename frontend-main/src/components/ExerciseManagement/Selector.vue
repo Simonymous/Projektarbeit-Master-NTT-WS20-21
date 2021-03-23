@@ -28,7 +28,12 @@
         </Accordion>
       </div>
     </AccordionTab>
-    <AccordionTab header="Import"> </AccordionTab>
+    <AccordionTab header="Import">
+            <Button
+        label="Upload Exercises"
+        v-on:click="emitImport()"
+      ></Button>
+    </AccordionTab>
   </Accordion>
 </template>
 <script>
@@ -104,6 +109,10 @@ export default {
       emit("exerciseSelected", { id: id, kindOfExercise: "task" });
     }
 
+    function emitImport(){
+      emit("exerciseSelected", { id: -1, kindOfExercise: "import" });
+    }
+
     return {
       emitOpenTaskCollection,
       listOfTasks,
@@ -111,6 +120,7 @@ export default {
       emitOpenTask,
       listOfTaskCollections,
       activeTabs,
+      emitImport
     };
   },
 };

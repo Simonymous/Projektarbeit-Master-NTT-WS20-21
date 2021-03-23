@@ -5,7 +5,7 @@
       <SplitterPanel :size="20">
         <div>
           <Selector @exerciseSelected="exerciseSelected"/>
-        </div>       
+        </div>
       </SplitterPanel>
       <SplitterPanel :size="80">
         <div v-if="exerciseType=='task'">
@@ -16,7 +16,6 @@
         </div>
         <div v-else>
           <importExport/>
-        Bitte eine Aufgabe oder Aufgabenblatt auswählen.
         </div>
       </SplitterPanel>
     </Splitter>
@@ -39,7 +38,7 @@ export default {
   setup(){
     const exerciseType = ref();
     const exerciseID = ref(-1)
-    
+
     function exerciseSelected(payload){
       console.log(payload)
       exerciseType.value = payload.kindOfExercise;
@@ -55,7 +54,7 @@ export default {
 </script>
 <style scoped>
   .p-splitter{
-    position:absolute; 
+    position:absolute;
     height: 100%;
     width: 100%
   }

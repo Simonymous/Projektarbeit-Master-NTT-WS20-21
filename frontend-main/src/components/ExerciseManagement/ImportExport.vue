@@ -1,17 +1,24 @@
 <template>
-  <div>
+  <div      v-if="!isUploading"
+>
     <FileUpload
       name="demo[]"
       :customUpload="true"
       @uploader="myUploader"
       accept=".json"
       :auto="true"
+      :showUploadButton="false"
+      :showCancelButton="false"
     />
+
     <Button
       label="Task(s) neu erstellen"
       v-on:click="handleCreateNewTasks"
     ></Button>
   </div>
+      <div v-else>
+      <ProgressSpinner />
+    </div>
 </template>
 <script>
 import { ref } from "vue";
@@ -29,6 +36,7 @@ export default {
   setup(props) {
     let myFiles = ref([]);
     const toast = useToast();
+    let isUploading = ref(false);
 
     function myUploader(event) {
       myFiles.value = [];
@@ -47,7 +55,7 @@ export default {
 
         filecontent.forEach((exercise) => {
           console.log(exercise);
-          if (exercise.type === "taskCollection") {
+          if (exercise.type === "TaskCollection") {
             taskCollections.push(exercise);
             exercise.tasks.forEach((task) => {
               if (
@@ -59,8 +67,8 @@ export default {
               }
             });
             exercise.tasks.includes;
-          } else if (exercise.type !== "taskCollection") {
-            throw "Unknown Element";
+          } else if (exercise.type !== "task") {
+            throw "Unknown Element " + exercise.type;
           }
         });
 
@@ -72,9 +80,17 @@ export default {
             });
             mapping.push({
               oldID: filecontent[i]._id,
-              newID: response.data._id,
+              newID: response.task._id,
             });
           }
+        }
+
+        if (!taskCollections.length) {
+          toast.add({
+            severity: "success",
+            summary: filecontent.length + " Tasks wurde erstellt",
+            life: 10000,
+          });
         }
 
         taskCollections.forEach((taskCollection) => {
@@ -90,14 +106,16 @@ export default {
                 severity: "success",
                 summary:
                   "TaskCollection " +
-                  response.payload.title +
+                  response.task.title +
                   " wurde gespeichert",
                 life: 10000,
               });
             }
           );
         });
+        isUploading.value = false;
       } catch (error) {
+        isUploading.value = false;
         toast.add({
           severity: "error",
           summary: "Error creating Exercises:",
@@ -108,6 +126,7 @@ export default {
     }
 
     function handleCreateNewTasks() {
+      isUploading.value = true;
       console.log(myFiles.value);
       myFiles.value.forEach((file) => {
         importFile(file);
@@ -117,6 +136,7 @@ export default {
     return {
       myUploader,
       handleCreateNewTasks,
+      isUploading,
     };
   },
 };
@@ -126,5 +146,3 @@ export default {
   visibility: hidden;
 }
 </style>
-
-

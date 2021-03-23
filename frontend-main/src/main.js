@@ -34,7 +34,7 @@ import MultiSelect from 'primevue/multiselect'
 import AutoComplete from 'primevue/autocomplete'
 import FileUpload from 'primevue/fileupload'
 import Textarea from 'primevue/textarea';
-
+import ProgressSpinner from 'primevue/progressspinner';
 
 
 import 'primevue/resources/themes/saga-blue/theme.css'
@@ -92,5 +92,7 @@ app.component('MultiSelect', MultiSelect)
 app.component('AutoComplete', AutoComplete)
 app.component('FileUpload', FileUpload)
 app.component('Textarea', Textarea)
+app.component('ProgressSpinner', ProgressSpinner)
+
 
 app.mount('#app')

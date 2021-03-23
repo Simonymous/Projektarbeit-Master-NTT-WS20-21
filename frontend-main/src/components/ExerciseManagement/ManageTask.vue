@@ -55,7 +55,6 @@
       <Button
         label="Export"
         v-on:click="handleExportClick"
-        disabled="true"
       ></Button>
     </div>
   </div>
