@@ -32,7 +32,6 @@ export default {
     pluginMode: String,
   },
   setup(props, { emit }) {
-    console.log(props.taskData);
     let state = useState();
     const inscopePlugin = ref(
       defineAsyncComponent(() => getSelectedPluginPath())

@@ -1,6 +1,5 @@
 <template>
-  <div      v-if="!isUploading"
->
+  <div v-if="!isUploading">
     <FileUpload
       name="demo[]"
       :customUpload="true"
@@ -16,9 +15,9 @@
       v-on:click="handleCreateNewTasks"
     ></Button>
   </div>
-      <div v-else>
-      <ProgressSpinner />
-    </div>
+  <div v-else>
+    <ProgressSpinner />
+  </div>
 </template>
 <script>
 import { ref } from "vue";
@@ -45,7 +44,7 @@ export default {
         const reader = new FileReader();
         reader.onload = (e) => myFiles.value.push(JSON.parse(e.target.result));
         reader.readAsText(file);
-        console.log(myFiles.value);
+
       });
     }
 
@@ -127,7 +126,6 @@ export default {
 
     function handleCreateNewTasks() {
       isUploading.value = true;
-      console.log(myFiles.value);
       myFiles.value.forEach((file) => {
         importFile(file);
       });

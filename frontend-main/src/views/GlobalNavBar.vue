@@ -40,11 +40,6 @@ export default {
         label: "Logged In: ",
         items: [
           {
-            label: "Settings",
-            icon: "pi pi-fw pi-cog",
-            to: "/settings",
-          },
-          {
             label: "Logout",
             icon: "pi pi-fw pi-power-off",
             command: (event) => {

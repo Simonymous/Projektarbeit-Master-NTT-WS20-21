@@ -7,7 +7,6 @@
  * in unserer Main wird unser store global zugänglich gemacht
  * um Daten des Typ State zu verwenden, muss in der entsprechenden Datei useState aus store.js importiert werden.
  * Anschließend kann man mittels let state = useState auf das stateObjekt zugreifen und es lesen/verndern.
- * Verständnisbeispiel befindet sich momentan in storetest.vue
  */
 import { reactive, provide, inject } from 'vue'
 import User from '../models/User'

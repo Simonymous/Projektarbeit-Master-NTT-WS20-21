@@ -1,8 +1,0 @@
-{
-  "installCommands": "npm i .... https://stackoverflow.com/questions/26414587/how-to-install-multiple-versions-of-package-using-npm",
-  "metaData": {"pluginName":""},
-  "author":"",
-  "version":"",
-  "createTask": "/Grade/resolve.vue",
-  "solveTask": "/Grade/resolve.vue"
-}

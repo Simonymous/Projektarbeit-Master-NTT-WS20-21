@@ -30,7 +30,6 @@ import {
   postBackendRequestDummy,
 } from "../../helper/dummyRequests";
 import { getBackendRequest, postBackendRequest } from "../../helper/requests";
-import TaskWorkVue from "../TaskWork.vue";
 import { useToast } from "primevue/usetoast";
 
 const PATHS = require("../../../config.json").URL_PATHS;

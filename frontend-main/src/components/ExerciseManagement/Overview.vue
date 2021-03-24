@@ -25,7 +25,7 @@
 <script>
 import ManageTask from './ManageTask'
 import Selector from './Selector.vue'
-import ImportExport from './ImportExport.vue'
+import ImportExport from './Import.vue'
 import { ref, onMounted, mounted } from 'vue'
 import ManageTaskCollection from './ManageTaskCollection'
 export default {

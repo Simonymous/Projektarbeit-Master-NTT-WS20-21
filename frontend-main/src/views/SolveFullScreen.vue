@@ -76,7 +76,6 @@ export default {
     const toast = useToast();
 
     let exerciseId = URL_PARAMS.get("exerciseId");
-    //console.log(URL_PARAMS.get("token"))
 
     initialize();
     function initialize() {

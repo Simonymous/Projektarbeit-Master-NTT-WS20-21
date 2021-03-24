@@ -2,7 +2,6 @@ import { createWebHistory, createRouter } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/SignUp.vue'
-import Settings from '../views/Settings'
 import SolveFullScreen from '../views/SolveFullScreen'
 import AlreadySubmitted from '../views/AlreadySubmitted'
 
@@ -21,11 +20,6 @@ const routes = [
     path: '/signup',
     name: 'Signup',
     component: Signup
-  },
-  {
-    path: '/settings',
-    name: 'Settings',
-    component: Settings
   },
   {
     path: '/solvefullScreen/alreadySubmitted',
