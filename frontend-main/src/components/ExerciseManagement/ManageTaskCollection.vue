@@ -1,23 +1,47 @@
 <template>
   <div>
-    Title:
-    <InputText type="text" v-model="taskCollection.title" placeholder="Title" />
-    Description:
-    <InputText
-      type="text"
-      v-model="taskCollection.description"
-      placeholder="Description"
-    />
-    Tags:
-    <InputText type="text" v-model="taskCollection.tags" placeholder="Tags" />
-    Class:
-    <InputText
-      type="text"
-      v-model="taskCollection.course"
-      placeholder="Class"
-    />
-
-    <customAutocomplete @addTask="addTask" />
+    <div class="taskCollectionInputs p-grid">
+      <div class="p-col-12 p-md-6 p-lg-3">
+        <span class="p-float-label">
+          <InputText
+            type="text"
+            v-model="taskCollection._id"
+            id="ID"
+            disabled="true"
+          />
+          <label for="ID">ID</label>
+        </span>
+      </div>
+      <div class="p-col-12 p-md-6 p-lg-3">
+        <span class="p-float-label">
+          <InputText type="text" v-model="taskCollection.title" id="Titel" />
+          <label for="Titel">Titel</label>
+        </span>
+      </div>
+      <div class="p-col-12 p-md-6 p-lg-3">
+        <span class="p-float-label">
+          <InputText type="text" v-model="taskCollection.tags" id="Tags" />
+          <label for="Tags">Tags</label>
+        </span>
+      </div>
+      <div class="p-col-12 p-md-6 p-lg-3">
+        <span class="p-float-label">
+          <InputText type="text" v-model="taskCollection.course" id="Course" />
+          <label for="Course">Course</label>
+        </span>
+      </div>
+      <div class="p-col-12">
+        <span class="p-float-label">
+          <Textarea
+            v-model="taskCollection.description"
+            id="Description"
+            rows="5"
+            cols="60"
+          />
+          <label for="Description">Description</label>
+        </span>
+      </div>
+    </div>
 
     <DataTable
       :value="taskCollection?.tasks"
@@ -27,19 +51,19 @@
       <Column :rowReorder="true" headerStyle="width: 3rem" />
 
       <Column field="title" header="Aufgabenname"></Column>
-      <Column
-        field="weighting"
-        :header="'Gewichtung (Absolut), Gesamt: ' + totalPoints"
-      >
+      <Column field="weighting">
+        <template #header>
+          {{ "Gewichtung (Absolut), Gesamt: " + totalPoints }}
+        </template>
         <template #body="slotProps">
           <InputText
-            v-model="slotProps.data[slotProps.column.props.field]"
+            v-model="slotProps.data.weighting"
             @input="calcTotalPoints()"
             className="p-inputtext p-component p-filled weightingInput"
           />
         </template>
       </Column>
-      <Column :header="'Gewichtung (in Relation)'">
+      <Column field="weighting" :header="'Gewichtung (in Relation)'">
         <template #body="slotProps">
           {{
             Math.round((slotProps.data.weighting * 10000) / this.totalPoints) /
@@ -49,6 +73,10 @@
         </template>
       </Column>
       <Column :exportable="false">
+        <template #header>
+          <customAutocomplete @addTask="addTask" />
+        </template>
+
         <template #body="slotProps">
           <Button
             icon="pi pi-search"
@@ -71,10 +99,7 @@
         v-on:click="handleDeleteClick"
         class="p-button-danger"
       ></Button>
-      <Button
-        label="Export"
-        v-on:click="handleExportClick"
-      ></Button>
+      <Button label="Export" v-on:click="handleExportClick"></Button>
     </div>
   </div>
 </template>
@@ -223,7 +248,7 @@ export default {
     function calcTotalPoints() {
       totalPoints.value = 0;
 
-      for(let i = 0; i<taskCollection.value.tasks.length; i++){
+      for (let i = 0; i < taskCollection.value.tasks.length; i++) {
         totalPoints.value += +taskCollection.value.tasks[i].weighting;
       }
       // taskCollection.value.tasks.forEach((task) => {
@@ -285,6 +310,10 @@ export default {
       console.log(payload);
     }
 
+    function test(t) {
+      console.log(t);
+    }
+
     return {
       taskCollection,
       onRowReorder,
@@ -296,11 +325,12 @@ export default {
       handleRemoveTask,
       handleInspectTask,
       handleExportClick,
+      test,
     };
   },
 };
 </script>
-<style lang="css">
+<style  lang="scss">
 .pointsIncorrect {
   color: black !important;
   background: red !important;
@@ -312,5 +342,22 @@ export default {
 
 .weightingInput {
   width: 100%;
+}
+
+.taskCollectionInputs {
+  padding-top: 15px;
+}
+
+.p-float-label {
+  margin-top: 15px;
+}
+
+.p-inputtext {
+  width: 100%;
+}
+.createTaskCollectionFooter {
+  .p-button {
+    margin: 5px;
+  }
 }
 </style>

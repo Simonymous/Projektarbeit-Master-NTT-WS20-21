@@ -7,7 +7,6 @@
       accept=".json"
       :auto="true"
       :showUploadButton="false"
-      :showCancelButton="false"
     />
 
     <Button

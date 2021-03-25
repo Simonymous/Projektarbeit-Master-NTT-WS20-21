@@ -12,7 +12,7 @@
           <SolveTask :taskID="exerciseId" />
         </div>
         <div v-else-if="exerciseType=='collection'">
-          TaskCollection ausfüllen
+          <SolveTaskCollection :taskCollectionID="exerciseId" />
         </div>
         <div v-else>
         Bitte eine Aufgabe oder Aufgabenblatt auswählen.
@@ -24,12 +24,14 @@
 
 <script>
 import SolveTask from './SolveTask'
+import SolveTaskCollection from './SolveTaskCollection'
 import Selector from '../ExerciseSolve/Selector'
 import { ref, onMounted, mounted } from 'vue'
 export default {
   components: {
     SolveTask,
     Selector,
+    SolveTaskCollection
   },
   setup(){
     const exerciseType = ref();

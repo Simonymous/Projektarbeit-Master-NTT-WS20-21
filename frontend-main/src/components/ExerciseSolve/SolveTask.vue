@@ -1,10 +1,15 @@
 <template>
   <div class="solveTask">
-    <div class="taskInputs">
+    <!-- <div class="taskInputs">
       TaskID: {{ task._id }} Titel:{{ task.title }} Description:{{
         task.description
       }}
-    </div>
+    </div> -->
+    <Fieldset :legend="task.title" :toggleable="true">
+      <p>TaskID: {{ task._id }}</p>
+      <p>Titel: {{ task.title }}</p>
+      <p>Description: {{ task.description }}</p>
+    </Fieldset>
 
     <show-plugin
       :taskData="task"
@@ -45,7 +50,7 @@ export default {
   },
   props: {
     taskID: String,
-    customSubmitPath: String
+    customSubmitPath: String,
   },
 
   setup(props, { emit }) {
@@ -82,9 +87,9 @@ export default {
       task.value = await requestTask();
       console.log(task.value);
       state.plugin = task.value.pluginCode;
-      console.log(props.customSubmitPath)
-      if(props.customSubmitPath){
-        submitPath=props.customSubmitPath;
+      console.log(props.customSubmitPath);
+      if (props.customSubmitPath) {
+        submitPath = props.customSubmitPath;
       }
     }
 
@@ -128,10 +133,10 @@ export default {
     async function submitSolution() {
       try {
         // if (process.env.VUE_APP_BACKEND_ONLINE === "true") {
-          await postBackendRequest(
-            submitPath + "/" + props.taskID,
-            task.value.dataForPlugin
-          );
+        await postBackendRequest(
+          submitPath + "/" + props.taskID,
+          task.value.dataForPlugin
+        );
         // }
         emit("taskSubmitted", { id: props.taskID });
       } catch (error) {
@@ -142,13 +147,12 @@ export default {
     function openToasts(dataArray) {
       toast.removeAllGroups();
 
-      if(dataArray.testResults.length == 0){
-      toast.add({
-        severity: "error",
-        summary: dataArray.message,
-      });
+      if (dataArray.testResults.length == 0) {
+        toast.add({
+          severity: "error",
+          summary: dataArray.message,
+        });
       }
-
 
       dataArray.testResults.forEach((item) => {
         console.log(item);
@@ -185,5 +189,9 @@ export default {
 }
 button {
   margin: 5px;
+}
+
+Fieldset{
+  margin:5px
 }
 </style>

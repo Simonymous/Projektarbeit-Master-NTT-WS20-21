@@ -70,48 +70,133 @@ Aufbau Aufgabe in JSON Datei:
 
 Siehe Aufbau Aufgabe!
 
-- (Titel: String) Titel der Aufgabe
+
+Aufbau Aufgabenblatt in JSON Datei:
+
+Siehe Aufbau Aufgabenblatt!  
+Das Verlinken von Aufgaben mit Aufagebnblättern geschieht mit der _id. (Beim Import wird diese ID intern geändert.) 
+
+
+
+Es können sowohl Aufgaben als auch Aufgabenblätter exportiert werden.
+
+Beim Export einer Aufgabe wird nur die Aufgabe exportiert.
+Beim Export eines Aufgabenblatt werden sowohl die Aufgaben in dem Aufgabenblatt als auch das Aufgabenblatt selbst exportiert.
+
+
+Erstellen, Bearbeiten und Löschen von Aufgaben und Aufgabenblätter:
+
+Aufgaben:
+
+Jede Aufgabe enthält standart Daten die immer gleich sind, diese wären:
+
+- Titel
+- Description
+- Type (wird automatisch bei der Auswahl erstellt)
+- Creator (Wird automatisch beim erstellen gesetzt)
+- Tags
+- PluginCode
+- (DataForPlugin) Teilweise werden diese Daten im entsprechenden Plugin gesetzt, der andere Teil in der allgemeinen Erstellung/Bearbeitung.
+
+Des Weiteren enthält jede Aufgabe Plugin spezifische Daten.
+
+Plugin spezifische Daten:
+
+- DataForPlugin
+- OpenTests
+- ClosedTests
+
+Coding Plugin:
+
+Bei dem Coding Plugin wird in dataForPlugin zum einen der Methodenrahmen angelgt (function xxx (a,b){}).
+Zum Anderen müssen die Inputparameter der Methode angegeben werden (a,b).
+In OpenTets werden die Werte für die Eingabe und die Werte für die Erwartete Ausgabe der Methode angegeben.
+In ClosedTests werden die Werte für die Eingabe und die Werte für die Erwartete Ausgabe der Methode angegeben.
+
+
+Aufgabenblätter:
+
+- Titel
+- Description
+- Type (wird automatisch bei der Auswahl erstellt)
+- Creator (Wird automatisch beim erstellen gesetzt)
+- Course 
+- Tasks (Aufgabe kann aus einer Liste von Aufgaben, per Dropdown, hinzugefügt werden )
+- - Wighting
+- - _id (Ist in der ausgewählten Aufgabe enthalten)
+- - Taskname (Ist in der ausgewählten Aufgabe enthalten)
+
+
+Task Interface:
+
+- (titel: String) Titel der Aufgabe
+- (_id: String) wird beim erstellen einer Aufgabe automatisch erstellt. 
 - (description: String) Beschreibung der Aufgabe
 - (type: String) Typ der Exercise in disem fall "Task"
-- (creator: String) Name des Benutzers welcher die Task erstellt
+- (creator: String) Name des Benutzers welcher die Task erstellt. 
 - (tags: String[]) Suchtags für die später Aufgabensuche
-- (Course: String) Fach für das die Task erstellt wird
-- (PluginCode: String) Art des Plugin in dem die Task erstellt wird
+- (course: String) Fach für das die Task erstellt wird
+- (pluginCode: String) Art des Plugin in dem die Task erstellt wird
 - (dataForPlugin: {}) Alle möglichen Daten und Informationen die die Task für das entsprechende Plugin benötigt
 - (openTests: any[]) Enthält die offenen Tests für die Aufgabe. Diese werden dem Benutzer später zur Überprüfung seiner Eingabe bereit gestellt
 - (closedTests: any[]) Enthält die verdeckten Tests für die Aufgabe. Diese wärden dem Benutzer nicht angezeigt sondern bilden die Grundlage für die Bewertung der Aufgabe.  
 
 TaskCollection Interface: 
 
-    title: string,
-    description: string,
-    type:string,
-    creator: string,
-    tags: string[],
-    course: string,
-    tasks: {
-        _id: string,
-        weighting: number,
-        taskName: string
-    }[]
+- (titel: String) Titel des Aufgabenblatts
+- (_id: String) wird beim erstellen eine Aufgabenblatts automatisch erstellt. 
+- (description: String) Beschreibung des Aufgabenblatts
+- (type: String) Typ der Exercise in disem fall "TaskCollection"
+- (creator: String) Name des Benutzers welcher das Aufgabenblatt erstellt. 
+- (tags: String[]) Suchtags für die später Aufgabenblattsuche
+- (course: String) Fach für das das Aufgabenblatt erstellt wird
+- (tasks: speziellesTaskObjekt{
+    (_id: String) Id der entsprechenden Aufgabe
+    (weighting: number) Gewischtung der Aufgabe bzw. Punkte die die Aufgabe brint.
+    (taskName: String) Name der entsprechenden Task
+}) Die Einzelnen Aufgaben können je nach Plugin flexibel in ein Aufgabenblatt hinzugefügt werden. 
 
-Task Interface:
 
-    title: string,
-    description: string,
-    creator: string,
-    type: string,
-    tags: string[],
-    course: string,
-    pluginCode: string,
-    dataForPlugin: any,
-    closedTests: [],
-    openTests: [],
+
 
 
 ## Solving Exercises
 
+In SolveFullScreen können einzelne Aufgaben sowie ganze Aufgabenblätter gelöst werden. 
+Dazu wird in Moodle die entsprechende Aufgabe/Aufgabenblatt mit seiner Id freigegeben. 
+Daraufhin wird der User auf SolveFullScreen weitergeleitet wo er nur die Aufgabe bzw. das Aufgabenblatt sieht und lösen kann.
+
+Der User kann die entsprechende Aufgabe lösen, testen und abgeben.
+
+Beim Testen wird die Eingabe des Users mit den offenen Tests verglichen und ausgewärtet. Der User bekommt anschließend eine Rückmeldung bezüglich der Richtigkit seiner Eingabe.
+
+Beim Abgeben wird die Eingabe des Users mit den verdeckten Tests verglichen und ausgewärtet. Anschließend wird das Ergebnis an Moodel übertragen und die Bewertung eingetragen. Der User kann die Aufgabe danach nicht ein weiteres mal abgeben.
+
 ## User Management
+
+Auf das User Management können nur User mit der Berechtigung Administrator zugreifen. Dieses Tool dient für die Erstellung, Bearbeitung und Löschung von externen Usern die nicht über Moodle auf die Platform zugreifen.
+
+User Interface:
+
+- (_id: String) Id des Users, wird bei der Erstellung erzeugt.
+- (username: String) Benutzername des Users
+- (password: String) Passwort des Users
+- (email: String) Emailadresse des Users
+- (role: String) Berechtigungsgruppe des Users
+- - Admin: kann alles außer andere Admins bearbeiten/löschen
+- - Dozent: kann alles was mit  Aufgaben und Aufgabenblätter zu tun hat. Diese auch selber lösen.
+- - Student: kann nur Aufgaben und Aufgabenblätter lösen.
+
+## Sonstiges
+
+Login: 
+
+Möglichkeit um sich auf die Blatform einzuloggen, anstatt über Moodle.
+
+Register:
+
+Möglichkeit sich einen Account auf der Platform zu erstellen. 
+Standartmäßig Studen. Erhöhte Berechtigungen müssen seperat gesetzt werden.
 
 
 ### Customize configuration

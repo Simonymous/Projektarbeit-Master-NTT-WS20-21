@@ -11,7 +11,17 @@
             optionLabel="title"
             optionDisabled="disabled"
             metaKeySelection="false"
-          />
+          >
+            <template #header>
+              <div class="ListboxHeader">
+                <Button
+                  class="p-button-secondary p-button-text"
+                  @click="selectedTaskLite = null"
+                  ><h3>{{ exercise.title }}</h3>
+                </Button>
+              </div>
+            </template>
+          </Listbox>
           <Button
             v-on:click="submitWholeCollection"
             label="Submit Collection"
@@ -21,17 +31,24 @@
           <div v-if="selectedTaskLite?._id">
             <SolveTask
               :taskID="selectedTaskLite._id"
-              :customSubmitPath="SUBMIT_TASK_IN_COLLECTION_PATH + '/' + exerciseId"
+              :customSubmitPath="
+                SUBMIT_TASK_IN_COLLECTION_PATH + '/' + exerciseId
+              "
               v-on:taskSubmitted="taskSubmitted"
             />
           </div>
-          <div v-else>Bitte eine Aufgabe auswählen.</div>
+          <div v-else>
+            <SolveTaskCollection :taskCollectionID="exerciseId" />
+          </div>
         </SplitterPanel>
       </Splitter>
     </div>
     <div v-else-if="exercise.type === 'task'">
       <p>Task ausgewählt</p>
-      <SolveTask :taskID="exercise?._id" v-on:taskSubmitted="terminateInputProcess"/>
+      <SolveTask
+        :taskID="exercise?._id"
+        v-on:taskSubmitted="terminateInputProcess"
+      />
     </div>
     <div v-else-if="exercise.type === 'finished'">
       <p>Aufgabe abgegeben</p>
@@ -48,10 +65,11 @@ import {
   postBackendRequest,
   deleteBackendRequest,
   putBackendRequest,
-  setAccessToken
+  setAccessToken,
 } from "../helper/requests";
 import { useToast } from "primevue/usetoast";
 import SolveTask from "../components/ExerciseSolve/SolveTask";
+import SolveTaskCollection from "../components/ExerciseSolve/SolveTaskCollection";
 
 import { getBackendRequestDummy } from "../helper/dummyRequests";
 
@@ -62,11 +80,11 @@ const TASK_COLLECTION_PATH = PATHS.TASK_COLLECTION_PATH;
 const SUBMIT_TASK_IN_COLLECTION_PATH = PATHS.SUBMIT_TASK_IN_COLLECTION_PATH;
 const SUBMIT_TASK_COLLECTION_PATH = PATHS.SUBMIT_TASK_COLLECTION_PATH;
 
-
 export default {
   name: "SolveFullScreen",
-  components:{
-    SolveTask
+  components: {
+    SolveTask,
+    SolveTaskCollection,
   },
   setup() {
     const URL_PARAMS = new URLSearchParams(window.location.search);
@@ -103,25 +121,32 @@ export default {
           }
         }
       } else {
-        exercise.value = getBackendRequestDummy(TASK_PATH + "/" + exerciseId);
-        // exercise.value = getBackendRequestDummy(TASK_COLLECTION_PATH + "/" + exerciseId);
+        // exercise.value = getBackendRequestDummy(TASK_PATH + "/" + exerciseId);
+        exercise.value = getBackendRequestDummy(
+          TASK_COLLECTION_PATH + "/" + exerciseId
+        );
       }
     }
 
-    function taskSubmitted(payload){
-      let submittedIndex = exercise.value.tasks.findIndex((task) => task._id == payload.id)
-      exercise.value.tasks[submittedIndex] = {...exercise.value.tasks[submittedIndex], disabled: true}
+    function taskSubmitted(payload) {
+      let submittedIndex = exercise.value.tasks.findIndex(
+        (task) => task._id == payload.id
+      );
+      exercise.value.tasks[submittedIndex] = {
+        ...exercise.value.tasks[submittedIndex],
+        disabled: true,
+      };
 
-      selectedTaskLite.value = {}
+      selectedTaskLite.value = {};
     }
 
-    async function submitWholeCollection(){
+    async function submitWholeCollection() {
       await postBackendRequest(SUBMIT_TASK_COLLECTION_PATH + "/" + exerciseId);
-      terminateInputProcess()
+      terminateInputProcess();
     }
 
-    function terminateInputProcess(){
-      exercise.value.type = 'finished'
+    function terminateInputProcess() {
+      exercise.value.type = "finished";
     }
 
     return {
@@ -132,7 +157,7 @@ export default {
       taskSubmitted,
       SUBMIT_TASK_IN_COLLECTION_PATH,
       submitWholeCollection,
-      terminateInputProcess
+      terminateInputProcess,
     };
   },
 };
@@ -140,5 +165,15 @@ export default {
 <style lang="scss" scoped>
 button {
   margin: 5px;
+}
+
+::v-deep .ListboxHeader {
+  button {
+    width: calc(100% - 10px);
+    h3 {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
 }
 </style>

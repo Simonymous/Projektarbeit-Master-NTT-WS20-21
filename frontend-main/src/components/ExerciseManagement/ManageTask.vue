@@ -224,7 +224,7 @@ export default {
     }
 
     function handleExportClick() {
-      const data = JSON.stringify(task.value);
+      const data = JSON.stringify([task.value]);
       const blob = new Blob([data], { type: "application/json" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);

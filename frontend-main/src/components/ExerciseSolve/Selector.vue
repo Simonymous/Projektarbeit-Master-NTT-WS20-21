@@ -92,11 +92,11 @@ export default {
     }
 
     function emitOpenTaskCollection(id = -1) {
-      emit("exerciseSelected", { id: id, kindOfExercise: "collection" });
+      emit("exerciseSelected", { _id: id, kindOfExercise: "collection" });
     }
 
     function emitOpenTask(id = -1) {
-      emit("exerciseSelected", { id: id, kindOfExercise: "task" });
+      emit("exerciseSelected", { _id: id, kindOfExercise: "task" });
     }
 
     return {
