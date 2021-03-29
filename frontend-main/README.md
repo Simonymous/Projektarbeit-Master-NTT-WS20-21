@@ -213,4 +213,7 @@ Die Anwendung ist mit einem Router aufgebaut. Die Haupteinstiegspunkte sind:
     Wenn von Moodel nur eine Aufgabe angegeben wurde gibt es nur die Ansicht einer Aufgabe.  
 
 Konstante Werte, auf die global zugegriffen wird, aber dennoch leicht konfigurierbar sein sollen, sind in der config.json gespiechert. Dort befinden sich zum Einen der Pfad zu dem PluginsOrdner in dem die Plugins abgelegt werden sollen. Zum Anderen befinden sich dort die Verbindungsdaten zum Backend.  
-Ist man noch am lokalen entwickeln und möchte Backend-unabhängig testen, empfiehlt es sich die Umgebungsvarible VUE_APP_BACKEND_ONLINE im ..env auf false zu setzen. Soll nun eine Backendrequest gemacht werden, so wird diese nicht wie normal an die helper/requests.js Datei geleitet, sondern an Testdaten in der helper/DummyRequests.js Datei.  
+Ist man noch am lokalen entwickeln und möchte Backend-unabhängig testen, empfiehlt es sich die Umgebungsvarible VUE_APP_BACKEND_ONLINE im ..env auf false zu setzen. Soll nun eine Backendrequest gemacht werden, so wird diese nicht wie normal an die helper/requests.js Datei geleitet, sondern an Testdaten in der helper/DummyRequests.js Datei.
+
+Anmerkung:  
+Es ist bereits beim Import vorgesehen mehrere Dateien gleichzeitig hochzuladen. Da es derzeit noch einen Bug in Primevue im Import Feld gibt (Pull Request pending) ist diese Funktion deaktiviert und man kann nurn einen Datei gleichzeitig auswählen. Die Funktionalität für mehrere Dateien gleichzeitig ist bereits vorhanden wodurch die Funktionalität bei Bugfix schnell eingebaut werden kann.
