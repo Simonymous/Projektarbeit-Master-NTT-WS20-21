@@ -7,8 +7,6 @@
       <div class="auth-inner">
         <Toast />
         <ConfirmDialog />
-        <!-- {{this.$route}} -->
-
         <router-view />
       </div>
     </div>

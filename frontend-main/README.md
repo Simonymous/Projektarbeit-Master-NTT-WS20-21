@@ -122,9 +122,9 @@ Aufgabenblätter:
 - Creator (Wird automatisch beim erstellen gesetzt)
 - Course 
 - Tasks (Aufgabe kann aus einer Liste von Aufgaben, per Dropdown, hinzugefügt werden )
-- - Wighting
-- - _id (Ist in der ausgewählten Aufgabe enthalten)
-- - Taskname (Ist in der ausgewählten Aufgabe enthalten)
+    - Wighting
+    - _id (Ist in der ausgewählten Aufgabe enthalten)
+    - Taskname (Ist in der ausgewählten Aufgabe enthalten)
 
 
 Task Interface:
@@ -183,9 +183,9 @@ User Interface:
 - (password: String) Passwort des Users
 - (email: String) Emailadresse des Users
 - (role: String) Berechtigungsgruppe des Users
-- - Admin: kann alles außer andere Admins bearbeiten/löschen
-- - Dozent: kann alles was mit  Aufgaben und Aufgabenblätter zu tun hat. Diese auch selber lösen.
-- - Student: kann nur Aufgaben und Aufgabenblätter lösen.
+    - Admin: kann alles außer andere Admins bearbeiten/löschen
+    - Dozent: kann alles was mit  Aufgaben und Aufgabenblätter zu tun hat. Diese auch selber lösen.
+    - Student: kann nur Aufgaben und Aufgabenblätter lösen.
 
 ## Sonstiges
 
@@ -199,5 +199,18 @@ Möglichkeit sich einen Account auf der Platform zu erstellen.
 Standartmäßig Studen. Erhöhte Berechtigungen müssen seperat gesetzt werden.
 
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Architektur der Anwendung 
+Die Anwendung ist mit einem Router aufgebaut. Die Haupteinstiegspunkte sind:
+- Home <https://server.de/>   
+    Hier befindet sich die Oberfläche, für eine Benutzung ohne Moodle. Hier kann über die HomeNavBar zwischen ExerciseManagement (Aufgaben anlegen), ExerciseSolve (Aufgaben lösen) und User Management gewechselt werden.  
+    ExerciseManagement und Solve haben ihren Haupteistiegspunkt in Overview.vue. Auf der linken Seite des Sliders befindet sich die Auswahl der Aufgaben und auf der rechten Seite das Anlegen/Lösen der Aufgaben.  
+    Das Anlegen von Aufgaben teilt sich in zwei Teile auf: Pluginspezifisch und Pluginunspezifisch.  
+    Ein Plugin wird im SelectPluginDropdown ausgewählt. Die dortige Eingabe wird im Store gespeichert. Die Komponente ShowPlugin liest das wieder aus dem Store aus und lädt das jeweilige Plugin zur Laufzeit. Dem ShowPlugin muss das gesamte TaskObjekt mitgegeben werden, damit dies dem Plugin übergeben werden kann. Wird innerhalb des Plugins eine Änderung an dem Task vorgenommen, wird ein 'pluginChangedData' Event emittet um die Änderung hoch in das ManageTask.vue zu geben.
+- SolveFullScreen <https://server.de/solveFullScreen>  
+    Hier befindet sich die Oberfläche, für eine Benutzung mit Moodle. Hier können einzelne Aufgaben oder ganze Aufgabenblätter, die über Moodle bereitgestellt wurden, bearbeitet werden.
+    Wenn ein Aufgabenblatt ausgewählt ist, wird eine Ansicht mit einem Slider angezeigt. Auf der linken Seite des Sliders befindet sich das Aufgabenblatt mit seinen Aufgaben und einem Button zum Abgeben des Aufgabenblattes. (Bei Abgabe eines Aufgabenblattes werden alle darin enthaltenen Aufgaben abgegeben, auch die die nicht bearbeitet wurden.)
+    Auf der rechten Seite des Sliders befindet sich die Aufgabe mit Übersicht über das Aufgabenblatt. 
+    Wenn von Moodel nur eine Aufgabe angegeben wurde gibt es nur die Ansicht einer Aufgabe.  
+
+Konstante Werte, auf die global zugegriffen wird, aber dennoch leicht konfigurierbar sein sollen, sind in der config.json gespiechert. Dort befinden sich zum Einen der Pfad zu dem PluginsOrdner in dem die Plugins abgelegt werden sollen. Zum Anderen befinden sich dort die Verbindungsdaten zum Backend.  
+Ist man noch am lokalen entwickeln und möchte Backend-unabhängig testen, empfiehlt es sich die Umgebungsvarible VUE_APP_BACKEND_ONLINE im ..env auf false zu setzen. Soll nun eine Backendrequest gemacht werden, so wird diese nicht wie normal an die helper/requests.js Datei geleitet, sondern an Testdaten in der helper/DummyRequests.js Datei.  
