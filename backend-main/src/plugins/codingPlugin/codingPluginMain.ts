@@ -1,15 +1,24 @@
-    //@param data : dataForPlugin from Task
-    //@param tests : open tests
-    //@param input: userInput
-    //@return Return to Frontend Plugin
+    /**
+     * Basic getOpenTests For Plugin
+     *
+     * @param data dataForPlugin from Task
+     * @param tests open tests for task
+     * @param input userInput
+     * @returns Return obj to Frontend Plugin
+     */
     function getOpenTests(data:any,tests:any,input:any):any {
         const userinput = input.defaultCode
         return codingTests(data.inputParams,tests,userinput)
     }
-    //@param data : dataForPlugin from Task
-    //@param tests : closed tests
-    //@param input: userInput
-    //@return Return note in percent (0-100)
+
+    /**
+     * Basic getOpenTests For Plugin
+     *
+     * @param data dataForPlugin from Task
+     * @param tests closed tests for task
+     * @param input userInput
+     * @returns a note 0-100 for evaluation
+     */
     function submit(data:any,tests:any,input:any):number {
         const userinput = input.defaultCode
         return getNote(data.inputParams,tests,userinput)
@@ -17,7 +26,14 @@
 
     import { ITestResult, IFeedback } from './codingPluginInterfaces'
 
-    function codingTests(inputparams:string[],tests:any[],userInput:string) {
+    /**
+     *
+     * @param inputparams inputparams (stored in dataforplugin)
+     * @param tests open Tests created
+     * @param userInput userInput to test
+     * @returns Feedback in IFeedback Format (Message + runned Test Feedback)
+     */
+    function codingTests(inputparams:string[],tests:any[],userInput:string):IFeedback  {
         let returnTests = []
         let message = ""
         let countPassed = 0
@@ -51,6 +67,13 @@
         return returnObj
       }
 
+    /**
+     *
+     * @param inputparams inputparams (stored in dataforplugin)
+     * @param tests closed Tests created
+     * @param userInput userInput to test
+     * @returns Note Number 0-100 for evaluation
+     */
     function getNote(inputparams:string[],tests:any[],userInput:string) {
         let countPassed = 0
         try {

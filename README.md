@@ -1,12 +1,23 @@
 # projektarbeit-ntt
 
-main: fertige releases
+## Docker Compose Integration
 
-develop: beta releases
+In ./backend-main und ./frontend-main sollte zuvor ein
+```
+npm install
+```
+erfolgen
+Docker Compose start mit
 
-feature-branches für neue features
+```
+docker compose up
+```
+Alternativ können auch Backend und Frontend seperat gestartet werden.
+WICHTIG: Es ist zwingend notwendig, eine eigene MongoDB zu betreiben.
+Diese kann entsprechend in der config des backends eingetragen werden.
 
-Dokus: 
+
+Dokus:
 Dev Doku Frontend: ./frontend-main/README.md
 benutzer Doku Frontend: ./frontend-main/README.md
 Dev Doku Backend: ./backend-main/README.md

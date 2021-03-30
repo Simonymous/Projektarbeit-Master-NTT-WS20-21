@@ -67,16 +67,16 @@
                             <a href="#getNote" title="src/plugins/codingPlugin/codingPluginMain.ts"><b>getNote</b>&nbsp;&nbsp;&nbsp;(src/.../codingPluginMain.ts)</a>
                         </li>
                         <li>
+                            <a href="#getOpenTests" title="src/plugins/basicExamplePlugin/basicExamplePluginMain.ts"><b>getOpenTests</b>&nbsp;&nbsp;&nbsp;(src/.../basicExamplePluginMain.ts)</a>
+                        </li>
+                        <li>
                             <a href="#getOpenTests" title="src/plugins/codingPlugin/codingPluginMain.ts"><b>getOpenTests</b>&nbsp;&nbsp;&nbsp;(src/.../codingPluginMain.ts)</a>
                         </li>
                         <li>
-                            <a href="#getOpenTests" title="src/plugins/testPlugin/testPlugin.ts"><b>getOpenTests</b>&nbsp;&nbsp;&nbsp;(src/.../testPlugin.ts)</a>
+                            <a href="#submit" title="src/plugins/basicExamplePlugin/basicExamplePluginMain.ts"><b>submit</b>&nbsp;&nbsp;&nbsp;(src/.../basicExamplePluginMain.ts)</a>
                         </li>
                         <li>
                             <a href="#submit" title="src/plugins/codingPlugin/codingPluginMain.ts"><b>submit</b>&nbsp;&nbsp;&nbsp;(src/.../codingPluginMain.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#submit" title="src/plugins/testPlugin/testPlugin.ts"><b>submit</b>&nbsp;&nbsp;&nbsp;(src/.../testPlugin.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -109,6 +109,13 @@
 
 
 
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Main Run Function for Backend</p>
+</div>
+
+                </td>
+            </tr>
         </tbody>
     </table>
 </section>    <h3>src/plugins/codingPlugin/codingPluginMain.ts</h3>
@@ -145,6 +152,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -156,6 +164,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>inputparams (stored in dataforplugin)</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>tests</td>
@@ -165,6 +177,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>open Tests created</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>userInput</td>
@@ -174,11 +190,23 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>userInput to test</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/IFeedback.html" target="_self" >IFeedback</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>Feedback in IFeedback Format (Message + runned Test Feedback)</p>
+
                     </div>
                 </td>
             </tr>
@@ -216,6 +244,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -227,6 +256,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>inputparams (stored in dataforplugin)</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>tests</td>
@@ -236,6 +269,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>closed Tests created</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>userInput</td>
@@ -245,6 +282,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>userInput to test</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -279,6 +320,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Basic getOpenTests For Plugin</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -288,6 +331,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -302,6 +346,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>dataForPlugin from Task</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>tests</td>
@@ -314,6 +362,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>open tests for task</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>input</td>
@@ -326,6 +378,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>userInput</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -337,7 +393,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>Return obj to Frontend Plugin</p>
+
                     </div>
                 </td>
             </tr>
@@ -367,6 +424,8 @@
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Basic getOpenTests For Plugin</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -376,6 +435,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -390,6 +450,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>dataForPlugin from Task</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>tests</td>
@@ -402,6 +466,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>closed tests for task</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>input</td>
@@ -414,6 +482,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>userInput</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -425,13 +497,14 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>a note 0-100 for evaluation</p>
+
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/plugins/testPlugin/testPlugin.ts</h3>
+</section>    <h3>src/plugins/basicExamplePlugin/basicExamplePluginMain.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
@@ -466,6 +539,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -480,6 +554,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>dataForPlugin from createdPlugin (see Frontend)</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>tests</td>
@@ -492,6 +570,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>open Tests from Frontend (In Format Input -&gt; Expected Output)</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>input</td>
@@ -504,6 +586,8 @@
                                     </td>
 
 
+                                    <td>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -515,7 +599,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>Feedback for Open Tests</p>
+
                     </div>
                 </td>
             </tr>
@@ -554,6 +639,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -568,6 +654,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>dataForPlugin from createdPlugin (see Frontend)</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>tests</td>
@@ -580,6 +670,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>closed Tests from Frontend (In Format Input -&gt; Expected Output)</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>input</td>
@@ -592,6 +686,8 @@
                                     </td>
 
 
+                                    <td>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -603,7 +699,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>Note for the user submission (in 0-100 !!)</p>
+
                     </div>
                 </td>
             </tr>

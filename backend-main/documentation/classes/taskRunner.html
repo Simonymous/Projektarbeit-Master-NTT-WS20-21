@@ -116,7 +116,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/task/taskrunner.ts:4</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/task/taskrunner.ts:5</a></div>
                             </td>
                         </tr>
 
@@ -155,8 +155,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="21"
-                            class="link-to-prism">src/task/taskrunner.ts:21</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">src/task/taskrunner.ts:49</a></div>
                 </td>
             </tr>
 
@@ -172,6 +172,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -186,6 +187,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>pluginCode (like Name) for created Plugin (must match in frontend and backend)</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -197,7 +202,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>Import of the given file (if it exists) or null (if it doesnt exist)</p>
+
                     </div>
                 </td>
             </tr>
@@ -227,14 +233,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="7"
-                            class="link-to-prism">src/task/taskrunner.ts:7</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="16"
+                            class="link-to-prism">src/task/taskrunner.ts:16</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Runs the Tests for a Plugin and returns the result</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -244,6 +252,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -258,6 +267,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>raw Task created by plugin developer</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>input</td>
@@ -270,6 +283,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>raw input from frontend</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -281,7 +298,9 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>raw open tests result from plugin openTests method
+or null if the plugin is not found</p>
+
                     </div>
                 </td>
             </tr>
@@ -311,14 +330,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="14"
-                            class="link-to-prism">src/task/taskrunner.ts:14</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="33"
+                            class="link-to-prism">src/task/taskrunner.ts:33</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Submit a Task for a Plugin</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -328,6 +349,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -342,6 +364,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>raw Task created by plugin developer</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>input</td>
@@ -354,6 +380,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>raw input from frontend</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -365,7 +395,9 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>raw feedback result from plugin openTests method
+or null if the plugin is not found</p>
+
                     </div>
                 </td>
             </tr>
@@ -382,25 +414,53 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as plugins from &#x27;../plugins/plugins.json&#x27;
+//Path to Plugin Directory (this is not in the config.json because the directory path should not be changed)
 const pluginDirectoryPath &#x3D; &quot;../plugins/&quot;
 
 export default class taskRunner {
   constructor() {}
 
+  /**
+   *  Runs the Tests for a Plugin and returns the result
+   *
+   * @param task raw Task created by plugin developer
+   * @param input raw input from frontend
+   * @returns raw open tests result from plugin openTests method
+   *          or null if the plugin is not found
+   */
   async runTests(task:any,input:any):Promise&lt;any&gt; {
     console.log(&quot;[LOG] Running Tests:&quot;,task.openTests,&quot;for data:&quot;,input)
     const plugin &#x3D; await this.getPlugin(task.pluginCode)
-    const testResult &#x3D; plugin.default.getOpenTests(task.dataForPlugin,task.openTests,input)
-    return testResult
+    if(plugin) {
+      const testResult &#x3D; plugin.default.getOpenTests(task.dataForPlugin,task.openTests,input)
+      return testResult
+    } else return null
   }
 
+  /**
+   *  Submit a Task for a Plugin
+   *
+   * @param task raw Task created by plugin developer
+   * @param input raw input from frontend
+   * @returns raw feedback result from plugin openTests method
+   *          or null if the plugin is not found
+   */
   async submitTask(task:any,input:any):Promise&lt;number&gt; {
       console.log(&quot;[LOG] Submitting:&quot;,task.closedTests,&quot;for data:&quot;,input)
       const plugin &#x3D; await this.getPlugin(task.pluginCode)
-      const submittedResult &#x3D; plugin.default.submit(task.dataForPlugin,task.closedTests,input)
-      return submittedResult
+      if(plugin) {
+        const submittedResult &#x3D; plugin.default.submit(task.dataForPlugin,task.closedTests,input)
+        return submittedResult
+      } else return null
+
   }
 
+  /**
+   *
+   * @param pluginCode pluginCode (like Name) for created Plugin (must match in frontend and backend)
+   * @returns Import of the given file (if it exists) or null (if it doesnt exist)
+   *
+   */
   private async getPlugin(pluginCode:string) {
     let pluginFileName:string
     let pluginDirectory:string
@@ -408,10 +468,12 @@ export default class taskRunner {
       if(plugin.name &#x3D;&#x3D; pluginCode) {
         pluginFileName&#x3D;plugin.mainFile
         pluginDirectory&#x3D;plugin.directory
+        const pathToFile &#x3D; pluginDirectoryPath+pluginDirectory+&#x27;/&#x27;+pluginFileName
+        return import(pathToFile)
       }
     })
-    const pathToFile &#x3D; pluginDirectoryPath+pluginDirectory+&#x27;/&#x27;+pluginFileName
-    return import(pathToFile)
+    return null
+
   }
 
 }</code></pre>
