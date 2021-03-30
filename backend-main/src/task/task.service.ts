@@ -44,7 +44,6 @@ export class TaskService {
     }
   }
 
-	//TODO: TaskCollection tasks[]title synchronisieren
   async getSingleTaskCollection(taskCollectionId: string): Promise<TaskCollection> {
     console.log("[LOG] Getting Task Collection with ID:",taskCollectionId)
     if (taskCollectionId.match(/^[0-9a-fA-F]{24}$/)) {
@@ -55,6 +54,7 @@ export class TaskService {
   }
 
   // Objekt mit 2 Arrays: Suche nach Tags und Suche nach Name: TODO: SearchByTag, SearchByName
+  //Not Used in Project
   async searchTask(searchQuery: any):Promise<Task[]> {
     console.log("[LOG] Search Task with query",searchQuery);
     return this.taskModel.find({searchQuery}).exec();
@@ -67,6 +67,11 @@ export class TaskService {
     return this.taskModel.findOneAndUpdate({_id: taskID},{...rest}, {new:true})
   }
 
+  /**
+   * Returns all Task Collections that include a given task
+   * @param taskId
+   * @returns Array of Task Collections
+   */
   async getTaskCollectionsForTask(taskId: string): Promise<TaskCollection[]> {
     console.log("[LOG] Finding TaskCollections for task ",taskId)
     const taskCollections = await this.findAllTaskCollections();
@@ -80,6 +85,10 @@ export class TaskService {
     return taskCollectionsFound
   }
 
+  /**
+   *  Help Method to delete a task in all collections that use the task
+   * @param taskId taskId to access task in collection
+   */
   private async deleteTasksInCollection(taskId) {
     const taskCollections = await this.findAllTaskCollections();
     taskCollections.forEach((taskCollection:any) => {
@@ -122,6 +131,12 @@ export class TaskService {
     }
   }
 
+  /**
+   * Calculates the Resulting Note for a Task Collection based on the notes of the submitted tasks within the collection and its weightning
+   * @param usermail
+   * @param taskCollectionID
+   * @returns note 0-100 as result
+   */
   async getTaskCollectionNote(usermail:string,taskCollectionID:string):Promise<number> {
     let moodleUser = await this.userModel.findOne({'email': usermail}).exec()
     let note = 0
@@ -156,6 +171,15 @@ export class TaskService {
     return note
   }
 
+  /**
+   *
+   * Help Method to mark a task in a given taskcollection as submitted with its result/note
+   * @param usermail
+   * @param taskCollectionID
+   * @param taskID
+   * @param note
+   * @returns
+   */
   async markTaskInCollectionAsSubmitted(usermail:string,taskCollectionID:string,taskID:string,note:number):Promise<User> {
     let moodleUser = await this.userModel.findOne({'email': usermail}).exec()
     if(moodleUser) {
@@ -188,6 +212,14 @@ export class TaskService {
 
   }
 
+  /**
+   * Help Method to mark a Task or Colelction as submitted for a given moodle user and save its result/note
+   * this also deletes the "taskincollectionsubmitted" if a taskcollection is submitted to clean up the database
+   * @param usermail
+   * @param taskOrCollectionId
+   * @param note
+   * @returns
+   */
   async markTaskOrCollectionAsSubmitted(usermail:string,taskOrCollectionId:string,note:number):Promise<User> {
     let moodleUser = await this.userModel.findOne({'email': usermail}).exec()
     if(moodleUser) {

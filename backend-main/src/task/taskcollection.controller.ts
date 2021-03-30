@@ -56,7 +56,7 @@ export class TaskCollectionController {
       const note = await mytaskrunner.submitTask(task, submission);
       const sessions = moodleSessions.getInstance()
       const session = sessions.getSession(authToken)
-      if(session) {
+      if(session && note) {
         let userId = session.body.user_id
         let userName = session.body.ext_user_username
         let userMail = session.body.lis_person_contact_email_primary

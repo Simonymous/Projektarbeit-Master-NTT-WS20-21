@@ -3,12 +3,19 @@ import { Controller, Post, Request, Body, Get, Param, Patch, Delete, Res, HttpSt
 import { LocalAuthGuard } from './local-auth.guard';
 import { UserDTO } from 'src/users/user.dto';
 import { UsersService } from 'src/users/users.service';
-import { timeStamp } from 'console';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
 
+  /**
+   *
+   * Normal Login From Frontend
+   *
+   * @param res Response to Client (message + token if login succesful)
+   * @param userDTO submitted Userdata
+   * @returns status and message - and if login successful token
+   */
     @UseGuards(LocalAuthGuard)
     @Post('/login')
     async login(@Res() res, @Body() userDTO: UserDTO) {
@@ -25,6 +32,14 @@ export class AuthController {
       //return this.authService.login(userDTO)
     }
 
+    /**
+     *
+     * Login from embedded Moodle
+     *
+     * @param request lti Request to initiate LTI Session
+     * @param response redirect to fullscreen - or if task is submitted to a already submitted page
+     * @returns response "
+     */
     @Post('/moodleLogin')
     async moodleLogin(
       @Req() request,
@@ -42,6 +57,12 @@ export class AuthController {
 
       }
 
+    /**
+     *
+     * @param res message with status and if user was created user
+     * @param userDTO submitted Userdata
+     * @returns res "
+     */
     @Post('/register')
     async register(    @Res() res,
     @Body() userDTO: UserDTO, ) {

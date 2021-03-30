@@ -13,6 +13,14 @@ export class AuthService {
                private jwtService: JwtService
               ) {}
 
+  /**
+   *
+   * Validates a username/password
+   *
+   * @param username
+   * @param pass
+   * @returns user if okay and null if not okay
+   */
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
     //console.log(user)
@@ -24,7 +32,11 @@ export class AuthService {
     else return null;
   }
 
-
+  /**
+   * Login a User and create token
+   * @param user userDto
+   * @returns token
+   */
   async login(user: any) {
     const validatedUser = await this.usersService.findOne(user.username)
     //console.log(validatedUser)
@@ -35,6 +47,13 @@ export class AuthService {
     };
   }
 
+  /**
+   *
+   * Initiate a LTI Session and parse data
+   * @param request LTI Request from moodle
+   * @returns relevant data for lti session
+   *
+   */
   async ltiSessionInitiate(request):Promise<any> {
     let provider = new lti.Provider(config.moodle_consumer_key, config.moodle_consumer_secret); //Shared und public Secret aus moodle
     let taskId;
@@ -66,6 +85,15 @@ export class AuthService {
 
   }
 
+  /**
+   *
+   * Login or create a new moodle user and check if task exists
+   *
+   * @param userName
+   * @param userMail
+   * @param taskId
+   * @returns moodle User and boolean for task status
+   */
   async loginMoodleUserAndGetTask(userName,userMail,taskId):Promise<any> {
     const moodleUser = await this.usersService.findMoodleUser(userMail)
     let solved = false;

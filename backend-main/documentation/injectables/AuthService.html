@@ -193,14 +193,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/auth/auth.service.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/auth/auth.service.ts:40</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Login a User and create token</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -210,6 +212,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -224,6 +227,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>userDto</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -235,7 +242,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>token</p>
+
                     </div>
                 </td>
             </tr>
@@ -265,14 +273,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="69"
-                            class="link-to-prism">src/auth/auth.service.ts:69</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="97"
+                            class="link-to-prism">src/auth/auth.service.ts:97</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Login or create a new moodle user and check if task exists</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -321,7 +331,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>moodle User and boolean for task status</p>
+
                     </div>
                 </td>
             </tr>
@@ -351,14 +362,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="38"
-                            class="link-to-prism">src/auth/auth.service.ts:38</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">src/auth/auth.service.ts:57</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Initiate a LTI Session and parse data</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -367,6 +380,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -378,6 +392,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>LTI Request from moodle</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -389,7 +407,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>relevant data for lti session</p>
+
                     </div>
                 </td>
             </tr>
@@ -419,14 +438,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="16"
-                            class="link-to-prism">src/auth/auth.service.ts:16</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">src/auth/auth.service.ts:24</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Validates a username/password</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -473,7 +494,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>user if okay and null if not okay</p>
+
                     </div>
                 </td>
             </tr>
@@ -500,6 +522,14 @@ export class AuthService {
                private jwtService: JwtService
               ) {}
 
+  /**
+   *
+   * Validates a username/password
+   *
+   * @param username
+   * @param pass
+   * @returns user if okay and null if not okay
+   */
   async validateUser(username: string, pass: string): Promise&lt;any&gt; {
     const user &#x3D; await this.usersService.findOne(username);
     //console.log(user)
@@ -511,7 +541,11 @@ export class AuthService {
     else return null;
   }
 
-
+  /**
+   * Login a User and create token
+   * @param user userDto
+   * @returns token
+   */
   async login(user: any) {
     const validatedUser &#x3D; await this.usersService.findOne(user.username)
     //console.log(validatedUser)
@@ -522,6 +556,13 @@ export class AuthService {
     };
   }
 
+  /**
+   *
+   * Initiate a LTI Session and parse data
+   * @param request LTI Request from moodle
+   * @returns relevant data for lti session
+   *
+   */
   async ltiSessionInitiate(request):Promise&lt;any&gt; {
     let provider &#x3D; new lti.Provider(config.moodle_consumer_key, config.moodle_consumer_secret); //Shared und public Secret aus moodle
     let taskId;
@@ -553,6 +594,15 @@ export class AuthService {
 
   }
 
+  /**
+   *
+   * Login or create a new moodle user and check if task exists
+   *
+   * @param userName
+   * @param userMail
+   * @param taskId
+   * @returns moodle User and boolean for task status
+   */
   async loginMoodleUserAndGetTask(userName,userMail,taskId):Promise&lt;any&gt; {
     const moodleUser &#x3D; await this.usersService.findMoodleUser(userMail)
     let solved &#x3D; false;

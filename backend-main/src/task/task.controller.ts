@@ -28,6 +28,15 @@ export class TaskController {
   //TODO: Funktioniert!! man muss nur aus dem Frontend das beim Login übermittelte Token mitschicken
   // https://stackoverflow.com/questions/44072750/how-to-send-basic-auth-with-axios ? ausprobieren..
   //@UseGuards(JwtAuthGuard)
+
+  /**
+   *
+   * Creates a new Task
+   *
+   * @param res Response status with message and new task if it was created successfully
+   * @param taskDTO task Data from Frontend
+   * @returns res "
+   */
   @Post('/create')
   async createNewTask(@Res() res, @Body() taskDTO: Task) {
 
@@ -40,16 +49,34 @@ export class TaskController {
     })
   }
 
+  /**
+   * Returns All Tasks as Array
+   * @returns Array with All Tasks
+   */
   @Get()
   getAllTasks() {
     return this.taskService.findAllTasks();
   }
 
+  /**
+   *
+   * Returns Task Collections that use a given Task
+   * @param taskID taskID to search in taskCollections
+   * @returns Array of TaskCollections
+   */
   @Get('/getTaskCollections/:id')
   async getTaskCollectionsForTask(@Param('id') taskID: string) {
     return await this.taskService.getTaskCollectionsForTask(taskID);
   }
 
+  /**
+   *
+   * Returns a Specific Task
+   *
+   * @param taskID taskID to get
+   * @param res response (not found or ok with task)
+   * @returns res "
+   */
   @Get(':id')
   async getTask(@Param('id') taskID: string, @Res() res) {
     const returnObj = await this.taskService.getSingleTask(taskID);
@@ -59,6 +86,7 @@ export class TaskController {
     })
   }
 
+  // Wird nicht verwendet, ist trotzdem korrekt und als überbleibsel hier
   // Suche primär nach Tags und dann nach Name -> erhalte Searchstring
   @Post('/searchTask')
   async searchTask(@Res() res, @Body() searchQuery: any) {
@@ -69,6 +97,15 @@ export class TaskController {
     });
   }
 
+  /**
+   *
+   * Updates a given Task
+   *
+   * @param taskID task to update
+   * @param taskDTO new task Data
+   * @param res updated Task
+   * @returns res "
+   */
   @Put('/update')
   async updateTask(
     @Param('id') taskID: string,
@@ -83,6 +120,14 @@ export class TaskController {
     });
   }
 
+  /**
+   *
+   * Deletes a Task
+   *
+   * @param taskID task to delete
+   * @param res status message and deleted task if deletion was successful
+   * @returns res "
+   */
   @Delete(':id')
   async deleteTask(@Param('id') taskID: string, @Res() res) {
 
@@ -95,6 +140,15 @@ export class TaskController {
 
   }
 
+  /**
+   *
+   * Get Open Tests For given Task
+   *
+   * @param taskID TaskID
+   * @param input userInput for Plugin
+   * @param res status message and open tests if task is found
+   * @returns res "
+   */
   @Post('/test/:id')
   async getOpenTests(
     @Param('id') taskID: string,
@@ -107,7 +161,12 @@ export class TaskController {
     if (task) {
       let mytaskrunner = new taskRunner();
       let runnedTests = await mytaskrunner.runTests(task, input);
-      return res.status(HttpStatus.OK).json(runnedTests);
+      if(runnedTests) {
+        return res.status(HttpStatus.OK).json(runnedTests);
+      } else return res.status(HttpStatus.NOT_FOUND).json({
+        message: 'Task not found!',
+      });
+
     }
 
     return res.status(HttpStatus.NOT_FOUND).json({
@@ -115,6 +174,16 @@ export class TaskController {
     });
   }
 
+  /**
+   *
+   * Submit a Task to moodle
+   *
+   * @param taskID task ID to submit
+   * @param headers headers.authorization includes user token to access the moodle session internal
+   * @param input userinput from plugin
+   * @param res message and status
+   * @returns res "
+   */
   @Post('/submit/:id')
   async submitTask(
     @Param('id') taskID: string,
@@ -131,7 +200,7 @@ export class TaskController {
       //Taskergebnis an moodle senden
       const sessions = moodleSessions.getInstance()
       const session = sessions.getSession(authToken)
-      if(session) {
+      if(session && note) {
         let userId = session.body.user_id
         let userName = session.body.ext_user_username
         let userMail = session.body.lis_person_contact_email_primary
