@@ -21,14 +21,10 @@ npm run build
 npm run lint
 ```
 
-## Architektur
-
-
-
 # User Doku
 ## Sign Up
 <https://server.de/signup>  
-Falls ein User noch nicht Registriert ist, kann er sich im Sign Up einen neuen Account erstellen. Dieser Account wird vorallem von Exercise Ersteller und Nutzer gebraucht, welche nicht über Moodle auf die Platform zugreifen möchten.
+Falls ein User noch nicht Registriert ist, kann er sich im Sign Up einen neuen Account erstellen. Dieser Account wird vorallem von Exercise Ersteller und Nutzer gebraucht, welche nicht über Moodle auf die Plattform zugreifen möchten.
 
 Eingabe:
 
@@ -36,9 +32,9 @@ Eingabe:
 - Password
 - Email
 
-## Login
+## Log In
 <https://server.de/login>  
-Im Login kann sich ein Nutzer auf der Seite anmelden. Dafür muss zuvor ein erfolgreiche Registrierung vollzogen werden. 
+Im Login kann sich ein Nutzer auf der Seite anmelden. Dafür muss zuvor eine erfolgreiche Registrierung vollzogen werden. 
 
 Eingabe:
 
@@ -119,10 +115,10 @@ Aufgabenblätter:
 - Titel
 - Description
 - Type (wird automatisch bei der Auswahl erstellt)
-- Creator (Wird automatisch beim erstellen gesetzt)
+- Creator (wird automatisch beim Erstellen gesetzt)
 - Course 
 - Tasks (Aufgabe kann aus einer Liste von Aufgaben, per Dropdown, hinzugefügt werden )
-    - Wighting
+    - Weighting
     - _id (Ist in der ausgewählten Aufgabe enthalten)
     - Taskname (Ist in der ausgewählten Aufgabe enthalten)
 
@@ -191,12 +187,12 @@ User Interface:
 
 Login: 
 
-Möglichkeit um sich auf die Blatform einzuloggen, anstatt über Moodle.
+Möglichkeit um sich auf die Plattform einzuloggen, anstatt über Moodle.
 
 Register:
 
-Möglichkeit sich einen Account auf der Platform zu erstellen. 
-Standartmäßig Studen. Erhöhte Berechtigungen müssen seperat gesetzt werden.
+Möglichkeit sich einen Account auf der Plattform zu erstellen. 
+Standartmäßig Student. Erhöhte Berechtigungen müssen separat gesetzt werden.
 
 
 ## Architektur der Anwendung 
@@ -213,7 +209,7 @@ Die Anwendung ist mit einem Router aufgebaut. Die Haupteinstiegspunkte sind:
     Wenn von Moodel nur eine Aufgabe angegeben wurde gibt es nur die Ansicht einer Aufgabe.  
 
 Konstante Werte, auf die global zugegriffen wird, aber dennoch leicht konfigurierbar sein sollen, sind in der config.json gespiechert. Dort befinden sich zum Einen der Pfad zu dem PluginsOrdner in dem die Plugins abgelegt werden sollen. Zum Anderen befinden sich dort die Verbindungsdaten zum Backend.  
-Ist man noch am lokalen entwickeln und möchte Backend-unabhängig testen, empfiehlt es sich die Umgebungsvarible VUE_APP_BACKEND_ONLINE im ..env auf false zu setzen. Soll nun eine Backendrequest gemacht werden, so wird diese nicht wie normal an die helper/requests.js Datei geleitet, sondern an Testdaten in der helper/DummyRequests.js Datei.
+Ist man noch am lokalen entwickeln und möchte Backend-unabhängig testen, empfiehlt es sich die Umgebungsvarible VUE_APP_BACKEND_ONLINE im .env auf false zu setzen. Soll nun eine Backendrequest gemacht werden, so wird diese nicht wie normal an die helper/requests.js Datei geleitet, sondern an Testdaten in der helper/DummyRequests.js Datei.
 
 Anmerkung:  
-Es ist bereits beim Import vorgesehen mehrere Dateien gleichzeitig hochzuladen. Da es derzeit noch einen Bug in Primevue im Import Feld gibt (Pull Request pending) ist diese Funktion deaktiviert und man kann nurn einen Datei gleichzeitig auswählen. Die Funktionalität für mehrere Dateien gleichzeitig ist bereits vorhanden wodurch die Funktionalität bei Bugfix schnell eingebaut werden kann.
+Es ist bereits beim Import vorgesehen mehrere Dateien gleichzeitig hochzuladen. Da es derzeit noch einen Bug in Primevue im Import Feld gibt (Pull Request pending) ist diese Funktion deaktiviert und man kann nur eine Datei auswählen. Die Funktionalität für mehrere Dateien gleichzeitig ist bereits vorhanden wodurch die Funktionalität bei Bugfix schnell eingebaut werden kann.
