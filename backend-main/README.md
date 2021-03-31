@@ -18,7 +18,7 @@ mongodb_path is the exakt path to the mongo db.
 moodle_consumer_key and moodle_consumer_secret are defined in the moodle settings for the lti tool.
 also make sure that you define a task or task colelction id in the tool definitions:
 ```
-custom_taskId=XXXTASKIDXXX
+taskId=XXXTASKIDXXX
 ```
 This Task ID is displayed in the frontend
 ### Compiles and hot-reloads for development
