@@ -194,6 +194,35 @@ Register:
 Möglichkeit sich einen Account auf der Plattform zu erstellen. 
 Standartmäßig Student. Erhöhte Berechtigungen müssen separat gesetzt werden.
 
+# Entwickler Doku
+
+## Plugin erstellen
+
+Es ist möglich eigene Aufgabenarten mithilfe von Plugins zu erstellen. Ein Plugin muss folgendermaßen aufgebaut sein:
+- config.json  
+In dieser Datein befinden sich die Konfigurationen des Plugins dazu zählen:
+    - _installCommands_ Welche Kommandozeilen befehle bei insatllation des Plugins ausgeführt werden sollen. Vorallem zum installieren von (NPM) Modulen, die das PLugin benötigt.
+    - _author_
+    - _version_
+    - _createTask_ Welche Datei der Einstiegspunkt zum erstellen von Aufgaben ist.
+    - _solveTask_ Welche Datei Welche Datei der Einstiegspunkt zum lösen von Aufgaben ist.
+- create/solve.vue  
+    Diese Dateien enthalten die Komponenten die für das Erstellen und Lösen des spezifischen Plugins benötigt werden und in den jeweiligen Views angezeigt werden.
+
+    Die Komponenten erhalten als "Props" jeweils das gesamt Task Objekt. Wenn eine Eingabe getätigt wird und sich eine Einstellung ändert, soll ein "emit('pluginChangedData', task)" mit dem gänderten Task als payload zurück gegeben werden. 
+
+## Plugin im Frontend einfügen
+
+Die drei (oder mehr) Dateien müssen in einem Ordner gesammelt werden und in den Plugin Ordner (/src/components/Plugins) eingefügt werden.
+
+Des Weiteren muss in /src/components/Plugins/paths.json Datei ein Eintrag hinzugefügt werden. Ein Eintrag besteht aus Folgenden Attributen: 
+- _label_ Name unter dem das Plugin für den Benutzer auswählbar ist.
+- _code_ Identifiziert das Plugin eindeutig
+- _path_ Pfad der Plugin-config.json Datei (z.B. /Code/config.json)
+
+Falls in der Plugin Config Skripte hinterlegt sind, sollen diese ausgeführt werden.
+
+Evtl. muss das gesamte Frontend neu gebaut und gestartet werden.
 
 ## Architektur der Anwendung 
 Die Anwendung ist mit einem Router aufgebaut. Die Haupteinstiegspunkte sind:
