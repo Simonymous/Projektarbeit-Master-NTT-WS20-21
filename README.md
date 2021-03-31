@@ -17,10 +17,9 @@ WICHTIG: Es ist zwingend notwendig, eine eigene MongoDB zu betreiben.
 Diese kann entsprechend in der config des backends eingetragen werden.
 
 
-Dokus:
-Dev Doku Frontend: ./frontend-main/README.md
-benutzer Doku Frontend: ./frontend-main/README.md
-Dev Doku Backend: ./backend-main/README.md
+Dokus:  
+- Doku Frontend: ./frontend-main/README.md
+- Doku Backend: ./backend-main/README.md
 
 
 
