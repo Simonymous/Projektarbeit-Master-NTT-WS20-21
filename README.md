@@ -34,7 +34,7 @@ Alternativ können auch Backend und Frontend seperat gestartet werden.
 WICHTIG: Es ist zwingend notwendig, eine eigene MongoDB zu betreiben.
 Diese kann entsprechend in der config des backends eingetragen werden.
 
-Wichtig:
+## Moodle Konfiguration
 in Moodle wird das Tool folgendermaßen konfiguriert:
 ![Alt text](https://github.com/Simonymous/maprojektarbeit-ntt/blob/develop/moodleConfig.PNG "Moodle Config")
 Dabei wird in den custom Parameters (Angepasste Parameter) die taskID folgendermaßen eingetragen:
@@ -44,6 +44,6 @@ taskId=XXXTASKIDXXX
 Anwenderschlüssel (consumer_key) und Öffentliches Kennwort (shared_secret) müssen entsprechend in der Backend config.json (siehe Backend Dokumentation) angepasst werden.
 Wichtig ist hier auch die Url mit /auth/moodleLogin, welche automatisch eine moodle LTI session initiiert
 
-Dokus:  
+## Weitere Dokus
 - Doku Frontend: ./frontend-main/README.md
 - Doku Backend: ./backend-main/README.md
