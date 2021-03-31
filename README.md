@@ -1,4 +1,4 @@
-# projektarbeit-ntt
+# Projektarbeit NTT
 
 ## Docker Compose Integration
 
