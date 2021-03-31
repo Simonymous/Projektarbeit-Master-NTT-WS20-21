@@ -36,6 +36,7 @@ Diese kann entsprechend in der config des backends eingetragen werden.
 
 Wichtig:
 in Moodle wird das Tool folgendermaßen konfiguriert:
+![Alt text](/moodleCnfig.png?raw=true "Moodle Config")
 ```
 taskId=XXXTASKIDXXX
 ```
