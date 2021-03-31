@@ -1,28 +1,22 @@
 # projektarbeit-ntt
 
-main: fertige releases
+## Docker Compose Integration
 
-develop: beta releases
+In ./backend-main und ./frontend-main sollte zuvor ein
+```
+npm install
+```
+erfolgen
+Docker Compose start mit
 
-feature-branches für neue features
-
-
-Scrumboard: https://dev.azure.com/pniedermeyer/MAprojektarbeit-NTT
-
-Benötigte Frameworks und Instalationen:
-
-Note.js Version 12
-
-Vue.js CLI Version 4.5.8
-Vue3.js Version 3.0.2
-
-Nest.js Version 7.5.2
-
-Docker Version 19.03
+```
+docker compose up
+```
+Alternativ können auch Backend und Frontend seperat gestartet werden.
+WICHTIG: Es ist zwingend notwendig, eine eigene MongoDB zu betreiben.
+Diese kann entsprechend in der config des backends eingetragen werden.
 
 
-MongoDB mit Docker verbinden:
-
-- download docker/mongo : docker pull mongo
-
-- start Mongo Service : docker run --name some-mongo -d mongo:tag
+Dokus:
+- Doku Frontend: ./frontend-main/README.md
+- Doku Backend: ./backend-main/README.md

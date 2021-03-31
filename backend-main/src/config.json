@@ -1,0 +1,7 @@
+{
+    "port":3000,
+    "enableCors":true,
+    "mongodb_path":"mongodb://root:example@mongo:27017/test?authSource=admin",
+    "moodle_consumer_key":"top",
+    "moodle_consumer_secret":"secret"
+}

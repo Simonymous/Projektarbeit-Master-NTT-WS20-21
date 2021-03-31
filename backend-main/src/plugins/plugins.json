@@ -1,0 +1,12 @@
+[
+    {
+        "name":"test",
+        "directory":"/basicExamplePlugin",
+        "mainFile":"basicExamplePluginMain"
+    },
+    {
+        "name":"codeJS",
+        "directory":"/codingPlugin",
+        "mainFile":"codingPluginMain"
+    }
+]
