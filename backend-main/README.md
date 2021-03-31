@@ -23,8 +23,40 @@ npx @compodoc/compodoc -s
 ```
 and access it at localhost:8080
 
-## Architektur
+## Plugins erstellen
+* 1. plugin erstellen
+Hierfür wird innerhalb des /src/plugin Ordners ein eigener Ordner angelegt, der als Bereich für das Plugins gilt.
+Es können beliebig viele Dateien angelegt werden. Wichtig ist, dass eine "Hauptdatei" existiert, welche die Methoden
+```
+getOpenTests(data:any,tests:any,input:any):any
+```
+und
+```
+submit(data:any,tests:any,input:any):number
+```
+implementieren und exportieren.
+getOpenTests:
+**data:** Intern das DataForPlugin Attribut (siehe oben), welches als Platzhalter für alle Plugin-spezifischen Daten gilt
+**tests:** Open Tests, die zuvor im Frontend erstellt wurden
+**input:** Nutzer Input, welches vom Frontend Plugin versendet wird
+get Open Tests soll nun die offenen Tests überprüfen und anschließend Feedback ans Frontend senden. Die Funktionsweise der Überprüfung
+sowie das Format ist dabei komplett dem Entwickler überlassen, es muss lediglich sichergestellt werden, dass das Frontend entsprechend mit den Ergebnissen der Open Tests arbeiten kann.
+submit bekommt die selben Argumente übergeben, hier sind tests allerdings nicht die Open Tests sondern die im Frontend definierten Closed Tests.
+In der Logik dieser Methode sollen nun die Closed Tests überprüft werden und daraus eine Note im Bereich **0-100** errechnen und zurück geben.
 
+
+Ein Beispiel für ein Plugin ist im /plugins Ordner unter "basicExamplePlugin" vorhanden, ein weiteres bereits implementiertes Plugin unter "codingPlugin"
+
+*2. plugin in plugins.json registrieren
+Hierfür wird im Array ein eigener Eintrag erzeugt, der folgendermaßen aufgebaut ist:
+```
+{
+    "name":"PLUGINNAME",
+    "directory":"/ORDNER_DES_PLUGINS",
+    "mainFile":"MAIN_FILE_MIT_EXPORTIEREN_METHODEN"
+}
+```
+der Name muss sich zwingend mit dem im Frontend definierten Namen decken!
 # Wichtigste Routen im Überblick
 ## Authentifikation
 
