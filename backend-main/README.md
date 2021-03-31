@@ -39,7 +39,7 @@ npx @compodoc/compodoc -s
 and access it at localhost:8080
 
 ## Plugins erstellen
-* 1. plugin erstellen
+1. plugin erstellen  
 Hierfür wird innerhalb des /src/plugin Ordners ein eigener Ordner angelegt, der als Bereich für das Plugins gilt.
 Es können beliebig viele Dateien angelegt werden. Wichtig ist, dass eine "Hauptdatei" existiert, welche die Methoden
 ```
@@ -50,19 +50,19 @@ und
 submit(data:any,tests:any,input:any):number
 ```
 implementieren und exportieren.
-getOpenTests:
-**data:** Intern das DataForPlugin Attribut (siehe oben), welches als Platzhalter für alle Plugin-spezifischen Daten gilt
-**tests:** Open Tests, die zuvor im Frontend erstellt wurden
-**input:** Nutzer Input, welches vom Frontend Plugin versendet wird
-get Open Tests soll nun die offenen Tests überprüfen und anschließend Feedback ans Frontend senden. Die Funktionsweise der Überprüfung
-sowie das Format ist dabei komplett dem Entwickler überlassen, es muss lediglich sichergestellt werden, dass das Frontend entsprechend mit den Ergebnissen der Open Tests arbeiten kann.
-submit bekommt die selben Argumente übergeben, hier sind tests allerdings nicht die Open Tests sondern die im Frontend definierten Closed Tests.
+getOpenTests:  
+**data:** Intern das DataForPlugin Attribut (siehe oben), welches als Platzhalter für alle Plugin-spezifischen Daten gilt  
+**tests:** Open Tests, die zuvor im Frontend erstellt wurden  
+**input:** Nutzer Input, welches vom Frontend Plugin versendet wird  
+**get Open Tests** soll nun die offenen Tests überprüfen und anschließend Feedback ans Frontend senden. Die Funktionsweise der Überprüfung
+sowie das Format ist dabei komplett dem Entwickler überlassen, es muss lediglich sichergestellt werden, dass das Frontend entsprechend mit den Ergebnissen der Open Tests arbeiten kann.  
+**submit** bekommt die selben Argumente übergeben, hier sind tests allerdings nicht die Open Tests sondern die im Frontend definierten Closed Tests.
 In der Logik dieser Methode sollen nun die Closed Tests überprüft werden und daraus eine Note im Bereich **0-100** errechnen und zurück geben.
 
 
-Ein Beispiel für ein Plugin ist im /plugins Ordner unter "basicExamplePlugin" vorhanden, ein weiteres bereits implementiertes Plugin unter "codingPlugin"
+Ein Beispiel für ein Plugin ist im /plugins Ordner unter "basicExamplePlugin" vorhanden, ein weiteres bereits implementiertes Plugin unter "codingPlugin".
 
-* 2. plugin in plugins.json registrieren
+2. plugin in plugins.json registrieren  
 Hierfür wird im Array ein eigener Eintrag erzeugt, der folgendermaßen aufgebaut ist:
 ```
 {
@@ -72,14 +72,14 @@ Hierfür wird im Array ein eigener Eintrag erzeugt, der folgendermaßen aufgebau
 }
 ```
 der Name muss sich zwingend mit dem im Frontend definierten Namen decken!
-# Wichtigste Routen im Überblick
+# Wichtige Routen im Überblick
 ## Authentifikation
 
-POST /auth/moodleLogin
+```POST /auth/moodleLogin```
 wird vom Moodle LTI System verwendet.
 Es wird automatisiert zur der in moodle angegebenen Aufgabe / Aufgabenblatt weitergeleitet - bzw. zu einer entsprechenden Ansicht, falls die Aufgabe vom Nutzer bereits abgegeben wurde.
 
-POST /auth/login erwartet ein UserDTO im Body und loggt den entsprechenden Nutzer ein. wichtig hierbei sind eigentlich nur id, username, email und password
+```POST /auth/login``` erwartet ein UserDTO im Body und loggt den entsprechenden Nutzer ein. wichtig hierbei sind eigentlich nur id, username, email und password
 ```
     _id: string,
     username: string,
@@ -89,7 +89,7 @@ POST /auth/login erwartet ein UserDTO im Body und loggt den entsprechenden Nutze
 ```
 liefert den Status und falls erfolgreich eingeloggt wurde ein Token, welches im Folgenden für die Authentikation verwendet wird
 
-POST /auth/register erwartet ein UserDTO im Body und legt den entsprechenden Nutzer an
+```POST /auth/register``` erwartet ein UserDTO im Body und legt den entsprechenden Nutzer an
 ```
     _id: string,
     username: string,
@@ -100,8 +100,8 @@ POST /auth/register erwartet ein UserDTO im Body und legt den entsprechenden Nut
 
 ## Standardmethoden für Tasks und TaskCollections
 
-POST /task/create
-Erstellt einen Task Hierfür wird eine TaskDTO im Body erwartet, die folgendermaßen aufgebaut ist:
+```POST /task/create```
+Erstellt einen Task. Hierfür wird eine TaskDTO im Body erwartet, die folgendermaßen aufgebaut ist:
 ```
     title: string,
     description: string,
@@ -118,7 +118,7 @@ Erstellt einen Task Hierfür wird eine TaskDTO im Body erwartet, die folgenderma
 DataForPlugin spielt dabei eine wichtige Rolle, da es ein generisches Attribut für alle Plugin Daten ist, die ein Entwickler verwenden kann.
 So ist es möglich, Plugins zu entwickeln, ohne diese Struktur aufzubrechen.
 
-POST /taskcollection/create
+```POST /taskcollection/create```
 Erstellt einen TaskCollection. Hierfür wird eine TaskCollectionDTO im Body erwartet, die folgendermaßen aufgebaut ist:
 ```
     title: string,
