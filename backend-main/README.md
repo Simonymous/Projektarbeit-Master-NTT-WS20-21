@@ -96,13 +96,26 @@ analog hierzu gibt ein GET auf /task bzw. /taskcollection mit :id als URL Param 
 Andernfalls wird entsprechend ein HTTP 404 (NOT FOUND) zurückgeliefert
 Nach dem selben prinzip löscht die DELETE Methode auf /task bzw. /taskcollection mit :id als URL Param einen spezifischer Task bzw eine spezifische TaskCollection
 
-GET /getTaskCollections/:id
+```GET /getTaskCollections/:id```
 Liefert alle Task Collections, die einen spezifischen Task (der per ID via Parameter angegeben wurde) verwenden
 Dies wird verwendet, wenn ein Task gelöscht werden soll, der allerdings noch in TaskCollections verwendet wird.
 
-PUT /task/update bzw. PUT /taskcollection/update
+```PUT /task/update``` bzw. ```PUT /taskcollection/update```
 updatet einen Task bzw. eine TaskCollection. eine taskDTO bzw taskcollectionDTO analog zur create Methode wird dabei erwartet.
 
 ## Open Tests und Submissions für Tasks
+```POST /task/test/:id``` mit dem Nutzer input im Body (Object)
+Liefert die Ergebnisse für alle im Task definierten Open Tests für den per ID angegebenen Task. Es werden intern alle definierten Tests ausgeführt und nach Plugin Definition zurück ans Frontend geliefert
+
+```POST /task/submit/:id``` mit dem Nutzer
+führt analog zu den Open Tests die Closed Tests aus und berechnet auf Basis des prozentualen bestanden. Hierbei ist wichtig, dass im Header unter authorization das Nutzer Token vorhanden ist, welches zu Beginn der moodleLogin Session (siehe Oben) generiert und ans Frontend gesendet wurde. Dieses wird verwendet, um die berechnete Note einem Nutzer zuordnen zu können.
 
 ## Open Tests und Submissions für TaskCollections
+```POST /taskcollection/submitTask/:taskcollectionID/:taskID```
+Gibt innerhalb einer TaskCollection einen Task ab. Bei dem agegebenen Task werden die Closed Tests durchlaufen und die Bewertung des seperaten Tasks zwischengespeichert, bis zu einem späteren Zeitpunkt das gesamte Aufgabenblatt submitted wird
+Auch hier ist der Authorization Header erforderlich, um den Nutzer zu authentifizieren
+
+```POST /taskcollection/submit/:id```
+Submitted die gesamte TaskCollection. Hierbei ist es notwendig,
+dass vorher die einzelnen Tasks innerhalb der TaskCollection submitted wurden. Wurde ein Task nicht submitted, wird er entsprechend als 0% gelöst bewertet.
+Innerhalb der Abgabe werden alle im vorherigen Schritt abgegebenen Tasks entsprechend ihrer definierten Wichtung miteinander verrechnet, woraus sich dann eine Gesamtnote für die Collection ergibt, welche dann wiederum an Moodle übertragen wird.
