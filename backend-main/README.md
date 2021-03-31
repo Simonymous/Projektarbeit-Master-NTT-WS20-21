@@ -5,7 +5,22 @@
 ```
 npm install
 ```
-
+Configurate Backend in /src/config.json
+```
+    "port":3000,
+    "enableCors":true,
+    "mongodb_path":"mongodb://root:example@mongo:27017/test?authSource=admin",
+    "moodle_consumer_key":"top",
+    "moodle_consumer_secret":"secret"
+```
+If you run backend and frontend on the same machine/same container, make sure to set "enableCors" to true
+mongodb_path is the exakt path to the mongo db.
+moodle_consumer_key and moodle_consumer_secret are defined in the moodle settings for the lti tool.
+also make sure that you define a task or task colelction id in the tool definitions:
+```
+custom_taskId=XXXTASKIDXXX
+```
+This Task ID is displayed in the frontend
 ### Compiles and hot-reloads for development
 ```
 npm run start
@@ -47,7 +62,7 @@ In der Logik dieser Methode sollen nun die Closed Tests überprüft werden und d
 
 Ein Beispiel für ein Plugin ist im /plugins Ordner unter "basicExamplePlugin" vorhanden, ein weiteres bereits implementiertes Plugin unter "codingPlugin"
 
-*2. plugin in plugins.json registrieren
+* 2. plugin in plugins.json registrieren
 Hierfür wird im Array ein eigener Eintrag erzeugt, der folgendermaßen aufgebaut ist:
 ```
 {
