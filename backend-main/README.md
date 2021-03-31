@@ -166,3 +166,11 @@ Auch hier ist der Authorization Header erforderlich, um den Nutzer zu authentifi
 Submitted die gesamte TaskCollection. Hierbei ist es notwendig,
 dass vorher die einzelnen Tasks innerhalb der TaskCollection submitted wurden. Wurde ein Task nicht submitted, wird er entsprechend als 0% gelöst bewertet.
 Innerhalb der Abgabe werden alle im vorherigen Schritt abgegebenen Tasks entsprechend ihrer definierten Wichtung miteinander verrechnet, woraus sich dann eine Gesamtnote für die Collection ergibt, welche dann wiederum an Moodle übertragen wird.
+
+## Anmerkung:
+
+Bei einem npm i wird das ims-lti paket überschrieben. Hier sind allerdings Änderungen vorhanden, welche den Betrieb des ims Consumer ohne SSL Zertifikat (also sprich im moodle HtW Testsystem) möglich machen. Dies geschieht mit
+```
+options.rejectUnauthorized = false
+```
+in outcomes.js:206 des lti tools
