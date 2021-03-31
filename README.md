@@ -20,7 +20,3 @@ Diese kann entsprechend in der config des backends eingetragen werden.
 Dokus:  
 - Doku Frontend: ./frontend-main/README.md
 - Doku Backend: ./backend-main/README.md
-
-
-
-Scrumboard: https://dev.azure.com/pniedermeyer/MAprojektarbeit-NTT
