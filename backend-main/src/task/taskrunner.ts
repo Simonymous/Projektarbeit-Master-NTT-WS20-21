@@ -33,10 +33,8 @@ export default class taskRunner {
   async submitTask(task:any,input:any):Promise<number> {
       console.log("[LOG] Submitting:",task.closedTests,"for data:",input)
       const plugin = await this.getPlugin(task.pluginCode)
-      if(plugin) {
-        const submittedResult = plugin.default.submit(task.dataForPlugin,task.closedTests,input)
-        return submittedResult
-      } else return null
+      const submittedResult = plugin.default.submit(task.dataForPlugin,task.closedTests,input)
+      return submittedResult
 
   }
 
@@ -53,11 +51,11 @@ export default class taskRunner {
       if(plugin.name == pluginCode) {
         pluginFileName=plugin.mainFile
         pluginDirectory=plugin.directory
-        const pathToFile = pluginDirectoryPath+pluginDirectory+'/'+pluginFileName
-        return import(pathToFile)
+
       }
     })
-    return null
+    const pathToFile = pluginDirectoryPath+pluginDirectory+'/'+pluginFileName
+    return import(pathToFile)
 
   }
 
