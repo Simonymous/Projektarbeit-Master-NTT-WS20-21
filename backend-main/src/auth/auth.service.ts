@@ -68,7 +68,7 @@ export class AuthService {
         return "INVALID: "+err
       }
       console.log("[LOG] LTI Session initiated:",provider)
-      if(provider.body.custom_taskId) taskId = provider.body.custom_taskId
+      if(provider.body.custom_taskid) taskId = provider.body.custom_taskid
       userId = provider.body.user_id
       userName = provider.body.ext_user_username
       userMail = provider.body.lis_person_contact_email_primary
