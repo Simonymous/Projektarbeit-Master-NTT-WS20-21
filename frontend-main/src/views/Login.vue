@@ -52,7 +52,7 @@ export default {
       try {
         if (username.value && password.value) {
           const user = new USER_TEMPLATE(username.value, password.value);
-          const response = postBackendRequest(AUTH_PATH, user);
+          const response = await postBackendRequest(AUTH_PATH, user);
           VueCookies.set(
             "access-token",
             "Bearer " + response.token.access_token,

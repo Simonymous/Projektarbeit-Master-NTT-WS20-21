@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!state.user">
+    <div v-if="!state.user?.isLoggedIn()">
       <Menubar :model="MENUBAR_ITEMS_USER_NOT_LOGGED_IN" class="menubar" />
     </div>
     <div v-else>

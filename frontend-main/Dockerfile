@@ -19,6 +19,6 @@ COPY . .
 
 # build app for production with minification
 #RUN npm run build
-ENTRYPOINT npm run serve
+ENTRYPOINT npm run serveProd
 #EXPOSE 8080
 #CMD [ "http-server", "dist" ]
