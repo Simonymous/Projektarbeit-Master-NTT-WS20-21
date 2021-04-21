@@ -1,8 +1,5 @@
 <template>
   <div v-if="state?.user?.isLoggedIn() || DEVMODE">
-      <!-- <div v-if=" DEVMODE"> -->
-        <p>{{state?.user?.isLoggedIn()}}</p>
-        <p>{{DEVMODE}}</p>
     <HomeNavBar />
     <div>
       <component :is="inscopeComponent"></component>
@@ -20,14 +17,15 @@ import HomeNavBar from "./HomeNavBar";
 import { useState } from "../store/store";
 import { ref, onMounted, defineAsyncComponent, watch, markRaw, shallowRef } from "vue";
 import { getBackendRequest } from "../helper/requests";
+import User from '../models/User'
 export default {
   name: "home",
   components: {
     HomeNavBar,
   },
   setup() {
-    // const DEVMODE = process.env.NODE_ENV === "development";
-const DEVMODE = false
+    const DEVMODE = process.env.NODE_ENV === "development";
+// const DEVMODE = false
     const inscopeComponent = ref(
       defineAsyncComponent(() => import("@/" + state.component))
     );
@@ -41,7 +39,7 @@ const DEVMODE = false
 
     async function getUserAndSetState() {
       try {
-        state.user = await getBackendRequest("user");
+        state.user = new User(await getBackendRequest("user"));
       } catch (e) {
         console.log(e);
       }

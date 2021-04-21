@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!state.user?.isLoggedIn()">
+    <div v-if="!state?.user?.isLoggedIn()">
       <Menubar :model="MENUBAR_ITEMS_USER_NOT_LOGGED_IN" class="menubar" />
     </div>
     <div v-else>
@@ -12,7 +12,8 @@
 <script>
 import { ref } from "vue"
 import { useState } from "../store/store"
-import VueCookies from "vue-cookies"
+import User from '../models/User'
+
 
 export default {
   name: "GlobalNavBar",
@@ -43,8 +44,7 @@ export default {
             label: "Logout",
             icon: "pi pi-fw pi-power-off",
             command: (event) => {
-              VueCookies.remove("access-token");
-              state.user = null;
+              state.user = new User(null);
             },
           },
         ],
