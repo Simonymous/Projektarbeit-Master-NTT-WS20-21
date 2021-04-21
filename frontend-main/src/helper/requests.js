@@ -1,19 +1,22 @@
 import VueCookies from 'vue-cookies'
 import axios from 'axios'
+import { useState } from "../store/store";
 
-// TODO: Schauen ob funktioniert
+
 const BACKEND_URL = require('../../config.json').backendURL
 // const BACKEND_URL = process.env.MY_BACKEND_URL
 
 // const ACCESS_TOKEN = VueCookies.get('access-token')
 
+let state = useState()
+
 let ACCESS_TOKEN;
-const URL_PARAMS = new URLSearchParams(window.location.search);
+const URL_PARAMS =  new URLSearchParams(window.location.search);
 
 
 const requestOptions = {
   headers: {
-    Authorization: URL_PARAMS.get("token"),
+    Authorization: state?.user?.isLoggedIn()?window.user.data:URL_PARAMS.get("token"),
     'Content-Type': 'application/json',
   }
 }
