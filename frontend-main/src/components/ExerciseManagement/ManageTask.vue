@@ -37,8 +37,10 @@
         </span>
       </div>
     </div>
-    <div class="pluginSelect"><div class="p-text-center">Center:</div>
- <SelectPluginDropdown /></div>
+    <div class="pluginSelect">
+      <div class="p-text-center">Center:</div>
+      <SelectPluginDropdown />
+    </div>
 
     <show-plugin
       :taskData="task"
@@ -52,10 +54,7 @@
         v-on:click="handleDeleteClick"
         class="p-button-danger"
       ></Button>
-      <Button
-        label="Export"
-        v-on:click="handleExportClick"
-      ></Button>
+      <Button label="Export" v-on:click="handleExportClick"></Button>
     </div>
   </div>
 </template>
@@ -269,13 +268,13 @@ button {
 }
 
 .pluginSelect {
-  display:flex;
+  display: flex;
   justify-content: center;
-  padding:5px;
-  align-items:center;
+  padding: 5px;
+  align-items: center;
 }
 
-.p-text-center{
-  padding:5px
+.p-text-center {
+  padding: 5px;
 }
 </style>

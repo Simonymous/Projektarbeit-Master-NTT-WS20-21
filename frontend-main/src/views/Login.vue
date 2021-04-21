@@ -39,7 +39,7 @@ import { useRouter } from "vue-router";
 import VueCookies from "vue-cookies";
 import { postBackendRequest } from "../helper/requests";
 import { useState } from "../store/store";
-import User from '../models/User'
+import User from "../models/User";
 export default {
   name: "Login",
 
@@ -50,14 +50,15 @@ export default {
     const USER_TEMPLATE = require("../models/loginUserDTO");
     const AUTH_PATH = "auth/login";
     let state = useState();
-    
 
     async function startLoginProcess() {
       try {
         if (username.value && password.value) {
           const user = new USER_TEMPLATE(username.value, password.value);
           const response = await postBackendRequest(AUTH_PATH, user);
-          state.user = new User(response.token.accessToken);
+          state.user = new User(response.token.access_token);
+          VueCookies.set("access_token", response.token.access_token, Infinity);
+          // router.go();
           router.push("/");
         }
       } catch (error) {
@@ -69,6 +70,7 @@ export default {
       username,
       password,
       startLoginProcess,
+      VueCookies,
     };
   },
 };

@@ -10,7 +10,7 @@
       ></prism-editor>
     </div>
     <div>
-      <h3>Test input Parameter:</h3>
+      <h3>Input Parameter:</h3>
       <InputText
         type="text"
         v-model="testFunctionParams"
@@ -26,7 +26,7 @@
         columnResizeMode="expand"
         class="editable-cells-table"
       >
-        <Column field="input" header="Eingabe Wert(e): [{''a'':1},{''b'':2}]">
+        <Column field="input" header="Eingabe Wert(e): [1,2]">
           <template #editor="slotProps">
             <InputText
               v-model="slotProps.data[slotProps.column.props.field]"
@@ -73,7 +73,7 @@
         columnResizeMode="expand"
         class="editable-cells-table"
       >
-        <Column field="input" header="Eingabe Wert(e): [{''a'':1},{''b'':2}]">
+        <Column field="input" header="Eingabe Wert(e): [1, 2]">
           <template #editor="slotProps">
             <InputText
               v-model="slotProps.data[slotProps.column.props.field]"
@@ -111,16 +111,16 @@
 </template>
 
 <script>
-import { PrismEditor } from 'vue-prism-editor'
-import 'vue-prism-editor/dist/prismeditor.min.css' // import the styles somewhere
+import { PrismEditor } from "vue-prism-editor";
+import "vue-prism-editor/dist/prismeditor.min.css"; // import the styles somewhere
 
 // import highlighting library (you can use any library you want just return html string)
-import { highlight, languages } from 'prismjs/components/prism-core'
-import 'prismjs/components/prism-clike'
-import 'prismjs/components/prism-javascript'
-import 'prismjs/themes/prism-tomorrow.css' // import syntax highlighting styles
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-tomorrow.css"; // import syntax highlighting styles
 
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted } from "vue";
 
 export default {
   components: {
@@ -132,71 +132,71 @@ export default {
   setup(props, { emit }) {
     // let openTestsRows = ref([...props.taskData.openTests]);
     let openTestsRows = ref(
-      JSON.parse(JSON.stringify(props.taskData.openTests)),
-    )
-    let closedTestsRows = ref([...props.taskData?.closedTests])
+      JSON.parse(JSON.stringify(props.taskData.openTests))
+    );
+    let closedTestsRows = ref([...props.taskData?.closedTests]);
     let testFunctionParams = ref(
-      arrayToString(props.taskData?.dataForPlugin?.inputParams),
-    )
-    let code = ref(props.taskData?.dataForPlugin?.defaultCode)
+      arrayToString(props.taskData?.dataForPlugin?.inputParams)
+    );
+    let code = ref(props.taskData?.dataForPlugin?.defaultCode);
 
     watch(props, () => {
-      code.value = props.taskData?.dataForPlugin?.defaultCode
+      code.value = props.taskData?.dataForPlugin?.defaultCode;
       openTestsRows.value = JSON.parse(
-        JSON.stringify(props.taskData?.openTests),
-      )
-      closedTestsRows.value = [...props.taskData?.closedTests]
+        JSON.stringify(props.taskData?.openTests)
+      );
+      closedTestsRows.value = [...props.taskData?.closedTests];
       testFunctionParams.value = arrayToString(
-        props.taskData?.dataForPlugin?.inputParams,
-      )
-    })
+        props.taskData?.dataForPlugin?.inputParams
+      );
+    });
 
     function arrayToString(arr = []) {
-      let returnString = ''
+      let returnString = "";
       arr.forEach((item) => {
-        returnString += item.toString() + ', '
-      })
+        returnString += item.toString() + ", ";
+      });
 
-      returnString = returnString.length ? returnString.slice(0, -2) : ''
-      return returnString
+      returnString = returnString.length ? returnString.slice(0, -2) : "";
+      return returnString;
     }
 
     function highlighter(code) {
-      return highlight(code, languages.js, 'typescript') // languages.<insert language> to return html with markup
+      return highlight(code, languages.js, "typescript"); // languages.<insert language> to return html with markup
     }
 
     function addNewOpenTest() {
-      openTestsRows.value.unshift({})
-      emitChanges()
+      openTestsRows.value.unshift({});
+      emitChanges();
     }
 
     function addNewClosedTest() {
-      console.log(closedTestsRows.value)
-      closedTestsRows.value.unshift({})
-      emitChanges()
+      console.log(closedTestsRows.value);
+      closedTestsRows.value.unshift({});
+      emitChanges();
     }
 
     function removeOpenTest(a) {
       if (openTestsRows.value.length > 0) {
-        openTestsRows.value.splice(a.index, 1)
+        openTestsRows.value.splice(a.index, 1);
       }
-      emitChanges()
+      emitChanges();
     }
 
     function removeClosedTest(a) {
       if (closedTestsRows.value.length > 0) {
-        closedTestsRows.value.splice(a.index, 1)
+        closedTestsRows.value.splice(a.index, 1);
       }
-      emitChanges()
+      emitChanges();
     }
 
     function splitTestFunctionParams() {
-      let splittedInputParams = testFunctionParams.value.split(',')
+      let splittedInputParams = testFunctionParams.value.split(",");
 
       splittedInputParams.forEach((param, index) => {
-        splittedInputParams[index] = param.trim()
-      })
-      return splittedInputParams
+        splittedInputParams[index] = param.trim();
+      });
+      return splittedInputParams;
     }
 
     function emitChanges() {
@@ -208,9 +208,9 @@ export default {
         },
         openTests: openTestsRows.value,
         closedTests: closedTestsRows.value,
-      }
-      console.log(taskData)
-      emit('pluginChangedData', taskData)
+      };
+      console.log(taskData);
+      emit("pluginChangedData", taskData);
     }
 
     return {
@@ -224,9 +224,9 @@ export default {
       closedTestsRows,
       testFunctionParams,
       emitChanges,
-    }
+    };
   },
-}
+};
 </script>
 
 <style>

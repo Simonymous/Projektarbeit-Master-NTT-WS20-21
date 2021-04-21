@@ -38,7 +38,7 @@ export default {
           handleClickComponent(event);
         },
       },
-      {
+      /**{
         label: "User Management",
         icon: "pi pi-users",
         code: "components/UserManagement.vue",
@@ -46,7 +46,7 @@ export default {
         command: (event) => {
           handleClickComponent(event);
         },
-      },
+      },**/
     ]);
 
     function handleClickComponent(e) {
@@ -70,5 +70,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
